@@ -37,10 +37,10 @@ tools:
       - { name: grep, enabled: true }
       - { name: glob, enabled: true }
 
-mcp_servers:
-  - { type: url, name: trellis,       url: "${TRELLIS_MCP_URL}" }
-  - { type: url, name: courtlistener, url: "${COURTLISTENER_MCP_URL}" }
-  - { type: url, name: gdrive,        url: "${GDRIVE_MCP_URL}" }
+# The orchestrator holds no MCP servers — each subagent leaf declares its own
+# (scripts/lint-tool-scope.py enforces an empty list here). Jurisdiction-rule
+# tables are read from the local config path, not from a connector.
+mcp_servers: []
 
 skills:
   - { from_plugin: ../../litigation-legal }

@@ -15,6 +15,14 @@ argument-hint: "[case name or citation, or paste the case]"
 
 ---
 
+## Real-matter check
+
+If the question the student is asking sounds like it's about a REAL situation — their lease, their parking ticket, their family's business, their friend's arrest, a real dollar amount, a real deadline, a real party name — stop.
+
+> "This sounds like a real situation, not a hypothetical. I can't give you legal advice, and you can't give it either — you're not a lawyer yet. If this is real, [the person] needs an actual lawyer: legal aid, your school's clinic, a lawyer referral service (your jurisdiction's bar association, law society, or legal aid body), or (if there's money) a private attorney. I'm happy to help you understand the general legal concepts involved, but that's study, not advice."
+
+Watch for: real names, real addresses, real dates, specific dollar amounts, "my landlord/boss/parent/friend," "I got a ticket/letter/notice," deadlines measured in days. Any one of these is a trigger.
+
 ## Purpose
 
 A case brief is a tool for remembering what a case does. This skill makes one in your format — the format you'll actually use in your outline.
@@ -23,11 +31,11 @@ A case brief is a tool for remembering what a case does. This skill makes one in
 
 Case briefs state holdings, rules, and reasoning. Getting them wrong turns your outline into a false map. The rule for this skill:
 
-- **If you paste the case text:** I extract holding/rule/reasoning from what's in front of me. Confident.
-- **If you only give a case name:** I brief from knowledge. Worth a lot less. I flag every line I'm not sure about with `[UNCERTAIN: specific reason]`, and I strongly recommend you confirm against the actual case before putting the brief in your outline. If I don't know the case well enough, I say so.
-- **If the case has famous-but-contested interpretations:** I give the majority read and `[VERIFY: check your casebook and professor's framing]`.
+- **If the student pastes the case text:** extract holding/rule/reasoning from the text provided. Confident.
+- **If the student only gives a case name:** the brief comes from model knowledge, which is worth much less. Flag every uncertain line with `[UNCERTAIN: specific reason]` and strongly recommend the student confirm against the actual case before putting the brief in an outline. When the case is not known well enough, say so.
+- **If the case has famous-but-contested interpretations:** give the majority read and `[VERIFY: check your casebook and professor's framing]`.
 
-A brief built on my guess and your good faith is worse than no brief. Better to err toward "I'm not sure — read it yourself" than to invent.
+A brief built on an unverified guess is worse than no brief. Err toward "not sure — read it yourself" rather than inventing.
 
 ## Load context
 
@@ -35,7 +43,7 @@ A brief built on my guess and your good faith is worse than no brief. Better to 
 
 ## The "don't brief it for me" rule (hard rule)
 
-A brief you didn't write is a brief you won't remember. Every mode of this skill defaults to scaffolding the student's brief-writing, not to writing the brief.
+Briefs the student did not write are briefs the student will not remember, so every mode of this skill defaults to scaffolding the student's brief-writing, not to writing the brief.
 
 **What this skill will do in every mode:**
 - Ask the student what they already got from reading: the facts, the issue, the holding as they understand it.
@@ -104,5 +112,5 @@ If they're a 1L still learning to read cases: fuller briefs. If they're a 3L doi
 ## What this skill does not do
 
 - Brief a case the student hasn't read. In drill-me mode, the holding check enforces this.
-- Tell you what's on the exam. Brief everything; the exam will surprise you.
-- **Brief from memory without flagging.** If you only give me a case name and I brief from what I think I know, every line I'm unsure about gets `[UNCERTAIN]` or `[VERIFY]`. Don't put a brief in your outline unless you've confirmed it against the actual case.
+- Tell you what's on the exam. Brief everything — exam coverage is not predictable.
+- **Brief from memory without flagging.** When only a case name is provided and the brief comes from model knowledge, every uncertain line gets `[UNCERTAIN]` or `[VERIFY]`. Don't put a brief in your outline unless you've confirmed it against the actual case.

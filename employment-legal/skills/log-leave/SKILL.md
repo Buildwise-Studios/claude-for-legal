@@ -34,17 +34,23 @@ leave and you want the tracker to watch the clocks from day one.
 3. Using the jurisdiction table in `~/.claude/plugins/config/claude-for-legal/employment-legal/CLAUDE.md`, look up the applicable leave
    entitlement (hours/weeks) for this leave type in this jurisdiction.
 
-4. Compute the first upcoming deadline based on the information provided:
-   - Designation not yet sent → deadline is 5 business days from leave start
-   - Med cert requested but not received → deadline is 15 days from request date
-   - Both sent and received → next deadline is at 75% exhaustion
+4. Compute the first upcoming deadline from the researched rule for the
+   applicable regime (designation notice, certification window, or exhaustion
+   projection) and record the pinpoint cite in `controlling_sources`. Do not
+   recall deadlines from memory — each regime the register covers (FMLA, state
+   leave, USERRA, ADA accommodation) sets its own clocks, and some run from
+   events other than leave start. If research is unavailable this session,
+   record the deadline tagged `[model knowledge — verify]` and flag it for the
+   next /employment-legal:leave-tracker run.
 
 5. Write a new entry to `~/.claude/plugins/config/claude-for-legal/employment-legal/leave-register.yaml` using the leave register
    format from the leave-tracker agent. If the file doesn't exist, create it.
 
 6. Confirm with a single line:
    > "Logged. [Employee/Role] — [Leave type] — [Jurisdiction] — started [date].
-   > First deadline: [what it is and when]. Leave tracker will alert automatically."
+   > First deadline: [what it is and when]. Run /employment-legal:leave-tracker
+   > weekly to check deadlines — set a recurring reminder; the tracker does not
+   > run on its own."
 
 ## Examples
 

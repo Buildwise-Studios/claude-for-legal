@@ -30,6 +30,10 @@ cold-start interview and without hand-editing YAML.
    > You haven't run setup yet. Run `/product-legal:cold-start-interview`
    > first — customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/product-legal/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -89,10 +93,16 @@ cold-start interview and without hand-editing YAML.
   the plugin / team that picks it up.
 - **Flag internal inconsistency.** If the change would make the profile
   inconsistent (e.g., AI-feature claims scrutiny on + no AI policy
-  commitments set in `/ai-governance-legal`; or "fast SLA" + "every
-  launch requires GC sign-off"), flag the tension.
+  commitments set in the ai-governance-legal practice profile; or
+  "fast SLA" + "every launch requires GC sign-off"), flag the tension.
 - **Flag guardrail degradation.** The `[review]` flag, source attribution
   tags, and `[verify]` tags on cited regulations are load-bearing — do not
   remove. The substantiation requirement on claims is the thing
   `/marketing-claims-review` exists for; weakening it defeats the skill.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, gates, or the allowlist:
+  update `Last material change: [today's date]` in the profile header, and ask
+  whether the authorizing attorney has reviewed this change. If yes, update
+  `Authorized by:` with the new date; if no, append ` (pending attorney review
+  since [date])` to the existing `Authorized by:` line.

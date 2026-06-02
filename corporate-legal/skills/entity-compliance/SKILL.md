@@ -36,8 +36,9 @@ to share it.
 
 ## Important: deadline reference caveat
 
-> The filing deadlines in this skill's reference table reflect publicly available
-> requirements as of the skill's build date. State filing requirements and due
+> The example deadlines in this skill (the Delaware block below) reflect publicly
+> available requirements and carry [verify] tags; everything else is captured from
+> you or your registered agent. State filing requirements and due
 > dates can change. **Always confirm deadlines with your registered agent or
 > directly with the relevant Secretary of State before relying on them for
 > compliance purposes.** If you use CT Corp, National Registered Agents, or
@@ -61,7 +62,7 @@ to share it.
 >
 > A DE LLC is NOT required to file a March 1 annual report — writing that deadline for an LLC carries real risk (spurious "overdue" flags that mask actual June 1 exposure, or worse, the inverse: a user who treats the March 1 corporation rule as universal and misses the June 1 LLC deadline). If the entity table records a Delaware entity without a type, flag it as `type_unknown` and ask the user to confirm before computing either deadline.
 >
-> The same entity-type discipline applies in every other jurisdiction with divergent filing regimes by entity type (e.g., CA corp Statement of Information vs. CA LLC SOI cadence; TX franchise tax applies to corporations, LLCs, and LPs but with different no-tax-due thresholds). When the reference table for a jurisdiction is populated, make sure it is indexed by entity type, not just by state.
+> The same entity-type discipline applies in every other jurisdiction with divergent filing regimes by entity type (e.g., CA corp Statement of Information vs. CA LLC SOI cadence; TX franchise tax applies to corporations, LLCs, and LPs alike — what differs by entity type is passive-entity exclusion eligibility, not the no-tax-due threshold [model knowledge — verify]). When capturing filing requirements for a jurisdiction, index them by entity type, not just by state.
 
 ---
 
@@ -81,7 +82,7 @@ metadata:
   last_updated: "[date]"
   last_audit: "[date or null]"
 
-custom_jurisdictions:   # manually added — US states or countries not in built-in reference table
+custom_jurisdictions:   # captured per jurisdiction at init — there is no built-in reference table
   []                    # populated when a new jurisdiction is encountered
 
 entities:
@@ -140,7 +141,7 @@ For each jurisdiction where the entity is registered (domestic or foreign):
 
 **Capture details in the tracker rather than a reference table:**
 
-> I don't have filing requirements for [Jurisdiction] in the reference table.
+> I don't have filing requirements captured for [Jurisdiction] yet.
 > Let me capture them so we can track this going forward.
 >
 > For [Entity] in [Jurisdiction]:
@@ -196,7 +197,7 @@ calculated filing requirements. Set initial status:
 - `current` if last_filed is within the current filing period
 - `due_soon` if due within 90 days and no last_filed for current period
 - `overdue` if due date has passed and no last_filed for current period
-- `unknown` if formation_date is missing or state is not in reference table
+- `unknown` if formation_date is missing or filing requirements have not been confirmed for the jurisdiction
 
 Show a summary after generating:
 
@@ -208,10 +209,10 @@ Total jurisdictions: [N]
 Filings tracked: [N]
 
 Status summary:
-  ✅ Current:   [N]
-  ⏰ Due soon:  [N] (next 90 days)
+  Current:   [N]
+  Due soon:  [N] (next 90 days)
   🔴 Overdue:   [N]
-  ❓ Unknown:   [N] (confirm with registered agent)
+  Unknown:   [N] (confirm with registered agent)
 
 Run /corporate-legal:entity-compliance --report to see what's due.
 ```
@@ -235,17 +236,17 @@ ENTITY COMPLIANCE REPORT — [date]
 🔴 OVERDUE ([N]):
   [Entity] / [State] / [Filing type] — was due [date]
 
-⏰ DUE WITHIN [N] DAYS ([N]):
+DUE WITHIN [N] DAYS ([N]):
   [Entity] / [State] / [Filing type] — due [date]  [registered agent]
   [Entity] / [State] / [Filing type] — due [date]
 
-✅ RECENTLY FILED ([N] in last 90 days):
+RECENTLY FILED ([N] in last 90 days):
   [Entity] / [State] / [Filing type] — filed [date]
 
-❓ UNKNOWN STATUS ([N]):
+UNKNOWN STATUS ([N]):
   [Entity] / [State] / [Filing type] — no information; confirm with registered agent
 
-🌐 AGENT-MANAGED ([N]):
+AGENT-MANAGED ([N]):
   [Entity] / [Country] / [Filing type] — managed by [local agent]; confirm status directly
   [Entity] / [Country] — no local agent recorded; add one with --update
 
@@ -443,7 +444,7 @@ a report or Slack message, showing only the next 90 days of filings.
   This skill is best suited for smaller organizations without agent support,
   or as a lightweight layer on top of agent data for organizations that do
   have support.
-- The filing deadline reference table is not legal advice and may not reflect
+- Captured filing deadlines are not legal advice and may not reflect
   current requirements. Confirm all deadlines before relying on them.
 
 

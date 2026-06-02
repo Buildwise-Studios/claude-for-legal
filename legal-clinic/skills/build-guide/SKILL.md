@@ -31,7 +31,7 @@ Multiple guides are fine — one per practice area. Re-run this command to revis
 
 ## Purpose
 
-The supervisor guide is the dial that turns student-facing skills from "get the work done" into "teach the student to do the work." Every student-facing skill in this plugin reads the guide before producing output: intake asks the questions the supervisor wants asked, drafting skills pick a pedagogy posture (assist / guide / teach), review gates route to the supervisor on the items the supervisor cares about, and cross-plugin checks wrap other-plugin skills in a supervision layer.
+The supervisor guide configures how far student-facing skills lean toward doing the work versus teaching the student to do it. Every student-facing skill in this plugin reads the guide before producing output: intake asks the questions the supervisor wants asked, drafting skills pick a pedagogy posture (assist / guide / teach), review gates route to the supervisor on the items the supervisor cares about, and cross-plugin checks wrap other-plugin skills in a supervision layer.
 
 This skill helps a supervisor author that guide in 5-10 minutes per practice area. The guide is plain markdown at a well-known path — edit it by hand anytime.
 
@@ -99,7 +99,7 @@ Capture the default posture for the practice area, and any per-document override
 - `pedagogy_posture_memo: [override]`
 - `pedagogy_posture_draft: [override]`
 
-If the supervisor names a document type the skills don't currently have, record the intended posture in a `pedagogy_posture_other:` block with a note — future skills can read it.
+If the supervisor names a document type the skills don't have, record the intended posture in a `pedagogy_posture_other:` block with a note.
 
 ### Step 5: Review gates
 

@@ -118,11 +118,11 @@ thought we owned.
 >
 > If absent and AI-assisted creation is foreseeable (consulting, development, content creation, design): 🟠 High. "The assignment clause is well-drafted but there's no AI-use disclosure. The copyright status of AI-generated content is unsettled, and without a disclosure obligation you won't know which portions are affected. Add an AI-use representation and a disclosure obligation." `[review — copyright status of AI-generated works is an evolving area; verify against current Copyright Office guidance and case law]`
 
-> **AI-assisted inventorship.** A patent filed with incorrect inventorship is unenforceable. If a consultant uses AI tools that contribute to an inventive concept, the inventorship question is unsettled and the patent is at risk. For any agreement with patent assignment provisions covering potentially patentable work product:
+> **AI-assisted inventorship.** Inventorship errors are correctable (35 U.S.C. §256), but uncorrected misjoinder or nonjoinder can threaten validity, deceptive intent risks unenforceability (inequitable conduct), and a claimed invention with no human inventor is unpatentable (*Thaler v. Vidal*). If a consultant uses AI tools that contribute to an inventive concept, the inventorship determination is unsettled and the patent is at risk. For any agreement with patent assignment provisions covering potentially patentable work product:
 >
 > Check: does the agreement have an AI-use representation? A process for determining inventorship where AI contributed? A disclosure obligation about AI use in the inventive process?
 >
-> If absent: flag. "Patent assignment without an AI-use representation. If AI tools contributed to the inventive concept, inventorship determination is complicated and an incorrectly-attributed patent is unenforceable. Add an AI-use representation and inventorship protocol."
+> If absent: flag. "Patent assignment without an AI-use representation. If AI tools contributed to the inventive concept, the inventorship determination is complicated — errors are correctable under §256, but uncorrected misattribution threatens validity, deceptive intent risks unenforceability, and an invention with no human inventor is unpatentable. Add an AI-use representation and inventorship protocol."
 
 ### Step 3: Clause-by-clause review
 
@@ -204,7 +204,7 @@ Default to the smallest edit that achieves the playbook position:
 - Replace a **sentence** before replacing the clause.
 - Only replace a **whole clause** when the counterparty's version is so far from your position that surgical edits would be harder to read than a fresh draft — and when you do, say so in the transmittal: "We've replaced §8.2 rather than marking it up because the changes were extensive. Happy to walk you through the delta."
 
-When in doubt, smaller. A client who receives a surgical redline trusts that you read carefully. A client who receives a wholesale replacement wonders whether you read at all.
+When in doubt, choose the smaller edit. A surgical redline signals careful reading; a wholesale replacement invites doubt about whether the original was read at all.
 
 ### Step 6: Assemble the memo
 
@@ -239,7 +239,7 @@ This memo and the underlying agreement may be privileged, confidential, or both.
 
 ## Assignment gap check
 
-[✅ Clear | ⚠️ Gap present — see above]
+[✓ Clear | ⚠️ Gap present — see above]
 
 ---
 

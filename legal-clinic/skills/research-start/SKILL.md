@@ -41,7 +41,7 @@ This skill produces the starting point: statutes to check, case law areas to inv
 
 ### Step 0: Seed documents first
 
-**Before building the roadmap, read the clinic's own seed documents.** The supervising attorney uploaded them at cold-start (handbook, filing guides, local court rules, intake forms, example case files, prior memos) — they are pre-vetted, jurisdiction-specific, and will beat any Westlaw query on the first 20 minutes of a student's research.
+**Before building the roadmap, read the clinic's own seed documents.** The supervising attorney uploaded them at cold-start (handbook, filing guides, local court rules, intake forms, example case files, prior memos) — they are pre-vetted, jurisdiction-specific, and more useful than a fresh database query for the first stage of a student's research.
 
 1. Read `~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md` → `## Seed documents`. Identify any item whose purpose or filename matches the research area (e.g., "Alameda UD filing guide" for a UD habitability question; a redacted sample case file in the same practice area; a prior memo on the same issue).
 2. For each match, surface it as a **Seed documents to read first** block at the top of the roadmap output. Name the file, say why it matters for this specific question, and say what it likely covers vs. where outside research will still be needed.
@@ -119,7 +119,7 @@ If the student has already done some research and uploads it: read it, identify 
 > **From your research so far:**
 > - You have: [summary of what's covered]
 > - Gap: [what the roadmap above suggests that you haven't found yet]
-> - `[VERIFY: the case you cited — [name] — run through a citator (verify it is good law) it, it may have been distinguished or limited]`
+> - `[VERIFY: the case you cited — [name] — run it through a citator to confirm it is still good law; it may have been distinguished or limited]`
 
 ## Output
 
@@ -174,7 +174,7 @@ match this issue — proceeding to primary sources."]
 1. Start with a secondary source to get the framework
 2. Find and read the primary statutes — confirm the citations above are current
 3. Run the searches, find the leading cases
-4. run through a citator (verify it is good law) everything before relying on it
+4. Run every case through a citator (confirm it is good law) before relying on it
 5. Come back and run `/memo` to scaffold your analysis once you have the rule
 
 ## What this roadmap does NOT do
@@ -195,7 +195,7 @@ match this issue — proceeding to primary sources."]
 
 - **Provide authoritative citations.** Explicitly, by design. The student verifies every cite before using it.
 - **Replace legal research.** Accelerates the "where do I start" phase; the research itself is still the student's.
-- **Guarantee the roadmap is complete.** It's a starting set of leads. The research may reveal sources the roadmap missed — that's fine, that's research.
+- **Guarantee the roadmap is complete.** It's a starting set of leads; the research may reveal sources the roadmap missed.
 
 ## Close with the next-steps decision tree
 

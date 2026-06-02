@@ -12,11 +12,13 @@ argument-hint: "[feature name or description]"
 # /pia-generation
 
 1. Load `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → PIA house style (trigger, structure, depth, sign-off).
-2. Run the workflow below.
-3. Check: is a PIA actually needed? (House trigger + research the mandatory-assessment triggers for each applicable regime — cite primary sources, verify currency.)
-4. Intake: ask the product-team questions. Can pull from PRD if provided.
-5. Write PIA in house format. Include privacy policy consistency check.
-6. Output with conditions list and named owners. Route for sign-off.
+2. Check the practice context index for prior cross-plugin work on this feature (AIAs, DPA reviews) — see `## Check prior cross-plugin work`.
+3. Run the workflow below.
+4. Check: is a PIA actually needed? (House trigger + research the mandatory-assessment triggers for each applicable regime — cite primary sources, verify currency.)
+5. Intake: ask the product-team questions. Can pull from PRD if provided.
+6. Write PIA in house format. Include privacy policy consistency check.
+7. Output with conditions list and named owners. Route for sign-off.
+8. Record the completed PIA in the practice context index — see `## Record in the practice context index`.
 
 ```
 /privacy-legal:pia-generation "Location sharing feature"
@@ -39,11 +41,11 @@ PRD: [Drive link]
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
-A PIA is a conversation with the product team, captured. It asks: what data, why, how long, who sees it, what could go wrong. This skill structures that conversation and writes the output in this team's format — the one learned from the seed PIA during cold-start.
+A PIA captures a structured conversation with the product team: what data, why, how long, who sees it, what could go wrong. This skill structures that conversation and writes the output in this team's format — the one learned from the seed PIA during cold-start.
 
 ## Jurisdiction assumption
 
@@ -67,6 +69,28 @@ If a prior PIA exists:
 **Carry severity from upstream as a floor** per the cross-skill severity floor rule in `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → `## Shared guardrails`. A use-case-triage that rated the activity high-risk cannot become a PIA that concludes low-risk without stating why and what changed.
 
 If no prior output is found, say so explicitly — "No prior triage or PIA on this activity in outputs folder; this is a cold start" — so the reviewing attorney knows the check ran and didn't find anything to reconcile.
+
+## Check prior cross-plugin work
+
+The section above covers this plugin's own outputs. Other practice areas' work lives elsewhere — read the shared practice context index at `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`) — an append-only, cross-plugin index of completed assessments and reviews, one pointer line per work product:
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+
+Look for entries whose Subject matches this feature, system, or its vendor/processor:
+
+- **Prior AIAs on the same system** (ai-governance-legal, `aia-generation` entries) — the AIA's system description, oversight model, and risk findings feed this PIA's description of processing and risks sections.
+- **Prior DPA reviews on the same vendor/processor** (`dpa-review` entries) — the reviewed terms inform the PIA's data flow and subprocessor analysis.
+
+If a relevant entry exists, surface it before starting:
+
+> "An AI impact assessment for [system] was completed on [date] (ai-governance-legal) — its system description, oversight model, and risk findings feed sections 1 (description of processing) and 5 (risks and mitigations) of this PIA. Want me to incorporate it? (You'll need to point me at the document; the index has its location.)"
+
+The index records pointers, not findings — to incorporate prior work, the user points you at the document (the index has its location).
+
+If the index doesn't exist or has no relevant entries, say nothing and proceed — no noise. If matter workspaces are enabled and a matter is active, skip the check entirely — matter-scoped work is never indexed at practice level, and cross-matter visibility would breach matter isolation.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
 
 ## Load house style
 
@@ -125,7 +149,7 @@ Verify currency; statutory definitions and bases are amended often. Flag uncerta
 - Who inside the company can see this data? Engineers? Support? Analysts?
 - Any third parties? Vendors, partners, analytics?
 - Where is it stored? Which region? New infrastructure or existing?
-- How long is it kept? Is there a deletion schedule or does it live forever?
+- How long is it kept? Is there a deletion schedule, or is retention indefinite?
 
 ### What could go wrong
 
@@ -254,6 +278,7 @@ Flag every mismatch. One of them has to change before launch.
 ## Handoff
 
 - **To product team:** Conditions list with owners and deadlines. Not "improve security" — "add audit logging to the admin panel's location lookup, owner: [eng lead], before launch."
+- **To AI governance:** If the feature involves an AI system making or influencing decisions about individuals, flag: "If the ai-governance-legal plugin is installed, run `/ai-governance-legal:aia-generation [system name]` in parallel — it will pick up this work from the practice context index. The PIA doesn't substitute for an AIA."
 - **To reg-gap-analysis skill:** If the PIA uncovered a policy inconsistency, that skill tracks the policy update.
 - **To the sign-off process:** Per `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → who approves PIAs.
 
@@ -270,6 +295,18 @@ Producing an internal PIA is research and documentation. *Submitting a DPIA to a
 > If you need to find a licensed attorney, solicitor, barrister, or other authorised legal professional in your jurisdiction: your professional regulator's referral service is the fastest starting point (state bar in the US, SRA/Bar Standards Board in England & Wales, Law Society in Scotland/NI/Ireland/Canada/Australia, or your jurisdiction's equivalent).
 
 Do not proceed past this gate without an explicit yes.
+
+## Record in the practice context index
+
+**Record in the practice context index.** After the PIA is complete, append a one-line entry to `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`): date, this plugin, this skill, the subject (product/system/vendor name), the outcome status, and where the full document lives. If the index doesn't exist, create it from the template at `references/practice-context-template.md` in the plugin root (or, if the template isn't available, with the column schema shown below). The `Outcome` cell takes exactly one value from a closed set — `completed`, `draft`, `superseded`, or `withdrawn` — status only, never findings, conclusions, or risk ratings. Skip this step when working inside a matter workspace — matter-scoped work is never indexed at practice level.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+| [YYYY-MM-DD] | privacy-legal | pia-generation | [product/system name] | [completed / draft / superseded / withdrawn] | [path or DMS link] |
+
+The index is practice-level work-product — same confidentiality as the practice profiles. Record pointers, not findings: one line per artifact, status-only outcome, no substantive findings (the index travels in backups and syncs more readily than the documents it points to). Never record client names in multi-client (firm) practices — use matter numbers or generic descriptors.
 
 ## Close with the next-steps decision tree
 

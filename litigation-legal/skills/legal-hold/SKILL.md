@@ -16,19 +16,21 @@ argument-hint: "[slug] [--issue | --refresh | --release | --status]"
    - `--release`: capture release date, retention instruction. Draft release notice. Set `released:` field.
 6. Confirm before writing. Show the user the draft notice and the log diff.
 
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
+
 ---
 
 # Legal Hold
 
 ## Purpose
 
-A legal hold is the most mechanical high-stakes document in-house counsel writes. The notice itself is templated. The failure modes are operational: issued too late, scoped too narrowly, never refreshed, never released. This skill owns all four phases: **issue → refresh → (release) → track**.
+A legal hold notice is templated but high-stakes. The failure modes are operational: issued too late, scoped too narrowly, never refreshed, never released. This skill owns all four phases: **issue → refresh → (release) → track**.
 
 The portfolio already flags missing holds; this skill writes them.
 
 ## Jurisdiction assumption
 
-Preservation duties vary materially by forum. Federal common law (via Zubulake / Residential Funding / Rule 37(e)) differs from state practice; states differ from each other on trigger timing, scope, sanctions, and spoliation remedies; regulatory preservation obligations overlay civil rules in some matters (SEC Rule 17a-4, HIPAA, etc.). The trigger, scope, and sanctions exposure cited in the draft are a starting-point read for the forum named in the matter — confirm with counsel before issuing, refreshing, or releasing.
+Preservation duties vary materially by forum. Federal practice (trigger per the *Zubulake* reasonable-anticipation standard; ESI sanctions per Rule 37(e), which as amended in 2015 displaced earlier circuit law such as *Residential Funding* as to ESI — *Residential Funding* remains live for non-electronic evidence, *Hoffer v. Tellone*, 128 F.4th 433 (2d Cir. 2025)) differs from state practice; states differ from each other on trigger timing, scope, sanctions, and spoliation remedies; regulatory preservation obligations overlay civil rules in some matters (SEC Rule 17a-4, HIPAA, etc.). (England & Wales: see `references/uk.md` — the preservation duty and the written-notification requirement are express in PD 57AD ¶¶3.1/4, not a common-law hold doctrine.) The trigger, scope, and sanctions exposure cited in the draft are a starting-point read for the forum named in the matter — confirm with counsel before issuing, refreshing, or releasing.
 
 ## Load context
 
@@ -210,7 +212,7 @@ Read `_log.yaml`. Produce a report:
 
 | Matter | Issued | Last refresh | Next refresh | Custodians | Status |
 |---|---|---|---|---|---|
-| [slug] | [date] | [date] | [date] | [N] | [ok / ⚠️ refresh due / ❌ overdue] |
+| [slug] | [date] | [date] | [date] | [N] | [ok / ⚠️ refresh due / ⚠️ OVERDUE] |
 
 ## ⚠️ Attention
 
@@ -235,4 +237,4 @@ The `portfolio-status` skill already flags "Hold not issued on active litigation
 - **Enforce preservation.** It issues the notice; IT/custodians preserve. The skill flags when a custodian leaves (so IT can preserve at system level) but doesn't reach into systems.
 - **Make scope calls alone.** The skill proposes scope from matter context; the user confirms. Scope too broad = operational burden. Scope too narrow = spoliation risk. User's judgment.
 - **Auto-refresh without review.** Even when `next_refresh` comes up, the user reviews scope changes before the refresh notice goes out.
-- **Send the notice.** Drafts .docx; user sends via email per house convention. (Future integration: Gmail/O365 MCP could send directly after user review.)
+- **Send the notice.** Drafts .docx; user sends via email per house convention.

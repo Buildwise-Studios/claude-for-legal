@@ -18,7 +18,7 @@ argument-hint: "[--all | --risk=high | --stale]"
 
 ## Purpose
 
-One read that answers: what do I own right now, what needs attention, and what's slipping? Output is scannable — designed for a counsel who has three minutes before their next call.
+One read that answers "what do I own right now, what needs attention, and what's slipping?" Output is scannable — designed for a counsel who has three minutes before their next call.
 
 ## Load context
 
@@ -102,7 +102,7 @@ Flags:
 
 ## Anomaly rules
 
-These are the checks that make the skill useful rather than decorative:
+These checks drive the anomalies section:
 
 1. **Overdue deadline:** `next_deadline < today` and `status != closed`
 2. **Stale:** `last_updated < today - 30d` and `status != closed`

@@ -12,10 +12,11 @@ argument-hint: "[describe the use case, or 'batch' to triage a list]"
 # /use-case-triage
 
 1. Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. Confirm registry is populated — if not, stop and direct to setup.
-2. Use the framework below. Clarify the use case if vague.
-3. Registry lookup → red line check → classify.
-4. Output: classification, reasoning, conditions table (if conditional), governance tier, cross-plugin handoffs.
-5. Propose registry update if use case wasn't already in the registry.
+2. Check the practice context index — has privacy-legal already triaged or assessed this use case? See `## Check prior cross-plugin work`.
+3. Use the framework below. Clarify the use case if vague.
+4. Registry lookup → red line check → classify.
+5. Output: classification, reasoning, conditions table (if conditional), governance tier, cross-plugin handoffs.
+6. Propose registry update if use case wasn't already in the registry.
 
 ```
 /ai-governance-legal:use-case-triage "Sales team wants to score leads with AI automatically"
@@ -31,12 +32,12 @@ argument-hint: "[describe the use case, or 'batch' to triage a list]"
 
 ## Purpose
 
-Stop the conversation that happens in a hallway and starts as "can we just use AI
-for this?" Give a fast, calibrated answer from the registry — and if the answer
-is conditional, make the conditions concrete and the next step obvious.
+Answer the informal "can we just use AI for this?" request with a fast,
+calibrated answer from the registry — and if the answer is conditional, make
+the conditions concrete and the next step obvious.
 
-The triage skill is a gateway, not a destination. Its job is to classify, flag
-what's required, and route. The aia-generation skill does the deep work.
+The triage skill's job is to classify, flag what's required, and route. The
+aia-generation skill does the deep work.
 
 ## Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` first
 
@@ -49,16 +50,40 @@ If `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` con
 > I notice you haven't configured your practice profile yet — that's how I tailor the use case registry, red lines, and governance tiers to your practice.
 >
 > **Two choices:**
-> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
+> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to your practice.
 > - Say **"provisional"** and I'll triage against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no registry (classify by general AI governance principles rather than matching to a registered entry). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to YOUR practice — your registry, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to your practice — your registry, your jurisdiction, your risk appetite. 2 minutes."
 
 **Jurisdictional scope.** Triage applies the registry, red lines, and governance tiers configured for the regulatory footprint in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. AI rules vary materially by jurisdiction — an APPROVED classification in one footprint may be CONDITIONAL or prohibited in another. If deployment touches a jurisdiction not in the footprint, surface that and re-triage rather than extending by analogy.
+
+---
+
+## Check prior cross-plugin work
+
+Read the shared practice context index at `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`) — an append-only, cross-plugin index of completed assessments and reviews, one pointer line per work product:
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+
+Look for entries whose Subject matches this use case or its system/vendor:
+
+- **A privacy triage or assessment covering the same use case** (privacy-legal, `use-case-triage` or `pia-generation` entries) — its system description, data categories, and conditions are reusable here.
+- **Prior AIAs or vendor AI reviews on the same system/vendor** (`aia-generation` / `vendor-ai-review` entries) — a use case that's already been assessed shouldn't be triaged as if it's new.
+
+If a relevant entry exists, surface it before classifying:
+
+> "privacy-legal triaged [use case] on [date] — this AI governance triage will reuse its system description and stay consistent with its conditions. (To pull in the details, point me at the document; the index has its location.)"
+
+The index records pointers, not findings — to incorporate prior work, the user points you at the document (the index has its location).
+
+If the index doesn't exist or has no relevant entries, say nothing and proceed — no noise. If matter workspaces are enabled and a matter is active, skip the check entirely — matter-scoped work is never indexed at practice level, and cross-matter visibility would breach matter isolation.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
 
 ---
 
@@ -107,13 +132,13 @@ Triage typically stays high-level, but if the classification depends on citing a
 
 **Source attribution tiering.** For model-knowledge citations, use one of three tiers:
 
-- `[settled]` — stable, well-known statutory and regulatory references unlikely to have changed (e.g., GDPR Art. 22 as a concept, the existence of Regulation (EU) 2024/1689 as the EU AI Act). Still verify before certifying, but lower priority.
+- `[settled — last confirmed YYYY-MM-DD]` — stable, well-known statutory and regulatory references that have been checked against a primary source on the stated date (e.g., GDPR Art. 22 as a concept, the existence of Regulation (EU) 2024/1689 as the EU AI Act). The date matters — even "stable" references change. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead; an unconfirmed "settled" is a confident overclaim. Still verify before certifying, but lower priority.
 - `[verify]` — model-knowledge citations that are real but should be verified: specific delegated / implementing acts, regulator guidance, standards, effective dates, thresholds, post-2023 amendments.
 - `[verify-pinpoint]` — pinpoint citations (specific article numbers, annex references, subsection letters, paragraph numbers) carry the highest fabrication risk and should ALWAYS be verified against a primary source. EU AI Act article numbers in particular shifted during consolidation; every pinpoint cite to the Act should be verified against the Official Journal text.
 
-Other sources keep their own tags: `[registry]` when drawn from the practice profile's use case registry; `[Westlaw]`, `[EUR-Lex]`, `[regulator site]`, or the MCP tool name when retrieved from a connected legal research tool; `[web search — verify]` for web-search citations; `[user provided]` for user-supplied citations. The tiering surfaces the real verification work — a reader who verifies everything verifies nothing. Never strip or collapse the tags.
+Other sources keep their own tags: `[registry]` when drawn from the practice profile's use case registry; `[Westlaw]`, `[EUR-Lex]`, `[regulator site]`, or the MCP tool name when retrieved from a connected legal research tool; `[web search — verify]` for web-search citations; `[user provided]` for user-supplied citations. The tiering surfaces the real verification work — a single undifferentiated tag gives the reader no way to prioritize what to check first. Never strip or collapse the tags.
 
-**For non-lawyer users, uncertain dates and thresholds go in a confirm-list, not inline.** A `[verify]` tag on "effective February 1, 2026" reads as "effective February 1, 2026" to someone who doesn't know what the tag means. Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. If Role is **Non-lawyer** and an effective date, phase-in, threshold, or deadline is uncertain (would carry `[verify]` or `[verify-pinpoint]` if inline), replace the inline assertion with "effective date: confirm with counsel" (or "threshold: confirm with counsel") and collect all uncertain assertions in a final triage section titled: "**Things I'm not certain about — ask your attorney to confirm before relying on this:**" with each item listed (what I said, what's uncertain, why it matters). Lawyer-role users keep the inline `[verify]` treatment.
+**For non-lawyer users, uncertain dates and thresholds go in a confirm-list, not inline.** A `[verify]` tag on "effective February 1, 2026" reads as "effective February 1, 2026" to someone who doesn't know what the tag means. Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. If Role is **Non-lawyer** and an effective date, phase-in, threshold, or deadline is uncertain (would carry `[verify]` or `[verify-pinpoint]` if inline), replace the inline assertion with "effective date: confirm with counsel" (or "threshold: confirm with counsel") and collect all uncertain assertions in a final triage section titled: "**Things I'm not certain about — ask your attorney to confirm before relying on this:**" with each item listed (the assertion as written, what is uncertain about it, why it matters). Lawyer-role users keep the inline `[verify]` treatment.
 
 ---
 
@@ -128,13 +153,13 @@ say so immediately.
 > If there's something different about this situation, that's a conversation for
 > legal sign-off — not a triage call."
 
-Do not soften red line outcomes. If it's a no, it's a no.
+Do not soften red line outcomes.
 
 ---
 
 **Jurisdictional scope.** Ask: "Who's affected, and where are they? (Employees / customers / the general public / specific groups.) Which jurisdictions? (Not just where your company is — where the affected people are.)"
 
-Then check the use case against EVERY regime in the practice profile's `## Regulatory footprint`, not just the primary one. Flag conflicts:
+Then check the use case against EVERY regime in the practice profile's **Regulatory footprint** field (under `## Company profile`), not just the primary one. Flag conflicts:
 - "APPROVED under US law, but triggers EU AI Act Article 27 FRIA if EU residents are affected — confirm whether any affected individuals are in the EU."
 - "Standard tier under your governance framework, but NYC LL144 requires a bias audit if used for hiring decisions affecting NYC residents."
 - "Low risk under Australian AI Ethics Framework, but may be high-risk under the Colorado AI Act if Colorado residents are affected."
@@ -145,7 +170,7 @@ A use case that crosses jurisdictions gets the strictest applicable treatment, n
 
 ### Step 4: Classification and output
 
-The APPROVED / CONDITIONAL / NOT APPROVED buckets, the red-line definitions, and the CONDITIONAL required-controls list all come from `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## AI use case triage criteria` and `## Use case registry`. If the playbook doesn't define a criterion the use case turns on, ask the user: "Your playbook doesn't cover [specific question]. What's your default position? I'll add it to `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` so the next triage is consistent."
+The APPROVED / CONDITIONAL / NOT APPROVED buckets, the red-line definitions, and the CONDITIONAL required-controls list all come from `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## Use case registry` (including its `### Red lines` and `### Governance tiers` subsections). If the playbook doesn't define a criterion the use case turns on, ask the user: "Your playbook doesn't cover [specific question]. What's your default position? I'll add it to `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` so the next triage is consistent."
 
 **Before issuing an APPROVED classification (approving an AI use case for deployment):** Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. If the Role is Non-lawyer:
 

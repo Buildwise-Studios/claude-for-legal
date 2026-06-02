@@ -19,7 +19,7 @@ argument-hint: "[slug]"
 
 ## Purpose
 
-Matters end. The outcome is the single most valuable data point the portfolio generates — it calibrates the risk framework for future matters. Closing a matter captures the outcome structurally so the record is useful, not just archived.
+The outcome is the most valuable data point the portfolio generates — it calibrates the risk framework for future matters. Closing a matter captures the outcome structurally so the record is useful, not just archived.
 
 ## Load context
 
@@ -54,12 +54,12 @@ The date the matter actually ended (settlement executed, order issued, dismissal
 ### 3. Final exposure
 
 - Actual cost to company (settlement amount + fees + injunctive/structural cost)
-- vs. initial exposure range at intake (did we call it?)
+- vs. initial exposure range at intake (how accurate was the initial call?)
 - Reserve accuracy (if reserved): booked vs. actual
 
 ### 4. Lessons
 
-Two or three sentences. What did we get right? What did we misjudge? Anything the intake should have flagged earlier?
+Two or three sentences. What went right? What was misjudged? Anything the intake should have flagged earlier?
 
 This is the part future counsel will reread. Be honest. "Misjudged likelihood — plaintiff firm was more aggressive than expected" is worth more than "resolved favorably."
 
@@ -125,6 +125,6 @@ Show the user the full close entry and the yaml changes before writing.
 
 ## What this skill does not do
 
-- Delete matters. Closed matters stay in `_log.yaml` and on disk — they're the training set for the portfolio's judgment.
+- Delete matters. Closed matters stay in `_log.yaml` and on disk — they remain a reference point for future matters.
 - Re-open. If a closed matter comes back (appeal, related litigation), open a new matter that references the closed one in `matter.md`.
 - Summarize lessons the user didn't say. If the user skips the lessons section, leave it empty rather than invent.

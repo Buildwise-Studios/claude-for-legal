@@ -27,7 +27,7 @@ AI law moves faster than model training data. Before relying on an effective dat
 
 ## Federal (US)
 
-- EEOC AI guidance (2023) still in effect. Watch for a notice-and-comment rule.
+- EEOC AI technical assistance (2022 ADA doc, 2023 Title VII select-issues doc) was removed from the agency site in early 2025 following the change in administration. Treat as withdrawn / non-operative and verify the current enforcement posture before citing either document. `[verify — EEOC.gov]`
 - FTC §5 theory expanding: *FTC v. Humor Rainbow/OkCupid* (March 2026) — undisclosed training-data sharing as a §5 violation.
 - Executive orders change with administrations. Verify current policy.
 
@@ -35,4 +35,4 @@ AI law moves faster than model training data. Before relying on an effective dat
 
 When a skill cites an effective date, threshold, or obligation in this space, it should note: "AI law is moving fast — this date/rule may have changed since my training. Verify at [source]. See `references/currency-watch.md` for the live list."
 
-**This file goes stale.** It was current as of May 2026. Update it when you notice a date it lists has passed or a rule it lists has changed. A stale watch list is worse than no watch list.
+**This file goes stale.** It was current as of May 2026. Update it when you notice a date it lists has passed or a rule it lists has changed.

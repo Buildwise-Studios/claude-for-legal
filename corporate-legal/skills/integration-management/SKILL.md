@@ -35,11 +35,12 @@ argument-hint: "[--init | --contracts | --report | --update | --export [--format
 
 ## Purpose
 
-Outside counsel closes the deal. Legal inherits the mess. This skill is the
-program management layer for post-closing integration — not the business
-integration, not IT systems, not HR org design. The legal workstream: consents,
-contract assignments, entity rationalization, IP recordals, PA obligations.
-It tracks what's done, what's due, what's blocked, and what needs a decision.
+Outside counsel closes the deal; the post-closing legal workstream stays with
+in-house legal. This skill is the program management layer for post-closing
+integration — not the business integration, not IT systems, not HR org design.
+The legal workstream: consents, contract assignments, entity rationalization,
+IP recordals, PA obligations. It tracks what's done, what's due, what's
+blocked, and what needs a decision.
 
 ---
 
@@ -435,10 +436,10 @@ WORKPLAN — LEGAL OWNS
   🔴 OVERDUE ([N]):
     [item] — was due [date]
 
-  ⏰ DUE THIS WEEK ([N]):
+  DUE THIS WEEK ([N]):
     [item] — due [date]
 
-  ✅ COMPLETED SINCE LAST REPORT ([N]):
+  COMPLETED SINCE LAST REPORT ([N]):
     [item] — completed [date]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -529,7 +530,9 @@ board integration update.
   estate). It tracks legal's touchpoints in those workstreams and flags when
   legal input is needed. Ownership stays with the business function.
 - It does not draft the consent request letters or novation agreements — those
-  are produced by the written-consent skill or by outside counsel.
+  are drafted by outside counsel or ad hoc with attorney review.
+  (/corporate-legal:written-consent covers board and committee consents, not
+  counterparty consent requests.)
 - It does not advise on indemnification claims or PA breach. When a consent is
   refused or a deadline is missed, it flags the situation — the legal analysis
   of consequences is the attorney's call.

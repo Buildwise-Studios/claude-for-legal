@@ -9,7 +9,7 @@ user-invocable: false
 
 # [DEPRECATED] Form Generation → see `/draft`
 
-This skill was folded into `skills/draft/` during the v2 rebuild. The `/draft`
+This skill was folded into `skills/draft/`. The `/draft`
 command handles first-draft generation for all clinic documents including form
 population (asylum applications, eviction answers, protective order petitions,
 etc.) with practice-area templates and jurisdiction-aware formatting.

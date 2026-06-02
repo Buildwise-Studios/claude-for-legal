@@ -44,7 +44,7 @@ Most routine board approvals don't need a meeting. Officer appointments, equity 
 
 ## Major action + urgency = stop
 
-A board consent for a major one-off action (M&A, financing, dissolution, capital structure change, director election tied to a financing or M&A) that the user wants signed TODAY — "send for DocuSign this afternoon," "meeting in an hour," "signing tonight," "we need this before market open" — goes through outside counsel review. Not because the plugin can't draft it — because a wrong consent on a major action is a one-way door, and the urgency pressure is exactly when mistakes happen.
+A board consent for a major one-off action (M&A, financing, dissolution, capital structure change, director election tied to a financing or M&A) that the user wants signed TODAY — "send for DocuSign this afternoon," "meeting in an hour," "signing tonight," "we need this before market open" — goes through outside counsel review: a wrong consent on a major action is a one-way door, and urgency pressure is exactly when mistakes happen.
 
 Trigger (both must be true):
 
@@ -53,7 +53,7 @@ Trigger (both must be true):
 
 When both are true, output this and stop:
 
-> ⛔ **Major action + same-day signature — I won't mark this ready to sign.**
+> **Major action + same-day signature — I won't mark this ready to sign.**
 >
 > This is [action type], which is a one-way door. You've asked for it to be signed today. That combination is exactly when mistakes on a board consent become hardest to unwind.
 >

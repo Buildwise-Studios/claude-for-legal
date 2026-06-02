@@ -1,5 +1,7 @@
 # oc-status/ — weekly OC status-request drafts
 
+> **Location.** This layout lives at `~/.claude/plugins/config/claude-for-legal/litigation-legal/oc-status/` (or `./claude-for-legal-config/litigation-legal/oc-status/` where the home path isn't writable, e.g. Claude Cowork). The copy inside the installed plugin is documentation only — never store live files there; the install directory is replaced on plugin update.
+
 Output from `/litigation-legal:oc-status`. Per-run folders dated by day; each contains one markdown file per matter drafted, plus a `_summary.md`.
 
 ## Layout
@@ -24,4 +26,4 @@ Ad-hoc any time with `/litigation-legal:oc-status` (default filter) or `/litigat
 
 ## Housekeeping
 
-Old dated folders accumulate. Nothing needs them after OC has responded and matter history is updated. Feel free to delete older than 30 days.
+Old dated folders accumulate. Nothing needs them after OC has responded and matter history is updated. Folders older than 30 days can be deleted.

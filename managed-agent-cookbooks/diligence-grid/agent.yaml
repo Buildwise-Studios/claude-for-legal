@@ -1,9 +1,10 @@
 # Diligence Grid — managed-agent cookbook
 #
 # Fuses the dataroom-watcher (monitor a VDR) and the tabular-review skill
-# (schema-validated extraction across a document set) into the M&A diligence
-# workhorse. Analogous to a KYC-screening pipeline: batch document processing with
-# typed extraction, a normalization pass, and Write isolated to a single leaf.
+# (schema-validated extraction across a document set) into a single M&A
+# diligence pipeline. Analogous to a KYC-screening pipeline: batch document
+# processing with typed extraction, a normalization pass, and Write isolated
+# to a single leaf.
 
 name: diligence-grid
 model: claude-opus-4-7
@@ -69,10 +70,10 @@ system:
     not a representation, a disclosure schedule, or a diligence memo until a
     lawyer has read the underlying documents and signed off. The materiality
     filter and column classifications are heuristics — a contract the schema
-    calls immaterial may be the one that kills the deal. The verbatim quote
-    in every cell exists so the reviewer can verify fast, not so the output
-    can skip being reviewed. Do not soften this framing in the summary to
-    make the output read like a finding.
+    calls immaterial may still be deal-critical. The verbatim quote in every
+    cell exists so the reviewer can verify fast, not so the output can skip
+    being reviewed. Do not soften this framing in the summary to make the
+    output read like a finding.
 
 tools:
   # Orchestrator is scoped to local-only tools; MCP toolsets are held by the
@@ -84,11 +85,9 @@ tools:
       - { name: grep, enabled: true }
       - { name: glob, enabled: true }
 
-mcp_servers:
-  - { type: url, name: box,      url: "${BOX_MCP_URL}" }
-  - { type: url, name: gdrive,   url: "${GDRIVE_MCP_URL}" }
-  - { type: url, name: imanage,  url: "${IMANAGE_MCP_URL}" }
-  - { type: url, name: definely, url: "${DEFINELY_MCP_URL}" }
+# The orchestrator holds no MCP servers — each subagent leaf declares its own
+# (scripts/lint-tool-scope.py enforces an empty list here).
+mcp_servers: []
 
 skills:
   - { from_plugin: ../../corporate-legal }

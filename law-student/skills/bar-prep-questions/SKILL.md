@@ -36,7 +36,7 @@ The bar exam tests a defined body of subjects. This skill drills you on them —
 
 ## Exam type — ask first, do not assume
 
-**The bar exam is in transition.** As of the July 2026 administration, the NextGen Bar Exam (developed by the NCBE) has launched in some jurisdictions, while others continue to administer the traditional Uniform Bar Exam (UBE). State-specific exams (California, Louisiana, Puerto Rico, etc.) are their own thing. The subject scope is materially different between the NextGen and the traditional UBE — **subjects no longer independently tested on the NextGen include Trusts & Estates, Family Law, Conflict of Laws, and Secured Transactions** (some underlying concepts may appear inside integrated "foundational concepts and skills" questions, but they are not standalone tested subjects the way they were on MEE).
+**The bar exam is in transition.** As of the July 2026 administration, the NextGen Bar Exam (developed by the NCBE) has launched in some jurisdictions, while others continue to administer the traditional Uniform Bar Exam (UBE). State-specific exams (California, Louisiana, Puerto Rico, etc.) are separate exams with their own scope. The subject scope is materially different between the NextGen and the traditional UBE — **subjects no longer independently tested on the NextGen include Trusts & Estates, Family Law, Conflict of Laws, and Secured Transactions** (some underlying concepts may appear inside integrated "foundational concepts and skills" questions, but they are not standalone tested subjects the way they were on MEE).
 
 Do not assume the subject list. Before generating any questions:
 
@@ -60,7 +60,7 @@ Scope every question-generation session to the subjects actually tested on the s
 
 ## Jurisdiction handling
 
-The bar exam is not one exam. It is a family of exams. Rules that are "correct" on one are "wrong" on another. Getting this right matters more than almost anything else this skill does.
+The bar exam is a family of exams, and rules that are "correct" on one are "wrong" on another. Getting the applicable rule body right matters more than almost anything else this skill does.
 
 ### Two things to distinguish
 
@@ -130,7 +130,7 @@ The skill does not know every state's idiosyncrasies with confidence. If the stu
 Every question generated states a rule. A wrong rule stated confidently is worse than no question. The rule for this skill:
 
 - **Confident:** rule is black-letter in the subject; write the question normally.
-- **Uncertain:** rule varies by jurisdiction, is a minority rule, or I'm not sure I've got it exactly right — flag inline with `[UNCERTAIN: specific reason]` and tell the student to verify against their prep course materials before relying on the question.
+- **Uncertain:** rule varies by jurisdiction, is a minority rule, or the skill is not certain it has it exactly right — flag inline with `[UNCERTAIN: specific reason]` and tell the student to verify against their prep course materials before relying on the question.
 - **Don't know:** don't invent a question. Say "I don't have a reliable rule for this area; skip or use your prep course." Do not fabricate.
 
 Every MBE question answer explanation carries the same rule: if the "why C is correct" rule isn't one the skill is confident on, flag `[VERIFY: rule — confirm against Barbri/Themis/Kaplan outline]`. Use liberally.
@@ -265,6 +265,6 @@ If the student has a study schedule: weight questions toward what's on the sched
 ## What this skill does not do
 
 - Replace a bar prep course. Barbri/Themis/Kaplan have the full curriculum. This is supplemental drilling.
-- Predict the bar exam. Nobody can. Study everything.
-- Pass the bar for you. Obviously.
-- **State rules it isn't confident on without flagging.** If I'm not sure the rule is right, you will see `[UNCERTAIN]` or `[VERIFY]` — check the cited rule against your prep course before relying on the question. A wrong rule I state confidently is a worse study session than one I skip.
+- Predict the bar exam. No tool can; study everything.
+- Pass the bar for you.
+- **State rules it isn't confident on without flagging.** When the skill is not sure a rule is right, the question carries `[UNCERTAIN]` or `[VERIFY]` — check the cited rule against your prep course before relying on the question. A wrong rule stated confidently is a worse study session than a skipped question.

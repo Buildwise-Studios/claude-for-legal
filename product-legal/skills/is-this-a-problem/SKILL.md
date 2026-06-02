@@ -4,7 +4,8 @@ description: >
   Fast "is this a problem?" answer for the quick Slack question — pattern-matches
   against your calibration. Use when the user says "is this a problem", "quick
   question", "can we do X", "do I need legal review for", "sanity check", or
-  pastes a PM's question that needs a same-minute fine / needs a look / hold call.
+  pastes a PM's question that needs a same-minute verdict: fine / needs a look /
+  hold.
 argument-hint: "[the question]"
 ---
 
@@ -13,8 +14,8 @@ argument-hint: "[the question]"
 1. Load `~/.claude/plugins/config/claude-for-legal/product-legal/CLAUDE.md` → Risk calibration.
 2. Apply the triage workflow below.
 3. Pattern-match. Check for common traps.
-4. Answer in one minute: ✅ Fine / ⚠️ Needs a look / 🛑 Hold. One sentence why.
-5. If ⚠️ or 🛑: name the next step.
+4. Answer in one minute: 🟢 Fine / ⚠️ Needs a look / 🔴 Hold. One sentence why.
+5. If ⚠️ or 🔴: name the next step.
 
 ```
 /product-legal:is-this-a-problem "Can we use customer logos on the pricing page?"
@@ -30,17 +31,17 @@ argument-hint: "[the question]"
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
 Most "quick legal question" Slacks are one of three things: (a) not a problem, say so fast, (b) a real thing that needs a real look, route it, (c) a thing that looks fine but has a trap, catch the trap. This skill sorts in under a minute using the calibration table.
 
-The goal is speed. The PM asked at 4:47pm. They want an answer, not a memo.
+The goal is speed — the asker wants an answer, not a memo.
 
 ## Load calibration
 
-Read `~/.claude/plugins/config/claude-for-legal/product-legal/CLAUDE.md` → `## Risk calibration`. The whole point of this skill is pattern-matching against that table.
+Read `~/.claude/plugins/config/claude-for-legal/product-legal/CLAUDE.md` → `## Risk calibration`. This skill works by pattern-matching against that table.
 
 ## The triage
 
@@ -72,7 +73,7 @@ Some questions are fine on the surface but have a twist. Recognize the fact patt
 | "Can we use customer logos on the site?" | Logo use is a separate permission from the contract relationship — flag as potentially implicating publicity / endorsement rules and the customer's own contract terms | "What does the contract say about publicity? Do we have written permission?" |
 | "Can we train on this data?" | Usage rights for the original collection purpose may not extend to training — flag and research the notice/consent the users were given at collection | "What did we tell users when we collected it? What jurisdictions are the users in?" |
 | "It's just an internal tool" | Internal tools still process personal data — flag as potentially implicating privacy regimes and route for research | "Whose data does it touch? Employees, customers, third parties?" |
-| "We already do something similar" | "Similar" is doing a lot of work — the delta is where the issue usually is | "Similar how? What's actually different?" |
+| "We already do something similar" | "Similar" may hide a material difference — the delta is where the issue usually is | "Similar how? What's actually different?" |
 | "Can we use [AI vendor / LLM] for this?" | Vendor AI terms may permit training on inputs; use case may need an AIA — flag and route to `/ai-governance-legal:use-case-triage` | "Is there an AI addendum? What data goes into the model?" |
 | "Can we add AI to this feature?" | May be a new use case not in the registry; may trigger AIA requirement — flag and route to `/ai-governance-legal:use-case-triage` | "What does the AI do — assistive or automated? Who does it act on?" |
 | "The model just decides automatically" | Automated decision-making without human review is regulated in some jurisdictions — flag and research the applicable rules for the affected users' jurisdictions | "Who's affected? Is there a human in the loop? Where are the affected users?" |
@@ -94,18 +95,18 @@ Slack triage replies are internal legal advice. If the reply is being pasted int
 For an in-the-flow Slack DM reply to the PM, the short form is:
 
 ```
-[✅ Fine | ⚠️ Needs a look | 🛑 Hold]
+[🟢 Fine | ⚠️ Needs a look | 🔴 Hold]
 
 [One sentence: the call and why.]
 
 [If ⚠️: what the look involves, how long]
-[If 🛑: who to talk to, when]
+[If 🔴: who to talk to, when]
 ```
 
 **Examples:**
 
 ```
-✅ Fine — adding an analytics event is an FYI here as long as it's covered by
+🟢 Fine — adding an analytics event is an FYI here as long as it's covered by
 the existing privacy policy categories. This one is.
 ```
 
@@ -115,7 +116,7 @@ Want me to kick it off?
 ```
 
 ```
-🛑 Hold — "train on customer data" triggers a bunch of things. What did the
+🔴 Hold — "train on customer data" triggers a bunch of things. What did the
 customer agreement say about data use? Let's pull it before anyone promises
 this to the customer.
 ```
@@ -135,8 +136,6 @@ ships. Takes a day. Want me to run `/ai-governance-legal:use-case-triage` now?
 ## Tone
 
 Fast, direct, helpful. The PM is not asking for a lecture. If it's fine, say "fine" — don't list the seven things you checked. If it's not fine, say what's not fine and what to do about it.
-
-You are the lawyer people want to ask, not the one they route around.
 
 ## Close with the next-steps decision tree
 

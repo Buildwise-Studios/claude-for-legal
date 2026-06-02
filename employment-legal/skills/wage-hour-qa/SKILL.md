@@ -27,9 +27,9 @@ argument-hint: "[question]"
 
 ## Purpose
 
-"It depends" is true but unhelpful. This skill produces a jurisdiction-specific
-answer grounded in researched, cited primary sources — and flags when the
-question is close enough to need human judgment. It does not state rules from
+This skill produces a jurisdiction-specific answer grounded in researched,
+cited primary sources — and flags when the question is close enough to need
+human judgment. It does not state rules from
 memory: wage-and-hour thresholds, exemption criteria, and final-pay timing
 change frequently and vary meaningfully by state.
 
@@ -165,7 +165,7 @@ confident wrong number is the worst output this skill can produce.
 
 ### Step 3: The flag
 
-Is this a close call? Be honest.
+State plainly whether this is a close call.
 
 - If the answer is clear on the researched rule: say so. "Exempt — meets
   each element of the applicable duties test and the current salary
@@ -207,8 +207,8 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 - State the rule from memory — every answer is grounded in a researched,
   cited primary source verified for currency.
 - Make classification decisions for borderline cases. It states the rule and
-  flags the close call. Human decides.
-- Give a 50-state survey unless asked. Answers for the relevant
+  flags the close call; the human decides.
+- Give a 50-state survey unless asked. It answers for the relevant
   jurisdiction(s).
-- Track when the answer changes. If thresholds index or law shifts, the
-  answer goes stale. Re-ask for current.
+- Track when the answer changes. If thresholds index or the law shifts, the
+  answer goes stale; re-ask for a current answer.

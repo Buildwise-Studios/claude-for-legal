@@ -15,8 +15,9 @@ argument-hint: "[optional: --since DATE]"
 
 ## Purpose
 
-Pull the feeds. Filter by materiality. Output what's left. The filter is the
-value — unfiltered feeds are noise.
+Pulls the configured feeds, filters by the materiality threshold, and reports
+what remains. The filter is what keeps the digest readable — an unfiltered
+feed buries the items that matter.
 
 ## Load context
 
@@ -61,7 +62,7 @@ Agency slug reference for common watchlist regulators:
 | FTC | federal-trade-commission |
 | SEC | securities-and-exchange-commission |
 | CFPB | consumer-financial-protection-bureau |
-| CPPA (CA) | RSS only — cppa.ca.gov/feed |
+| CPPA (CA) | not in Federal Register API — no RSS; email list / page watch (see references/source-catalog.md) |
 | DOL | labor-department |
 | HHS | health-and-human-services-department |
 | FCC | federal-communications-commission |
@@ -103,7 +104,7 @@ Each item gets a materiality tier per `~/.claude/plugins/config/claude-for-legal
 | Final rule | Usually "always material" |
 | Proposed rule / NPRM | Usually "review-worthy" — and always log comment deadline |
 | ANPR (Advance Notice of Proposed Rulemaking) | Review-worthy for **strategy**, not compliance — no imposed requirements yet, but signals direction and carries a real comment deadline. Log the comment deadline. Route to `/regulatory-legal:policy-diff` only as a pre-positioning analysis, not as a gap-closure diff. |
-| RFI (Request for Information) | Same as ANPR — pre-rule, no compliance obligation, but comment deadline is real and direction-signaling is the value. |
+| RFI (Request for Information) | Same as ANPR — pre-rule, no compliance obligation, but the comment deadline is real and the item signals the regulator's direction. |
 | Enforcement action | Sector match → material; related-practice match → review-worthy; neither → FYI or skip |
 | Guidance | Review-worthy |
 | Speech / blog / statement | FYI or skip per threshold |
@@ -179,11 +180,11 @@ Format on disk matches the chat format exactly (below). Markdown renders well in
 [One-line]. [Relevance]. [Deadline if any].
 [Link]
 
-[NPRMs: include "💬 Comment deadline: [date] — decision pending" if comment tracking enabled]
+[NPRMs: include "Comment deadline: [date] — decision pending" if comment tracking enabled]
 
 [repeat]
 
-### 📝 FYI
+### FYI
 
 [N] items — [expandable list of titles + links, no summaries]
 

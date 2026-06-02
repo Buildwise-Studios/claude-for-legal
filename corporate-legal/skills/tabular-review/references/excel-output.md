@@ -1,6 +1,6 @@
 # Excel Output Spec
 
-The Excel file is the deliverable most deal teams will actually open. Get it right.
+The Excel file is the deliverable most deal teams will actually open.
 
 ## If Claude in Excel / Office agent is available
 
@@ -40,7 +40,7 @@ Check with `python3 -c "import openpyxl"`. If not installed, offer to install (`
 
 ## What not to do
 
-- Do not write a confidence percentage column. It's not information. The state + quote is the signal.
+- Do not write a confidence percentage column. The state + quote is the signal.
 - Do not truncate quotes to fit a cell. Wrap the text or put the full quote in the comment.
 - Do not merge cells in the data region. Lawyers will sort and filter.
 - Do not write the table without the `_schema` and `_summary` sheets. The self-documentation is what makes the file trustworthy.

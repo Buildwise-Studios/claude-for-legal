@@ -1,8 +1,8 @@
 # Law Student Plugin
 
-Learning mode, not answer mode. Socratic drilling that asks YOU questions and pushes back on sloppy reasoning. Case briefing, outline building, flashcards, IRAC grading, cold-call prep, writing feedback that never rewrites for you, and exam forecasting from past professor exams. Calibrated to you — your classes, your bar jurisdiction, whether you want to be drilled or scaffolded.
+A study plugin built around learning mode rather than answer mode: Socratic drilling that asks the student questions and pushes back on sloppy reasoning, case briefing, outline building, flashcards, IRAC grading, cold-call prep, writing feedback that never rewrites the draft, and exam forecasting from past professor exams. Calibrated to the student — classes, bar jurisdiction, and whether they prefer drilling or scaffolding.
 
-**Every output is a study scaffold, not a model answer. The plugin structures your thinking, drills you Socratically, and flags what you got wrong. It doesn't write the outline, the brief, or the essay for you — that would defeat the purpose. Citations in study materials are tagged for verification.**
+**Every output is a study scaffold, not a model answer. The plugin structures your thinking, drills you Socratically, and flags what you got wrong. It does not write the outline, the brief, or the essay for you — writing them is the learning. You do the analysis, you write the work, and you verify every rule and cite against your own sources. Citations in study materials are tagged for verification.**
 
 ## Who this is for
 
@@ -10,7 +10,7 @@ Law students. 1L through bar prep.
 
 ## First run: cold-start
 
-This one's about you, not an org. Your classes, your bar jurisdiction, your learning style — drill-me vs. explain-to-me. Bring materials: past outlines, graded essays, old exams (especially same-professor), MBE sets, syllabi, papers. Ten to twenty items is the target; below that the practice profile is flagged `LIMITED DATA` and downstream skills will be thinner until more is added.
+The interview captures the individual student, not an organization: classes, bar jurisdiction, and learning style (drill-me vs. explain-to-me). Bring materials: past outlines, graded essays, old exams (especially same-professor), MBE sets, syllabi, papers. Ten to twenty items is the target; below that the practice profile is flagged `LIMITED DATA` and downstream skills will be thinner until more is added.
 
 ```
 /law-student:cold-start-interview
@@ -23,6 +23,7 @@ Every skill is invoked as `/law-student:<skill-name>`.
 | Skill | Does |
 |---|---|
 | `/law-student:cold-start-interview` | About-you interview + materials intake — classes, bar, learning style, materials |
+| `/law-student:customize` | Change one profile setting — classes, learning style, outline preferences, bar prep subjects — without re-running the interview |
 | `/law-student:socratic-drill [subject]` | Socratic drilling — it asks, you answer, it pushes back. Does not give the answer. |
 | `/law-student:case-brief [case]` | Case brief in your preferred format |
 | `/law-student:outline-builder [subject]` | Build or extend an outline in your format from class materials |
@@ -37,15 +38,15 @@ Every skill is invoked as `/law-student:<skill-name>`.
 
 ## What "learning mode" means
 
-Several skills here (socratic-drill, case-brief in drill-me mode, cold-call-prep, irac-practice, legal-writing) are deliberately built to *not* give you the answer or write the thing for you. The point is that you learn by doing. If you want an answer or a draft, use a different tool. This plugin is for the struggle.
+Several skills here (socratic-drill, case-brief in drill-me mode, cold-call-prep, irac-practice, legal-writing) are deliberately built to *not* give you the answer or write the thing for you, because you learn by doing. For an answer or a draft, use a different tool — these skills are for practice.
 
-**legal-writing is the strictest.** It reads your draft and tells you what's weak, but does not rewrite. Asking it to rewrite will return a polite refusal plus an offer of more specific structural feedback. This is a feature.
+**legal-writing is the strictest.** It reads your draft and tells you what's weak, but does not rewrite. Asking it to rewrite will return a polite refusal plus an offer of more specific structural feedback.
 
 **outline-builder and case-brief follow the same rule in a softer form.** Outline builder scaffolds — topic tree, sub-topic slots, case placeholders — and asks Socratic questions as you fill the rules from your own notes and casebook. It won't generate a populated outline from a syllabus alone. Case brief works the same way in every mode (drill-me and explain-to-me both): the skill gives the template and pushes back on what you wrote; it doesn't brief the case for you. If you paste the case text, it can extract the court's own language into the slots — that's pointing at the source, not writing for you.
 
 ## Academic integrity
 
-Before using this plugin on any graded work — take-home exams, graded writing assignments, journal notes, papers — check your school's honor code and your professor's syllabus policy on AI tools. Many schools prohibit or restrict AI use on graded work, and the rules vary by course and professor. This plugin is designed for study and practice; using it where your school prohibits it is an honor code violation, and the consequences are yours, not the tool's. When in doubt, ask your professor in writing.
+Before using this plugin on any graded work — take-home exams, graded writing assignments, journal notes, papers — check your school's honor code and your professor's syllabus policy on AI tools. Many schools prohibit or restrict AI use on graded work, and the rules vary by course and professor. This plugin is designed for study and practice; using it where your school prohibits it is an honor code violation, and the responsibility is the student's. When in doubt, ask your professor in writing.
 
 The learning-mode skills here (socratic-drill, irac-practice, legal-writing, cold-call-prep) are deliberately designed to not give you the answer or write the thing for you — that's the pedagogy. It's also the design assumption behind treating some permitted uses (unassisted-looking practice drilling) differently from prohibited ones (ghostwriting a graded memo). Don't work around the guardrails.
 
@@ -67,14 +68,22 @@ Trust the flags more than the absence of flags — an unflagged rule is somethin
 
 **Connect a research tool first — the citation guardrails depend on it.** Without one, every cite is tagged `[verify]` and the reviewer note above each deliverable records that sources weren't verified. The plugin works either way; it just does more of the verification for you when a research tool is connected.
 
-The legal research connectors in this plugin aren't just data sources — they're the difference between a verified citation and a citation you have to check. A citation retrieved through **CourtListener** (U.S. court opinions, PACER dockets, citation verification) or **Descrybe** (primary-law search, citation treatment, quoted-language verification) is tagged with its source and can be traced back. A citation from the model's knowledge or from web search is tagged `[verify]` or `[verify-pinpoint]` and should be checked against a primary source before anyone relies on it. The plugin tiers its citations so your verification time goes where it matters.
+Ships with connectors configured in `.mcp.json`: **CourtListener** (U.S. court opinions, PACER dockets, citation verification), **Descrybe** (primary-law search, citation treatment, quoted-language verification), **Slack**, and **Google Drive**. Configured is not the same as connected — authorize them in your environment before relying on them.
+
+The legal research connectors determine whether a citation arrives verified or must be checked by hand. A citation retrieved through CourtListener or Descrybe is tagged with its source and can be traced back. A citation from the model's knowledge or from web search is tagged `[verify]` or `[verify-pinpoint]` (a pinpoint cite — subsection, paragraph, or page — which carries the highest fabrication risk and must always be checked against the primary source) and should be checked before anyone relies on it. The plugin tiers its citations so your verification time goes where it matters.
+
+## What this plugin does not do
+
+- **No citator.** CourtListener and Descrybe retrieve opinions and check treatment, but neither replaces KeyCite/Shepard's — confirm an authority is still good law before relying on it.
+- **It does not write your work.** Outlines, briefs, essays, and rewrites are deliberately out of scope — that's the pedagogy.
+- **It is not for real client matters.** Real matters route to a supervised clinic workflow (see `legal-clinic`) or a lawyer.
 
 ## Storage
 
-Your practice profile is stored at `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` and survives plugin updates. Everything else is in your working directory:
+Your practice profile is stored at `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` and survives plugin updates. In Claude Cowork, where that path isn't writable, setup saves to `claude-for-legal-config/` in your working folder instead — keep using the same folder across sessions. Flashcard decks, session trackers, and exam forecasts are stored under the same config directory (or the working-folder fallback when the home path is not writable):
 
 ```
-law-student/
+~/.claude/plugins/config/claude-for-legal/law-student/
 ├── flashcards/
 │   └── [subject]/cards.md             # per-subject flashcard decks
 ├── irac-sessions/
@@ -90,9 +99,6 @@ law-student/
         └── forecast-[YYYY-MM-DD].md   # versioned forecasts
 ```
 
-## Testing & QA
-
-
 ## How it learns
 
 Your study profile at `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. You can re-run setup, edit the file directly, or tell a skill to record a new position.
@@ -100,6 +106,6 @@ Your study profile at `~/.claude/plugins/config/claude-for-legal/law-student/CLA
 ## Notes
 
 - Drill-me vs. explain-to-me is set at cold-start; switch per session.
-- Case briefs and outlines use YOUR format. If you have existing outlines, point cold-start at them.
+- Case briefs and outlines use your format. If you have existing outlines, point cold-start at them.
 - Bar prep targets your weak subjects from ~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md. It will keep coming back to them.
-- Every content-generating skill flags when it's uncertain. Trust the flags more than the absence of flags — an unflagged rule is something I'm confident on; check your source anyway before an exam.
+- Every content-generating skill flags when it's uncertain. Trust the flags more than the absence of flags — an unflagged rule is something the skill is confident on; check your source anyway before an exam.

@@ -1,11 +1,11 @@
 ---
 name: ip-renewal-watcher
 description: >
-  Scheduled agent that reads the IP portfolio register, computes what's due,
-  and posts a ranked deadline report. Runs weekly by default. Posts to the
+  Recurring agent that reads the IP portfolio register, computes what's due,
+  and posts a ranked deadline report. Designed for a weekly cadence (triggered by a recurring reminder or external scheduler — the agent does not run on its own). Posts to the
   channel named in `~/.claude/plugins/config/claude-for-legal/ip-legal/CLAUDE.md`
   → Renewal alerts. Trigger phrases: "what's renewing", "IP deadlines",
-  "portfolio check", "IP renewal report", or on schedule.
+  "portfolio check", or "IP renewal report".
 model: sonnet
 tools: ["Read", "Write", "mcp__anaqua__*", "mcp__cpa__*", "mcp__altlegal__*", "mcp__*__slack_send_message"]
 ---
@@ -18,7 +18,7 @@ Portfolio deadlines only help if someone sees them in time. §8 declarations,
 patent maintenance fees, Madrid renewals, and domain expirations all have
 hard dates. This agent reads the portfolio register weekly and tells the
 channel what's coming up — and, more importantly, what's already in grace
-or lapsed, because those items need to move today.
+or lapsed, because those items require immediate action.
 
 ## Schedule
 
@@ -39,7 +39,7 @@ for grace/lapsed items happen regardless of schedule.
    `lapsed` status, post those items immediately regardless of schedule.
    The grace window on a US §8 is 6 months with surcharge; on a US patent
    maintenance fee it's 6 months with surcharge; both lose the asset if
-   missed. These cannot wait for Monday.
+   missed.
 
 4. **IP management system cross-reference:** if Anaqua / CPA Global / Alt
    Legal / similar is connected and the register hasn't been synced in
@@ -52,14 +52,14 @@ for grace/lapsed items happen regardless of schedule.
 ## Output format
 
 ```
-📅 IP Portfolio — week of [date]
+IP Portfolio — week of [date]
 
 🔴 IN GRACE / LAPSED ([N])
 • [Asset ID] / [Jurisdiction] / [Mark or title]
   [Action] — original due [date], grace ends [date]
   Owner: [business owner] | Counsel: [firm or docket ID]
 
-⏰ DUE WITHIN 30 DAYS ([N])
+DUE WITHIN 30 DAYS ([N])
 • [Asset ID] / [Jurisdiction] — [Mark/title]
   [Action] — due [date]
 
@@ -69,10 +69,10 @@ for grace/lapsed items happen regardless of schedule.
 🟡 DUE 60-90 DAYS ([N])
 • [N] items — [link to full register if stored somewhere shared]
 
-🌐 AGENT-MANAGED ([N])
+AGENT-MANAGED ([N])
 • [Asset ID] / [Jurisdiction] — managed by [local agent]; confirm directly
 
-❓ UNKNOWN ([N])
+UNKNOWN ([N])
 • [Asset ID] — missing data; cannot compute. Confirm with [registry].
 
 Flagged: [any §8s on uncertain-use marks, any patents approaching 11.5-year
@@ -86,8 +86,7 @@ register, not the system of record.
 
 If nothing is due in the next 90 days and nothing is in grace, post a
 short all-clear — so the team knows the agent ran, the register isn't
-stale, and the sync (if any) succeeded. Silent passes look identical to
-a broken cron job.
+stale, and the sync (if any) succeeded.
 
 ## Guardrail (every run)
 

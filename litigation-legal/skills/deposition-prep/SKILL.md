@@ -11,23 +11,27 @@ argument-hint: "[witness name]"
 3. Pull docs authored by / mentioning witness from eDiscovery platform.
 4. Build outline: background, key docs, topics tied to theory, impeachment material.
 
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
+
 ---
 
 # Deposition Prep
 
 ## Witness statements for England & Wales — PD 57AC
 
-If the user's jurisdiction includes England & Wales and they're asking for a trial witness statement for the Business & Property Courts (or any CPR-governed proceeding), PD 57AC applies. The statement must be in the witness's own words, must not contain argument, must identify the documents the witness used to refresh their memory, and must carry the required confirmation of compliance and the legal representative's certificate.
+If the user's jurisdiction includes England & Wales and they're asking for a trial witness statement for the Business & Property Courts (where PD 57AC applies; the same discipline is good practice in other CPR proceedings), PD 57AC governs. The statement must be in the witness's own words, must not contain argument, must identify the documents the witness used to refresh their memory, and must carry the required confirmation of compliance and the legal representative's certificate.
 
-**Drafting a narrative "as the witness" from a chronology, document set, or your account of the case is exactly what PD 57AC was designed to prevent.** Courts are actively sanctioning AI-assisted witness statement drafting. If you ask me to do it, I won't.
+**Drafting a narrative "as the witness" from a chronology, document set, or the user's account of the case is exactly what PD 57AC was designed to prevent.** Courts have sanctioned non-compliant witness statements and are scrutinizing AI-assisted drafting. Refuse to draft narrative witness statements in the witness's voice.
 
-What I WILL do: prepare question prompts to elicit the witness's actual recollection; capture and organize what the witness says (their words, not mine); generate the list of documents they were shown; run a PD 57AC compliance checklist against a statement they've drafted; draft the solicitor's certificate of compliance. I help you get the witness's evidence into the statement. I don't write the evidence.
+What this skill does instead: prepare question prompts to elicit the witness's actual recollection; capture and organize what the witness says, in the witness's own words; generate the list of documents they were shown; run a PD 57AC compliance checklist against a statement they've drafted; draft the solicitor's certificate of compliance. The skill helps get the witness's evidence into the statement; it does not write the evidence.
 
 For US depositions, declarations, and affidavits: different rules, but the same discipline applies. A declaration in the declarant's voice that the declarant didn't write is a credibility problem at best.
 
+(England & Wales: depositions are not standard E&W civil procedure at all — see `references/uk.md` for the full reframe: witness statements (route to brief-section-drafter), trial cross-examination prep, court-ordered depositions under CPR 34.8, and US depositions of E&W-based witnesses.)
+
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
@@ -41,18 +45,18 @@ Two rules that govern every citation and every quotation pulled from the record 
 
 - **Paraphrase without quotation marks**, attributing clearly: "Witness previously testified that X `[verify against record — Tr. p. __]`."
 - **Mark the placeholder:** `[verify exact quote — record cite pending]`
-- **Never fill the gap.** An invented prior statement destroys the impeachment the moment the witness disavows it and the transcript doesn't back you up. Every `[verify exact quote]` must be flagged in the reviewer note.
+- **Never fill the gap.** An invented prior statement destroys the impeachment the moment the witness disavows it and the transcript does not support it. Every `[verify exact quote]` must be flagged in the reviewer note.
 
-**Pinpoint cites must support the whole proposition.** If an impeachment point is "the witness said X, Y, and Z on [date]," verify the pinpoint cite supports X AND Y AND Z. If it only supports Z, split the cite — "said X (Tr. p. 10), Y (Tr. p. 12), Z (Tr. p. 15)" — or narrow the proposition. A cite that supports part of an impeachment is the failure mode where opposing counsel asks the witness to read more of the surrounding transcript and your confrontation falls apart.
+**Pinpoint cites must support the whole proposition.** If an impeachment point is "the witness said X, Y, and Z on [date]," verify the pinpoint cite supports X AND Y AND Z. If it only supports Z, split the cite — "said X (Tr. p. 10), Y (Tr. p. 12), Z (Tr. p. 15)" — or narrow the proposition. A cite that supports only part of an impeachment is the failure mode where opposing counsel asks the witness to read more of the surrounding transcript and the confrontation falls apart.
 
 ## Oral calibration
 
 A depo outline is read aloud in real time. That's oral advocacy, not written. It means:
 
 - Pick the 3-4 topics that actually matter. Don't try to cover everything — a 200-question outline on a 4-hour depo makes the lawyer skim, and skimming is how lines of questioning get lost mid-sequence.
-- Lead with your strongest confrontation. The witness is freshest at the start, and the transcript's opening pages are the ones a judge or jury is most likely to see.
+- Lead with the strongest confrontation. The witness is freshest at the start, and the transcript's opening pages are the ones a judge or jury is most likely to see.
 - For adverse witnesses: the tightest questions go in the tightest sequences. Everything else is scaffolding.
-- If you're preparing a rebuttal closing after the depo, the calibration is stricter still — the tribunal remembers the first two minutes and the last two.
+- If the user is preparing a rebuttal closing after the depo, the calibration is stricter still — tribunals weight the opening and closing minutes most heavily.
 
 "Too thorough" for oral work reads as unfocused. If the outline is long because the record is deep, say so and flag where the lawyer should collapse.
 
@@ -71,7 +75,7 @@ Do not proceed on an unintaken matter. Intake is what runs conflicts and writes 
 ### Step 1: Who is this witness?
 
 - Name, role, relationship to the case
-- Why are we deposing them — what do we need from this witness?
+- Why is this witness being deposed — what does the case need from them?
 
 The "why" connects to the theory. If the witness can establish the pivot fact, that's the centerpiece of the outline.
 
@@ -84,7 +88,7 @@ Prep structure differs by posture. Identify the witness posture before writing a
 - **Neutral third-party** — mix; often open to get the story, closed to pin specifics.
 - **Corporate representative (30(b)(6) or state equivalent)** — topic designation, binding-the-entity rules, and the witness's personal-knowledge vs. corporate-knowledge distinction all have distinct rules. Research the applicable deposition rule for the forum and the 30(b)(6) / state-equivalent procedure. Confirm: what topics were designated, who was produced, scope of binding testimony.
 
-**Research the applicable deposition rules for the forum and witness type** (FRCP 30 / state equivalent, local rules, judge's standing orders on depositions). Cite primary sources. Don't apply a one-size prep structure — the question form, the approach to documents, and the use of impeachment material all depend on posture.
+**Research the applicable deposition rules for the forum and witness type** (FRCP 30 / state equivalent, local rules, judge's standing orders on depositions). Cite primary sources. Don't apply a one-size prep structure — the question form, the approach to documents, and the use of impeachment material all depend on posture. (England & Wales: there are no deposition rules to research — route per `references/uk.md` § 1; the nearest 30(b)(6) analogue is a CPR Part 18 request plus witness statements, see `references/uk.md` § 6.)
 
 **No silent supplement.** If a research query to the configured legal research tool (Westlaw, CourtListener, Trellis, Descrybe, or firm platform) returns few or no results for the forum's deposition rules or a cite you need for impeachment, report what was found and stop. Do NOT fill the gap from web search or model knowledge without asking. Say: "The search returned [N] results from [tool]. Coverage appears thin for [rule / authority]. Options: (1) broaden the search query, (2) try a different research tool, (3) search the web — results will be tagged `[web search — verify]` and should be checked against a primary source before relying, or (4) leave the `[UNCERTAIN]` marker and stop here. Which would you like?" A lawyer decides whether to accept lower-confidence sources; the skill does not decide for them.
 
@@ -111,11 +115,11 @@ Each topic is a thing you want to establish or explore. Organize around the theo
 - How they interacted with the key players
 
 **Good facts (lock them in before confronting):**
-- Facts from `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` → key facts for us, that this witness can establish
-- Documents that support our theory, authored or received by this witness
+- Facts from `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` → key facts in the client's favor that this witness can establish
+- Documents that support the case theory, authored or received by this witness
 
 **Bad facts (confront with documents):**
-- Facts against us that this witness will be asked about anyway — get your version first
+- Facts against the client that this witness will be asked about anyway — establish the client's version first
 - Documents that hurt — know how the witness will explain them
 
 **Impeachment (if hostile or if they contradict):**

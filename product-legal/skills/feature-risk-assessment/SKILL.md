@@ -18,9 +18,9 @@ description: >
 
 ## Purpose
 
-The launch review is broad. This is deep. When a single issue needs more than a table row — a novel AI feature, a children's product, something a regulator is actively looking at — this skill produces a standalone assessment.
+Where the launch review is broad, this skill goes deep on a single issue. When an issue needs more than a table row — a novel AI feature, a children's product, something a regulator is actively looking at — this skill produces a standalone assessment.
 
-Not every launch needs one. Most don't. This is for the 10% where "PIA done, shipped" isn't the right level of scrutiny.
+Most launches don't need one. This is for the small minority where "PIA done, shipped" isn't the right level of scrutiny.
 
 ## When to run this
 
@@ -52,7 +52,7 @@ category interest to someone who shouldn't see it because X."]
 **Who gets hurt:** [Users? The company? A third party? Specific.]
 
 **How likely:** [Low / Medium / High — with a reason. "Low — would require
-both X and Y to fail simultaneously." Not just a vibes rating.]
+both X and Y to fail simultaneously." Not an unreasoned rating.]
 
 **How bad if it happens:** [Low / Medium / High — with a reason. "High —
 regulatory fine + class action exposure + press" vs. "Low — one angry
@@ -72,7 +72,7 @@ Only include if a regulator is actively interested in this space. If so:
 
 - Which regulator, what they've said/done recently
 - How this feature would look to them
-- Whether we'd rather they hear about it from us or from a headline
+- Whether the company would rather the regulator hear about it directly or from press coverage
 
 ### 4. Precedent (if any)
 

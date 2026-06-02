@@ -88,7 +88,7 @@ Add to `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` �
 confirm_routing: true   # Set to false to skip routing confirmation and proceed automatically
 ```
 
-The cold-start interview should ask about this preference. Default is `true` — confirmation on. As trust builds, the user can set it to `false`.
+The cold-start interview should ask about this preference. Default is `true` — confirmation on. The user can set it to `false` to skip the confirmation step.
 
 ## Examples
 

@@ -13,7 +13,7 @@ These are rough plausibility ranges, not computations. If a student-entered due 
 
 | Deadline type | Typical range from triggering event | Notes |
 |---|---|---|
-| CA UD response (post-AB 2347) | ~10-14 calendar days after service | Computed in court days per CCP § 1167 + § 12a; confirm against the current rule |
+| CA UD response (post-AB 2347) | ~14-18 calendar days after service (10 court days) | Computed in court days per CCP § 1167 + § 12a; 10 court days spans at least two weekends, so a count under 14 calendar days is the classic error to flag; confirm against the current rule |
 | CA answer to complaint (non-UD) | ~30 days after service | CCP § 412.20 / § 430.40; confirm |
 | CA demurrer / MTD | ~30 days after service | Filed in lieu of answer; CCP § 430.40 |
 | Notice of appeal (CA civil) | ~60 days after notice of entry | CRC 8.104; confirm triggering event (notice served vs. mailed) |

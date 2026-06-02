@@ -17,7 +17,10 @@ fi
 
 for d in "$ROOT"/managed-agent-cookbooks/*/; do
   slug=$(basename "$d")
-  if ! bash "$ROOT/scripts/deploy-managed-agent.sh" "$slug" --dry-run 2>&1 | tail -n +2 | python3 -c "
+  # grep -v: in a bare test env the MCP URL env vars are unset, so the deploy
+  # script emits a skip notice per optional connector; drop those from the
+  # JSON stream.
+  if ! bash "$ROOT/scripts/deploy-managed-agent.sh" "$slug" --dry-run 2>&1 | grep -v '^note: skipping MCP server' | tail -n +2 | python3 -c "
 import json,sys
 b=json.load(sys.stdin)
 errs=[]

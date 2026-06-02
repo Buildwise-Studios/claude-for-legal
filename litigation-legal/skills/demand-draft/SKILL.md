@@ -16,6 +16,8 @@ argument-hint: "[slug] [--skip-gate] [--version=N]"
 8. Write `~/.claude/plugins/config/claude-for-legal/litigation-legal/demand-letters/[slug]/checklist.md` (post-send checklist).
 9. Assess materiality per heuristic; offer to create a matter. If yes: hand off to `matter-intake` with pre-populated fields.
 
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
+
 ---
 
 # Demand Draft
@@ -34,7 +36,7 @@ Demand letters are advocacy, and every quoted line from a contract, an email, or
 - **Never fill the gap.** A misquoted contract provision in a demand letter is the fastest way to lose credibility with opposing counsel on the first round.
 - Every `[verify exact quote]` must be flagged in the reviewer note before the letter leaves.
 
-**Pinpoint cites must support the whole proposition.** If the demand asserts "Section 4.2 requires payment within 30 days upon invoice receipt," the cited section must cover the obligation AND the trigger AND the window. If it only covers one, split the cite (e.g., "Section 4.2 (payment obligation); Section 4.3 (30-day window)") or narrow the proposition. A contract cite that backs part of the demand is how the counterparty replies with the full text and flips the posture.
+**Pinpoint cites must support the whole proposition.** If the demand asserts "Section 4.2 requires payment within 30 days upon invoice receipt," the cited section must cover the obligation AND the trigger AND the window. If it only covers one, split the cite (e.g., "Section 4.2 (payment obligation); Section 4.3 (30-day window)") or narrow the proposition. A contract cite that backs only part of the demand invites the counterparty to reply with the full text and flip the posture.
 
 ## Candor about weak arguments
 
@@ -42,7 +44,7 @@ When the law or the record is against a point, don't dress it up as solid. When 
 
 > "The [claim / theory] here is weak because [authority / fact]. Options: (a) press it and frame as `[alternative framing]`, (b) drop it and rely on [stronger claim], (c) keep it as a hook but hedge the language. `[review — strategic call]`."
 
-A demand letter that over-asserts gets a response that catalogs every overreach, shifts leverage, and burns the next round. The strongest demand letter is the one that concedes what's weak so the counterparty can't.
+A demand letter that over-asserts gets a response that catalogs every overreach, shifts leverage, and burns the next round; conceding what's weak preempts that response.
 
 ## Echo vs repeat
 
@@ -67,7 +69,7 @@ Before the pre-draft gate, confirm the matter-level posture. Demand-letter tone 
 > **Posture for this matter.** Demand-letter tone and terms are case-by-case, not a practice default. Ask:
 > - **Tone:** measured / assertive / aggressive? (depends on the relationship, the amount, and whether litigation is likely)
 > - **Response window:** what's reasonable given the claim? (14 days is common for payment demands; 30 days for cure; 7 days for cease-and-desist — but the contract or protocol may set it)
-> - **Marking:** does this need a "without prejudice" or "without prejudice save as to costs" marking? (settlement communications do; assertions of claim often don't; jurisdiction matters — ask if unsure)
+> - **Marking:** does this need a "without prejudice" or "without prejudice save as to costs" marking? (settlement communications do; assertions of claim often don't; jurisdiction matters — ask if unsure. England & Wales: see `references/uk.md` § 3.3 — the letter before claim itself is open correspondence; settlement proposals go in a separate WP / Part 36 letter)
 > - **Signer:** you, the client, the GC, instructed solicitor/counsel?
 > Don't assume. Read the prior demand correspondence in the matter file if there is any — it establishes the register.
 
@@ -75,7 +77,7 @@ The answers drive tone verb choice, the consequence language, the `Without preju
 
 ## Jurisdiction assumption
 
-This draft assumes the jurisdiction identified in the intake and the forum's applicable settlement-communication rule (FRE 408 in federal, the state equivalent otherwise). Legal rules, deadlines, fee-shifting, and statutory hooks vary materially by jurisdiction. If the underlying facts touch a different forum, a different counterparty's home state, or a choice-of-law question, the draft may not apply as written — confirm before sending.
+This draft assumes the jurisdiction identified in the intake and the forum's applicable settlement-communication rule (FRE 408 in federal, the state equivalent otherwise). (England & Wales: see `references/uk.md` — the letter is a letter before claim under the Pre-Action Protocols, and settlement protection runs through without prejudice / Calderbank / Part 36, not FRE 408.) Legal rules, deadlines, fee-shifting, and statutory hooks vary materially by jurisdiction. If the underlying facts touch a different forum, a different counterparty's home state, or a choice-of-law question, the draft may not apply as written — confirm before sending.
 
 ## Load context
 
@@ -120,7 +122,9 @@ PRE-DRAFT CHECKLIST — [slug]
 
 4. Settlement-communication posture
    Research the settlement-communication protections applicable in the forum
-   (FRE 408 in federal, the state equivalent otherwise). Note that protection
+   (FRE 408 in federal, the state equivalent otherwise; England & Wales: see
+   references/uk.md § 3 — without prejudice / Calderbank / Part 36, and never
+   mark the letter before claim itself "without prejudice"). Note that protection
    attaches from conduct and context, not merely from labeling the communication.
    Intake says: [protected / not protected / case-by-case]
    Draft will [include / omit] settlement-communication markers, and will be
@@ -256,7 +260,7 @@ Show the draft as readable plain text for the user to review and request edits. 
 
 Append the following, set apart from the body, to the in-chat presentation and to any internal preview — it is a reviewer-facing note, not letter text, and is stripped before the letter goes out:
 
-> This is a draft demand letter for attorney review, not a letter ready to send. Sending it may constitute an attorney communication, create FRE 408 (or state-equivalent) implications, and start the clock on disputes, counterclaims, and statutes. A licensed attorney reviews, edits, and takes professional responsibility before sending. Do not send this draft unreviewed.
+> This is a draft demand letter for attorney review, not a letter ready to send. Sending it may constitute an attorney communication, create FRE 408 (or state-equivalent) implications (England & Wales: pre-action-protocol and without prejudice / Part 36 implications — see `references/uk.md`), and start the clock on disputes, counterclaims, and statutes. A licensed attorney reviews, edits, and takes professional responsibility before sending. Do not send this draft unreviewed.
 
 ### Citation verification
 
@@ -281,7 +285,7 @@ Every `[CITE:___]` placeholder — and any citation pulled from the intake or th
 
 - [ ] Final read-through by signer
 - [ ] Factual accuracy: all [VERIFY] flags resolved
-- [ ] Citations: all [CITE] placeholders filled and run through a citator (verify it is good law)d (if live law cited)
+- [ ] Citations: all [CITE] placeholders filled and verified — run `/litigation-legal:cite-check` on the final draft, then a citator to verify good-law status (if live law cited)
 - [ ] Privilege markings applied per house style — note: this is an external deliverable; do not include the `PRIVILEGED & CONFIDENTIAL — ATTORNEY WORK PRODUCT` header in the version sent to counterparty
 - [ ] Settlement-communication markers [present / absent] as intake specified, and substance aligns with posture
 - [ ] Internal copies cleared (per intake distribution list)

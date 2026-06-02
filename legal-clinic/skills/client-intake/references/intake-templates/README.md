@@ -1,6 +1,8 @@
 # Practice-Area Intake Templates
 
-Populated at cold-start from the professor's intake form(s). If none provided,
+Cold-start populates these from the professor's intake form(s), writing them to
+`~/.claude/plugins/config/claude-for-legal/legal-clinic/intake-templates/` — the
+version-independent config path, so they survive plugin updates. If none provided,
 `/client-intake` uses the default question sets in `client-intake/SKILL.md` Step 2.
 
 One file per practice area the clinic handles:

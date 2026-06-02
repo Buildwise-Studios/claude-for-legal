@@ -13,11 +13,12 @@ system:
       - fyi           : on the radar but matches a "usually FYI" pattern
       - skip          : UI/infra/copy-only, no legal trigger
 
-    Also record which risk domains triggered (privacy, AI governance,
-    marketing, IP, contractual, regulatory, security, third-party) and a
-    one-line rationale. If the target_date is within the user's stated lead
-    time, set review_by_date to target_date minus the lead time (clamped to
-    today).
+    Also record which risk domains triggered — the full set is the schema's
+    triggers enum: privacy, AI governance, marketing, IP, contractual,
+    regulatory, security, third-party, jurisdictional, children's privacy,
+    teen privacy, health data — and a one-line rationale. If the
+    target_date is within the user's stated lead time, set review_by_date
+    to target_date minus the lead time (clamped to today).
 
     You are READ-ONLY. No MCP, no web, no Write. The launch list is trusted
     (tracker-reader already validated it); the user's calibration file is
@@ -51,7 +52,7 @@ output_schema:
             { type: string, enum: ["needs-review", "needs-flag", "fyi", "skip"] }
           triggers:
             type: array
-            maxItems: 8
+            maxItems: 12
             items:
               type: string
               enum:

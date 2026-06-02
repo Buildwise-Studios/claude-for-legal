@@ -50,9 +50,9 @@ with guidance directly in the ticket (flagging incomplete info, asking for the
 repo link, returning the license-family classification), and track clearance
 status across requests.
 
-Without a connector, paste the ticket or describe the request and I'll handle
-it one at a time. See `CONNECTORS.md` at the repo root for how to add a
-ticketing connector.
+Without a connector, paste the ticket or describe the request and the skill
+handles requests one at a time. See `CONNECTORS.md` at the repo root for how
+to add a ticketing connector.
 
 ## Matter context
 
@@ -164,7 +164,7 @@ For each classified dependency, state what the deployment model triggers:
 > - **Network API call:** For most licenses, no. For **AGPL**, the network-interaction clause means serving the software over a network IS distribution. In a microservices architecture, an AGPL component behind an API still triggers.
 > - **File-scope copyleft (MPL):** Only the modified files carry copyleft, not the whole work. Check whether any copyleft files were modified.
 >
-> **The severity rating depends on this.** "LGPL — weak copyleft, linking rules vary" without the linking analysis is the answer that gets an engineer sued. Static-linked LGPL in a proprietary product is 🔴 Critical. Dynamic-linked LGPL is 🟢 Low. Same license, opposite rating.
+> **The severity rating depends on this.** "LGPL — weak copyleft, linking rules vary" without the linking analysis omits the decisive fact and leaves real legal exposure unassessed. Static-linked LGPL in a proprietary product is 🔴 Critical. Dynamic-linked LGPL is 🟢 Low. Same license, opposite rating.
 
 **Severity calibration:**
 

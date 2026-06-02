@@ -2,7 +2,7 @@
 
 In-house commercial contracts workflows: vendor agreement review, NDA triage, SaaS subscription review, renewal tracking, escalation routing, and business-stakeholder summaries. Built around a team practice profile that gets written by a cold-start interview — the plugin learns *your* playbook, not a generic one.
 
-**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. A lawyer reviews, verifies, and decides. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
+**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. The professional acts stay human: you configure the playbook and an attorney attests it, you verify the citations, and you approve positions and decide what gets signed. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
 
 ## Who this is for
 
@@ -11,11 +11,11 @@ In-house commercial contracts workflows: vendor agreement review, NDA triage, Sa
 | **Commercial counsel** | Vendor agreement review, escalation routing, stakeholder summaries |
 | **Contracts manager / paralegal** | NDA triage, renewal tracking, first-pass review |
 | **Procurement** | Renewal awareness, stakeholder summaries as recipients |
-| **Sales / BD** | NDA triage self-serve before pinging legal |
+| **Sales / BD** | NDA triage self-serve before contacting legal |
 
 ## First run: the cold-start interview
 
-On first use, the plugin interviews you — ten minutes, conversational — to learn how your team actually works. It asks about your playbook positions, your escalation rules, and the thing that makes you groan when it hits your desk. Then it asks for 5-10 recent signed agreements (more is better, 20 gives a clearer pattern) so it can see your positions in the wild.
+On first use, the plugin interviews you — ten minutes, conversational — to learn how your team actually works. It asks about your playbook positions, your escalation rules, and the most painful part of your current contracts workload. Then it asks for 5-10 recent signed agreements (more is better, 20 gives a clearer pattern) so it can extract the positions your team actually signs.
 
 It writes what it learns to `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` — a plain-English document about your team that every other skill reads before doing anything. You edit the document, not a config file.
 
@@ -30,6 +30,7 @@ It writes what it learns to `~/.claude/plugins/config/claude-for-legal/commercia
 | Command | Does |
 |---|---|
 | `/commercial-legal:cold-start-interview` | Run (or re-run) the cold-start interview |
+| `/commercial-legal:customize` | Change one part of your practice profile — playbook position, escalation contact, house style — without re-running the interview |
 | `/commercial-legal:review [file]` | Review a vendor agreement, NDA, or SaaS subscription against your playbook |
 | `/commercial-legal:renewal-tracker` | What's renewing in the next 90 days and when the cancel-by deadlines are |
 | `/commercial-legal:escalation-flagger` | Route an issue to the right approver and draft the ask |
@@ -42,6 +43,7 @@ It writes what it learns to `~/.claude/plugins/config/claude-for-legal/commercia
 | Skill | Purpose |
 |---|---|
 | **cold-start-interview** | First-run interview that writes `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` |
+| **customize** | Change one part of your practice profile — playbook position, escalation contact, house style — without re-running the interview |
 | **vendor-agreement-review** | Full playbook-vs-contract deviation analysis with redlines |
 | **nda-review** | Fast GREEN/YELLOW/RED triage so legal only reads the NDAs that need it |
 | **saas-msa-review** | Subscription-specific overlay: auto-renewal, price escalation, data exit, SLAs |
@@ -51,35 +53,44 @@ It writes what it learns to `~/.claude/plugins/config/claude-for-legal/commercia
 | **amendment-history** | Summarizes changes across a base agreement and its amendments, or traces a specific provision to its current controlling language |
 | **matter-workspace** | Create, list, switch, and close matter workspaces for multi-client practices; isolates each client/matter so context does not leak across them |
 
-## Interactive commands vs. scheduled agents
+## Interactive commands vs. recurring agents
 
-The commands above run when you invoke them — for when you're working a matter. The agents below run on a schedule — for what moves while you're not looking:
+The commands above run when you invoke them — for when you're working a matter. The agents below are designed for a recurring cadence and cover what changes between sessions — they do not run on their own; trigger them with a recurring reminder or an external scheduler:
 
-| Agent | What it watches | Default cadence |
+| Agent | What it watches | Suggested cadence |
 |---|---|---|
 | **renewal-watcher** | Renewal register — posts what's coming up in the next 90 days, with red-flag escalation for cancel-by windows in 0–13 days | Weekly (Monday) |
 | **deal-debrief** | Recently signed agreements for playbook deviations; prompts the attorney to log context while memory is fresh | Weekly (Monday) |
-| **playbook-monitor** | Deviation log — proposes playbook updates when a clause has been overridden 5+ times in a rolling 12-month window | Data-triggered (after each deal-debrief) |
+| **playbook-monitor** | Deviation log — proposes playbook updates when a clause has been overridden 5+ times in a rolling 12-month window | Data-triggered (run after a deal-debrief) |
 
 ## Integrations
 
-**Connect a research tool first — the citation guardrails depend on it.** Without one, every cite is tagged `[verify]` and the reviewer note above each deliverable records that sources weren't verified. Skills work either way; a research tool (CourtListener) just shifts verification work off your plate.
-
+**Connect a research tool first — the citation guardrails depend on it.** Without one, every cite is tagged `[verify]` and the reviewer note above each deliverable records that sources weren't verified. Skills work either way — but this plugin does not ship a case-law research connector; add CourtListener or your firm's research tool via `/mcp` to enable retrieval-backed citations.
 
 Ships with connectors configured in `.mcp.json`:
 
-- **Ironclad** — contract lifecycle management
-- **DocuSign** — signature status and envelope tracking
+- **Ironclad** — contract repository and workflow search (read; does not create records)
+- **DocuSign** — agreement search, signature status, and envelope tracking
+- **iManage** — DMS access, permission-bound and auditable
+- **TopCounsel** — outside counsel recommendations from The L Suite
+- **Definely** — contract structure: definitions, cross-references, structural diffs
 - **Slack** — search messages, read channels, find discussions (general bucket)
 - **Google Drive** — search, read, and fetch documents (general bucket)
 
-With a [CLM] connected: reviews check for prior agreements with the same counterparty, bulk-load the renewal register, create records with review memos attached.
+With a CLM connected: reviews search for prior agreements with the same counterparty and bulk-load the renewal register. The Ironclad connector is search/read — it does not create or modify records in your CLM.
 
 With DocuSign connected: track signature status, route envelopes in approver order.
 
+## What this plugin does not do
+
+- **No case-law research connector ships with it.** Citations to statutes or case law come from model knowledge (tagged `[verify]`) until you connect a research tool.
+- **No citator.** Nothing here checks whether an authority is still good law — keep your citator subscription.
+- **It does not negotiate or sign.** Reviews produce redlines and routing; the lawyer sends them. NDA triage routes to signature, it doesn't execute anything.
+- **It does not write to your CLM.** The Ironclad connector is search/read only.
+
 ## Quick start
 
-### 1. Get interviewed
+### 1. Run the cold-start interview
 
 ```
 /commercial-legal:cold-start-interview
@@ -87,7 +98,7 @@ With DocuSign connected: track signature status, route envelopes in approver ord
 
 Ten minutes. Have 5-10 recent signed agreements ready to share (more is better, 20 gives a clearer pattern).
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` and survives plugin updates. In Claude Cowork, where that path isn't writable, setup saves to `claude-for-legal-config/` in your working folder instead — keep using the same folder across sessions.
 
 ### 2. Review a contract
 
@@ -123,6 +134,7 @@ commercial-legal/
 │   └── playbook-monitor.md
 ├── skills/
 │   ├── cold-start-interview/
+│   ├── customize/
 │   ├── review/
 │   ├── review-proposals/
 │   ├── vendor-agreement-review/
@@ -139,6 +151,6 @@ commercial-legal/
 
 ## Notes
 
-- The plugin assumes you're the **customer** in most reviews. When you're the vendor, flag it and the review flips the playbook polarity.
+- Reviews determine which playbook side applies (sales or purchasing) from the deal context — usually obvious from whose paper it is; if it isn't obvious, the skill asks before reading the playbook. If the matching side isn't configured, the review stops and points you at `/commercial-legal:cold-start-interview --side <side>`.
 - NDA triage is built for self-serve by non-lawyers. GREEN means "route to signature." It does not negotiate.
-- Renewal tracking only knows about contracts that were reviewed through this plugin or bulk-loaded from the [CLM]. Contracts signed before you installed this need a one-time scan.
+- Renewal tracking only knows about contracts that were reviewed through this plugin or bulk-loaded from your CLM. Contracts signed before you installed this need a one-time scan.

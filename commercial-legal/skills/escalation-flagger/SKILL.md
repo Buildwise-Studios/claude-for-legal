@@ -11,7 +11,7 @@ argument-hint: "[describe the issue, or reference a review memo]"
 
 # /escalation-flagger
 
-Names the approver for a contract issue per the `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` escalation matrix and drafts the message so you're not writing "hey got a sec" at 5pm.
+Names the approver for a contract issue per the `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` escalation matrix and drafts the escalation message.
 
 ## Instructions
 
@@ -48,7 +48,7 @@ Issue: §8.2 indemnity carveouts
 
 ## Purpose
 
-Every contracts team has an escalation matrix, written or not. This skill reads the written one (in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`), matches a contract issue against it, names the approver, and drafts the ask so the lawyer isn't writing "hey do you have a sec" messages at 5pm.
+This skill reads the escalation matrix in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`, matches a contract issue against it, names the approver, and drafts the ask so the approver has everything needed to decide.
 
 ## Load the matrix
 
@@ -101,7 +101,7 @@ Be specific. Not "escalate to legal leadership" — name the person or role from
 
 ### Step 4: Draft the ask
 
-The approver should be able to decide from the message alone — no "let me pull up the contract."
+The approver should be able to decide from the message alone, without pulling up the contract.
 
 ```markdown
 **Escalating to:** [name]
@@ -154,6 +154,6 @@ If a term comes up that the playbook doesn't address, don't guess the threshold 
 
 ## What this skill does not do
 
-- It does not approve anything. It routes.
+- It does not approve anything; it routes.
 - It does not decide between the options. The draft includes a recommendation but the approver decides.
 - It does not send the escalation message — it drafts it. The lawyer sends it after reading.

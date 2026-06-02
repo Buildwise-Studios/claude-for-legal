@@ -6,9 +6,11 @@
 Usage: validate.py <output.json> <schema.json|schema.yaml>
 Exits 0 on valid, 1 on invalid (message to stderr).
 
-The CMA API does not enforce structured output today, so the deploy harness
-runs this between a reader subagent and the orchestrator. Schemas live in each
-subagent yaml under `output_schema:` — the deploy script extracts them.
+The CMA API does not enforce structured output today, and the deploy script
+does not wire this check in — it strips `output_schema:` blocks from manifests
+before POST. The deploying team runs this script in its own harness between a
+reader subagent's output and the orchestrator. Schemas live in each subagent
+yaml under `output_schema:`; copy the block to a file to use it here.
 """
 import json
 import sys

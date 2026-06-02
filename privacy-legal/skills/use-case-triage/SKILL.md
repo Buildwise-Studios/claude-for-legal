@@ -1,9 +1,9 @@
 ---
 name: use-case-triage
 description: >
-  Quickly determine whether a processing activity needs a PIA, a mandatory GDPR
-  DPIA, or can proceed — surfaces privacy policy conflicts and routes to the right
-  next step. Use when the user asks "does this need a PIA", "triage this feature",
+  Quickly determine whether a processing activity needs a PIA, a mandatory regime
+  assessment (e.g., GDPR DPIA, CPRA risk assessment), or can proceed — surfaces
+  privacy policy conflicts and routes to the right next step. Use when the user asks "does this need a PIA", "triage this feature",
   "privacy check on X", "is this okay from a privacy perspective", or describes a
   new data processing activity, product feature, or vendor relationship.
 argument-hint: "[describe the data processing activity or feature]"
@@ -12,10 +12,11 @@ argument-hint: "[describe the data processing activity or feature]"
 # /use-case-triage
 
 1. Read `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md`. Confirm privacy practice is configured — if not, stop and direct to setup.
-2. Run the workflow below. Clarify the activity if vague.
-3. House trigger check → mandatory DPIA check (if GDPR in footprint) → privacy policy conflict check.
-4. Output: classification (PROCEED / PIA REQUIRED / DPIA MANDATORY / STOP), reasoning, conditions table if required, cross-plugin handoffs.
-5. Offer to continue into PIA generation if assessment is required.
+2. Check the practice context index — has ai-governance-legal already triaged or assessed this use case? See `## Check prior cross-plugin work`.
+3. Run the workflow below. Clarify the activity if vague.
+4. House trigger check → mandatory assessment check (per regime in footprint) → privacy policy conflict check.
+5. Output: classification (PROCEED / PIA REQUIRED / DPIA MANDATORY / STOP), reasoning, conditions table if required, cross-plugin handoffs.
+6. Offer to continue into PIA generation if assessment is required.
 
 ```
 /privacy-legal:use-case-triage "New feature that uses behavioral data to personalize content recommendations"
@@ -33,7 +34,7 @@ argument-hint: "[describe the data processing activity or feature]"
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
@@ -68,14 +69,38 @@ If the file is missing or contains `[PLACEHOLDER]`, surface this bounce:
 > I notice you haven't configured your practice profile yet — that's how I tailor the PIA trigger criteria, regulatory footprint, and privacy policy commitments to your practice.
 >
 > **Two choices:**
-> - Run `/privacy-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to YOUR practice.
+> - Run `/privacy-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll triage tailored to your practice.
 > - Say **"provisional"** and I'll triage against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run triage normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction (CCPA + common federal sectoral baselines), no playbook (classify from general privacy-law principles rather than matching to configured commitments). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/privacy-legal:cold-start-interview` to get output calibrated to YOUR practice — your regulatory footprint, your privacy policy commitments, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Run `/privacy-legal:cold-start-interview` to get output calibrated to your practice — your regulatory footprint, your privacy policy commitments, your risk appetite. 2 minutes."
+
+---
+
+## Check prior cross-plugin work
+
+Read the shared practice context index at `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`) — an append-only, cross-plugin index of completed assessments and reviews, one pointer line per work product:
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+
+Look for entries whose Subject matches this activity or its system/vendor:
+
+- **An AI governance triage or assessment covering the same use case** (ai-governance-legal, `use-case-triage` or `aia-generation` entries) — its system description, affected-population analysis, and conditions are reusable here.
+- **Prior PIAs or DPA reviews on the same activity/vendor** (`pia-generation` / `dpa-review` entries) — an activity that's already been assessed shouldn't be triaged as if it's new.
+
+If a relevant entry exists, surface it before classifying:
+
+> "ai-governance-legal triaged [use case] on [date] — this privacy triage will reuse its system description and stay consistent with its conditions. (To pull in the details, point me at the document; the index has its location.)"
+
+The index records pointers, not findings — to incorporate prior work, the user points you at the document (the index has its location).
+
+If the index doesn't exist or has no relevant entries, say nothing and proceed — no noise. If matter workspaces are enabled and a matter is active, skip the check entirely — matter-scoped work is never indexed at practice level, and cross-matter visibility would breach matter isolation.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
 
 ---
 
@@ -116,7 +141,7 @@ activities need a PIA regardless of internal policy.
 >
 > Does this processing touch:
 > - **Financial account data or "nonpublic personal information" about consumers** (GLBA / Reg P — applies to financial institutions and their non-affiliated third parties; imposes substantive restrictions on sharing NPI for marketing, separate from and on top of any state privacy-law exemption)?
-> - **Protected health information held by a covered entity or business associate** (HIPAA Privacy / Security Rules — substantive restrictions on use and disclosure, breach notification at 500+ records, BAA required for any vendor)?
+> - **Protected health information held by a covered entity or business associate** (HIPAA Privacy / Security Rules — substantive restrictions on use and disclosure; breach notification for any breach of unsecured PHI, with HHS and media notice obligations escalating at 500+ individuals; BAA required for any vendor that creates, receives, maintains, or transmits PHI)?
 > - **Education records held by a school or a service provider acting for a school** (FERPA — consent requirements for disclosure, directory-information carve-outs)?
 > - **Data from children under 13 collected by an operator of an online service directed to children or with actual knowledge** (COPPA — parental consent, notice, deletion rights, strict limits on retention and sharing)?
 > - **Another sectoral federal regime** (e.g., VPPA for video-viewing records, CPNI for carrier data, DPPA for DMV records, TCPA for SMS/call consent)?
@@ -178,7 +203,7 @@ proceeds.
 **CLASSIFICATION:** [PROCEED / PIA REQUIRED / DPIA MANDATORY / STOP]
 
 **House trigger met?** [Yes / No]
-**GDPR mandatory DPIA trigger?** [Yes — [trigger] / No / N/A (GDPR not in footprint)]
+**Mandatory assessment trigger?** [Yes — [regime: trigger] / No / N/A (no assessment-mandating regime in footprint)]
 **Privacy policy conflict?** [None / Yes — [specific conflict]]
 
 **Reasoning:**

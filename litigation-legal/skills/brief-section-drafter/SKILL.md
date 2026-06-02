@@ -11,30 +11,34 @@ argument-hint: "[section \u2014 e.g., 'statement of facts', 'argument II']"
 3. Draft in house format/tone/citation style. Consistent with theory.
 4. Output: draft section. Flag every place a fact or cite needs verification.
 
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
+
 ---
 
 # Brief Section Drafter
 
 ## Witness statements for England & Wales — PD 57AC
 
-If the user's jurisdiction includes England & Wales and they're asking for a trial witness statement for the Business & Property Courts (or any CPR-governed proceeding), PD 57AC applies. The statement must be in the witness's own words, must not contain argument, must identify the documents the witness used to refresh their memory, and must carry the required confirmation of compliance and the legal representative's certificate.
+If the user's jurisdiction includes England & Wales and they're asking for a trial witness statement for the Business & Property Courts (where PD 57AC applies; the same discipline is good practice in other CPR proceedings), PD 57AC governs. The statement must be in the witness's own words, must not contain argument, must identify the documents the witness used to refresh their memory, and must carry the required confirmation of compliance and the legal representative's certificate.
 
-**Drafting a narrative "as the witness" from a chronology, document set, or your account of the case is exactly what PD 57AC was designed to prevent.** Courts are actively sanctioning AI-assisted witness statement drafting. If you ask me to do it, I won't.
+**Drafting a narrative "as the witness" from a chronology, document set, or the user's account of the case is exactly what PD 57AC was designed to prevent.** Courts have sanctioned non-compliant witness statements and are scrutinizing AI-assisted drafting. Refuse to draft narrative witness statements in the witness's voice.
 
-What I WILL do: prepare question prompts to elicit the witness's actual recollection; capture and organize what the witness says (their words, not mine); generate the list of documents they were shown; run a PD 57AC compliance checklist against a statement they've drafted; draft the solicitor's certificate of compliance. I help you get the witness's evidence into the statement. I don't write the evidence.
+What this skill does instead: prepare question prompts to elicit the witness's actual recollection; capture and organize what the witness says, in the witness's own words; generate the list of documents they were shown; run a PD 57AC compliance checklist against a statement they've drafted; draft the solicitor's certificate of compliance. The skill helps get the witness's evidence into the statement; it does not write the evidence.
 
 For US depositions, declarations, and affidavits: different rules, but the same discipline applies. A declaration in the declarant's voice that the declarant didn't write is a credibility problem at best.
 
+(Full England & Wales drafting reference — statements of case vs. skeleton arguments vs. witness statements, PD 57AC compliance details, OSCOLA and court citation requirements: `references/uk.md`. This gate and that file work together; the gate controls.)
+
 ## Purpose
 
-A good brief section is consistent with the theory, cited to the record, written in house style, and checkable. This skill produces the first draft — emphasis on *draft*. Partner edits.
+A good brief section is consistent with the theory, cited to the record, written in house style, and checkable. This skill produces a first draft for partner review and editing.
 
 ## Written or oral?
 
 Ask before drafting: "Is this for a written submission or oral argument?" They are different crafts:
 
 - **Written:** thorough. Cover the points, develop the authority, anticipate the responses.
-- **Oral (rebuttal, closing, argument):** strategic. Pick the 3-4 points that matter most. Concede or ignore the weak ones. Lead with your strongest. A tribunal remembers the first two minutes and the last two. "Too thorough" for oral advocacy reads as unfocused. If you're responding to a multi-issue submission, tell the user which issues you'd press and which you'd let go — that's the draft of the strategy, not just the words.
+- **Oral (rebuttal, closing, argument):** strategic. Pick the 3-4 points that matter most. Concede or ignore the weak ones. Lead with the strongest — tribunals weight the opening and closing minutes most heavily. "Too thorough" for oral advocacy reads as unfocused. If you're responding to a multi-issue submission, tell the user which issues you'd press and which you'd let go — that's the draft of the strategy, not just the words.
 
 ## Record fidelity — quotes and pinpoints
 
@@ -48,7 +52,7 @@ Two rules that govern every citation and every quotation in advocacy drafting. T
 
 Before citing any passage with quotation marks, have the source open. If you're working from memory or a summary, no quotation marks.
 
-**Pinpoint cites must support the whole proposition.** If the argument is "opposing counsel said X, Y, and Z" and you're citing one pinpoint, verify the pinpoint supports X AND Y AND Z. If it only supports Z, either (a) split the cite — "said X (Tr. p. 10), Y (Tr. p. 12), and Z (Tr. p. 15)" — or (b) narrow the proposition to what the pinpoint actually supports. A cite that supports part of a claim is how a tribunal catches you stretching. It's the single most common way a lawyer's credibility erodes in front of a court. This is the "misgrounded citation" failure mode: the cite exists, the passage exists, but the passage doesn't support the proposition as stated.
+**Pinpoint cites must support the whole proposition.** If the argument is "opposing counsel said X, Y, and Z" and the cite is one pinpoint, verify the pinpoint supports X AND Y AND Z. If it only supports Z, either (a) split the cite — "said X (Tr. p. 10), Y (Tr. p. 12), and Z (Tr. p. 15)" — or (b) narrow the proposition to what the pinpoint actually supports. A cite that supports only part of a claim overstates the record, and tribunals notice — it is a common way a lawyer's credibility erodes in front of a court. This is the "misgrounded citation" failure mode: the cite exists, the passage exists, but the passage doesn't support the proposition as stated.
 
 ## Candor about weak arguments
 
@@ -60,10 +64,12 @@ Asserting a weak argument without flagging it erodes the lawyer's credibility wi
 
 ## Citation extraction coverage
 
+The standalone way to run this check is `/litigation-legal:cite-check` — it implements the protocol below as its whole job (enumerate, batch, retrieve-and-read, per-cite verdicts) and works on any document, not just drafts this skill produced. Point the user at it when they ask for a citation check outside a drafting session.
+
 When this draft is cite-checked — by you, by another skill, or by a reviewer running through what you produced — the check must be exhaustive, not selective:
 
 1. **First pass: extract.** Read the whole document and build a list of every citation — cases, statutes, regulations, record cites, secondary authority. Report the count: "Found [N] citations."
-2. **Second pass: check.** Check each one against the source. Don't sample. Don't stop when you get tired.
+2. **Second pass: check.** Check each one against the source — every citation, not a sample.
 3. **Report coverage.** At the end: "Checked [N] of [M] citations. [K] could not be retrieved — verify manually. [J] confirmed. [I] flagged as potential miscitations. [H] flagged as misgrounded (cite exists but doesn't support the proposition)."
 4. **When source text is unavailable, say "could not check," never "confirmed."** A false positive ("this cite is fine" when you couldn't read the source) is worse than "couldn't check this one."
 5. **The hardest errors to catch are partial support.** A cite that backs part of a claim but not all of it. Read the proposition the brief makes, read what the source actually holds, and compare element by element.
@@ -93,16 +99,16 @@ Do not proceed on an unintaken matter. Intake is what runs conflicts, sets up `m
 
 | Section | What it does | Inputs needed |
 |---|---|---|
-| Statement of facts | Tells the story, in our frame, cited to record | Chronology, key docs, depo cites |
+| Statement of facts | Tells the story, in the client's frame, cited to record | Chronology, key docs, depo cites |
 | Standard of review | Sets the bar the court applies | Procedural posture |
 | Argument | Makes the legal case | Issue, authorities, facts |
-| Conclusion | Asks for relief | What we want |
+| Conclusion | Asks for relief | The relief sought |
 
 ### Step 2: Theory check
 
 Before writing: what does this section need to accomplish for the theory?
 
-- Statement of facts: Frame the story so our theory is the natural reading.
+- Statement of facts: Frame the story so the case theory is the natural reading.
 - Argument: Connect the law to the facts in a way that supports the theory.
 
 If the section you're about to draft contradicts the theory — stop. Either the theory is wrong or the section approach is wrong. Flag it, don't paper over it.
@@ -113,7 +119,7 @@ If the section you're about to draft contradicts the theory — stop. Either the
 
 Per `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md`:
 
-- **Citation format:** Bluebook, ALWD, or local — match exactly. Signals, pincites, parentheticals per house practice, confirmed against the local rule.
+- **Citation format:** the citation style recorded in the practice profile (Bluebook, ALWD, OSCOLA, AGLC, McGill, or court-specific) — match exactly. Signals, pincites, parentheticals per house practice, confirmed against the local rule. (England & Wales: see `references/uk.md` § 5 — neutral citations and the Law Reports hierarchy override academic OSCOLA conventions in court documents.)
 - **Structure:** How does this firm organize arguments? CRAC? Topic sentences first? Headings that argue vs. headings that describe?
 - **Tone:** Aggressive ("Defendants' argument is meritless") or measured ("The evidence does not support Defendants' position")? Match the seed brief.
 - **Length:** per the local rule / standing order — never relying on "what this judge usually wants" when the rule is checkable.
@@ -138,7 +144,7 @@ A draft with unresolved markers is not final. The markers make the verification 
 
 **Before the brief is filed (the consequential act — this skill drafts, but the gate runs at the filing step regardless of who triggers it):** Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md`. If the Role is Non-lawyer:
 
-> Filing a brief has legal consequences — it becomes the record, binds the client on arguments and facts asserted, and a Rule 11 / equivalent certification attaches to signature. Have you reviewed this with an attorney? If yes, proceed. If no, here's a brief to bring to them:
+> Filing a brief has legal consequences — it becomes the record, binds the client on arguments and facts asserted, and a Rule 11 / equivalent certification attaches to signature. (England & Wales: see `references/uk.md` § 6 — the statement of truth (CPR 22) and contempt exposure (CPR 32.14) replace the Rule 11 framing.) Have you reviewed this with an attorney? If yes, proceed. If no, here's a brief to bring to them:
 >
 > [Generate a 1-page summary: the section drafted, the theory tie-in, authorities relied on, open `[VERIFY]` / `[UNCERTAIN]` / `[CITE NEEDED]` markers unresolved, what could go wrong (factual misstatement, unsupported citation, argument outside the theory), what to ask the attorney before filing.]
 >
@@ -188,4 +194,4 @@ The statement of facts is advocacy through selection and sequence, not argument.
 
 - Produce a final brief. It produces a draft. Every cite needs verification, every argument needs a partner's eyes.
 - Decide strategy. If there are two ways to argue the issue, flag both and let the partner choose.
-- File anything. Ever.
+- File anything, ever.

@@ -25,13 +25,13 @@ argument-hint: "[--build | --update | --status | --cram]"
 
 ## Purpose
 
-Sitting down to study and not knowing what to study is how weeks disappear. This skill builds a plan — weeks to exam, sessions per day, subjects per week, session types — and then adapts as the student actually does the sessions. It is a living plan, not a calendar export.
+Study time without a plan disappears into deciding what to study. This skill builds a plan — weeks to exam, sessions per day, subjects per week, session types — and then adapts as the student actually does the sessions. It is a living plan, not a calendar export.
 
 It also gives downstream skills (bar-prep, flashcards, drill, irac) a shared schedule to honor, so the student isn't asked "what do you want to study today" every time they open a session.
 
 ## Confidence discipline
 
-A plan is opinion, not doctrine. The skill states clearly what's an estimate:
+A plan is an estimate, not doctrine. The skill states clearly which parts are estimates:
 
 - **Time-per-topic estimates** are general guidance (based on typical Barbri/Themis/Kaplan weightings). Flag them as estimates — the student's real pace will differ.
 - **Subject weightings** are derived from the student's own reported weak subjects and session history. Confident.
@@ -122,7 +122,7 @@ Calculate weeks-to-exam from today's date. Then:
 - Flag it: "You're less than four weeks out. This is cram mode — the plan prioritizes high-yield topics over full coverage. You will leave gaps. That's the tradeoff at this point."
 - 80/20 prioritization: the MBE subjects that historically appear most (Civ Pro, Evidence, Con Law, Contracts) get the lion's share. Narrower subjects get minimum viable coverage.
 - Daily schedule: MBE blocks every day (volume matters now), essay practice every other day, one simulated exam per week.
-- Sleep and taper the last 2-3 days. Do not schedule hard drilling the day before the exam. This is real — students who cram through the night before score worse.
+- Sleep and taper the last 2-3 days. Do not schedule hard drilling the day before the exam — students who cram through the night before score worse.
 
 ### Step 4: Write it
 
@@ -242,7 +242,7 @@ On the next `/law-student:study-plan --update` run (or when any skill detects th
 
 ## What this skill does not do
 
-- **Guarantee you pass.** The plan is a scaffold. The work is on you.
+- **Guarantee you pass.** The plan is a scaffold; the studying is yours to do.
 - **Predict the exam.** Cram mode uses historical subject frequency; high-yield ≠ guaranteed-tested.
 - **Replace your prep course schedule.** If you're on Barbri/Themis/Kaplan, this plan can supplement — don't run two full curricula against each other. Use one as primary.
-- **Schedule your life.** Hours available is what you tell me. If you overstate, the plan will break in week 2. Be honest.
+- **Schedule your life.** Hours available are what you report. If you overstate them, the plan will break in week 2.

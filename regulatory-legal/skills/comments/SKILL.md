@@ -8,9 +8,9 @@ argument-hint: "[optional: --decide CMT-ID]"
 
 ## Purpose
 
-NPRMs have deadlines. The decision to file a comment or not is an attorney
-call — but the deadline disappearing without a logged decision is the risk.
-This skill surfaces open comment periods and records decisions.
+The decision to file a comment on an NPRM is an attorney call — the risk is a
+comment deadline passing without a logged decision. This skill surfaces open
+comment periods and records decisions.
 
 ## Load context
 
@@ -22,7 +22,7 @@ This skill surfaces open comment periods and records decisions.
 ```markdown
 ## Comment Period Tracker — [date]
 
-### ⏰ Deadline in <14 days
+### Deadline in <14 days
 
 | ID | Regulation | Deadline | Days left | Decision | Owner |
 |---|---|---|---|---|---|

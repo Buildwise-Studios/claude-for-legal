@@ -36,10 +36,10 @@ argument-hint: "[optional — scope hint, e.g. 'firm-wide', 'legal team only', '
 
 ## Purpose
 
-A lot of firms and in-house teams don't have a written AI usage policy yet, or
-are running on a 2024-vintage one that doesn't mention the state AI laws, the EU
-AI Act implementing acts, the 2025 COPPA amendments, or what they actually ended
-up doing with Copilot and Claude for Work. This skill produces a **draft** policy
+Many firms and in-house teams don't have a written AI usage policy, or are
+running on an outdated one that doesn't mention the state AI laws, the EU
+AI Act implementing acts, the 2025 COPPA amendments, or the AI tools actually
+in use (Copilot, Claude for Work). This skill produces a **draft** policy
 to bring to the decision-maker — GC, managing partner, executive committee,
 board, head of IT, head of HR — not a finished policy to circulate.
 
@@ -50,10 +50,9 @@ The discipline of this skill:
    templates, and peer-firm / peer-company policies that are public. Cite what
    each source says and adapt it — don't generate policy language out of thin
    air.
-2. **Decision-tree the scope before drafting.** A policy that tries to cover
-   everything covers nothing. Ask the user what sections the policy needs. Let
-   them pick. Then build each picked section with `[review]` flags on every
-   choice point.
+2. **Decision-tree the scope before drafting.** Ask the user what sections the
+   policy needs. Let them pick. Then build each picked section with `[review]`
+   flags on every choice point.
 3. **Flag every judgment call.** The output is a draft the attorney reviews and
    adopts; every threshold, every named tool, every disclosure trigger, every
    enforcement consequence is a `[review]` line.
@@ -68,7 +67,8 @@ position on the hard calls. It produces a draft and surfaces the choices.
 Before drafting, always read the practice profile. The sections that drive the
 draft:
 
-- `## Company profile` — AI role (Builder / Deployer / Both), regulatory footprint,
+- `## Company profile` — AI activity summary (role is per-system — see
+  `## AI system inventory` and `ai-systems.yaml`), regulatory footprint,
   external commitments, practice setting
 - `## Use case registry` — what's already approved, conditional, or a red line
 - `## AI policy commitments` — what a prior or current policy already says
@@ -111,7 +111,7 @@ After the user picks, ask the second question:
 Before drafting, run web searches for the most recent published model AI
 policies and guidance.
 
-**Derive the model policy sources from the practice profile's `## Regulatory footprint`.** Don't hardcode US sources for a global user.
+**Derive the model policy sources from the practice profile's Regulatory footprint field (under `## Company profile`).** Don't hardcode US sources for a global user.
 
 | Jurisdiction | Model policy sources |
 |---|---|

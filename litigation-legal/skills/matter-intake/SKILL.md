@@ -73,7 +73,7 @@ Behavior by status:
       rationale: [why conflicts were bypassed — permanent record; does not auto-expire]
   ```
 
-  This field is visible in every `/portfolio-status`, every `/matter` briefing, and every `/matter-update` until removed. It is never removed by the skill — only by explicit user edit to `_log.yaml` after conflicts are actually cleared.
+  This field is visible in every `/portfolio-status`, every `/matter-briefing`, and every `/matter-update` until removed. It is never removed by the skill — only by explicit user edit to `_log.yaml` after conflicts are actually cleared.
 
   **Do not proceed silently.** "I'll do it later" is not an acceptable response. One of Path 1/2/3 must be chosen, and the choice is captured in the record.
 
@@ -93,7 +93,7 @@ How did this arrive?
 - Damages exposure range (best estimate)
 - Non-monetary exposure (injunction? consent decree? publicity? precedent?)
 
-If the risk calibration in `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` is thin, don't fake precision. Use the user's gut and note the thinness.
+If the risk calibration in `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` is thin, don't fake precision. Use the user's judgment and note the thinness.
 
 ### 5. Materiality
 

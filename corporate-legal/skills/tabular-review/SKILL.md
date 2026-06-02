@@ -61,7 +61,7 @@ This is also not a replacement for a human reading the document. Every cell this
 
 ## The column type system
 
-The thing that makes a tabular review useful is that Column C means the same thing in row 1 as in row 200. Free text drifts. Types hold.
+A tabular review is useful when Column C means the same thing in row 1 as in row 200. Free text drifts; typed columns hold their meaning.
 
 Every column has a **type** that constrains the answer format:
 
@@ -220,7 +220,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 ## What this skill does not do
 
 - **It does not replace reading the documents.** It tells you where to look.
-- **It does not produce confidence scores.** A 0.73 is not information. The `unclear` / `needs_review` states and the verbatim quotes are the confidence signal — if the quote doesn't support the value, flag it.
+- **It does not produce confidence scores.** The `unclear` / `needs_review` states and the verbatim quotes are the confidence signal — if the quote doesn't support the value, flag it.
 - **It does not silently skip documents.** Every document the user pointed at gets a row. A document that couldn't be read gets a row of `needs_review` with a note.
 - **It does not pretend a paraphrase is a quote.** The evidence trail is the whole point.
 

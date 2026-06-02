@@ -73,14 +73,14 @@ is authoritative for suggesting edits.
 
 The website privacy policy is one surface. Modern privacy programs make binding commitments in at least four more places that regulators actively scrutinize for inconsistencies:
 
-1. **Cookie consent banners / CMPs.** The consent management platform promises specific cookie categories and purposes. If the privacy policy says "we use analytics cookies" and the CMP offers "strictly necessary only," there's a conflict. EU DPAs and the FTC have both enforced against CMP misconfigurations.
+1. **Cookie consent banners / CMPs.** The consent management platform promises specific cookie categories and purposes. If the privacy policy says "we use analytics cookies" and the CMP offers "strictly necessary only," there's a conflict. EU DPAs have enforced against non-compliant cookie banners, and the FTC has treated deceptive consent flows as § 5 violations `[model knowledge — verify]`.
 2. **App store privacy labels.** Apple App Privacy (the "nutrition label") and Google Data Safety are self-declared and FTC-enforceable. A company that updates its privacy policy but doesn't update its App Store label has a material, regulator-visible inconsistency. Check: when was the label last updated? Does it match the current policy's data categories, purposes, and sharing?
 3. **In-product consent flows.** The actual screens where users make data-use choices (onboarding consents, settings toggles, "we've updated our policy" dialogs). The policy says what you do; the consent flow says what the user agreed to. They should match.
 4. **Sector-specific notices.** GLBA privacy notices, HIPAA NPPs, FERPA directory notices, COPPA direct notices. These have their own update obligations and their own consistency requirements with the general privacy policy. (Detail below under "Sectoral notices.")
 
-**Add fields to the practice profile for each surface's location and last-updated date.** The sweep checks each against the current policy and flags divergence: "Privacy policy updated [date]. App Store label last updated [earlier date] — may not reflect the new data category. CMP last configured [date] — verify cookie purposes match the policy."
+**Each surface's location and last-updated date is recorded in the practice profile under `## Outputs` → Other privacy-commitment surfaces — read it; if a surface is missing or unset there, ask the user and record it.** The sweep checks each against the current policy and flags divergence: "Privacy policy updated [date]. App Store label last updated [earlier date] — may not reflect the new data category. CMP last configured [date] — verify cookie purposes match the policy."
 
-A company with a clean privacy policy and a stale App Store label is a company with an FTC complaint waiting to happen. Sweep the surfaces, not just the document.
+A current privacy policy paired with a stale App Store label is a regulator-visible inconsistency and an FTC enforcement risk. Sweep the surfaces, not just the document.
 
 ### Sectoral notices are in scope for this sweep
 
@@ -99,7 +99,7 @@ The website privacy policy is one notice. Federally-regulated practices require 
 > **Sectoral notice coverage:**
 > - [regime]: [configured notice path + last updated, or "NOT CONFIGURED — flag each sweep until resolved"]
 
-**If the sweep cannot locate the sectoral notice**, say so explicitly — do not silently default to diffing only against the website policy. A fintech DPO relying on a policy-monitor sweep that ignored GLBA would ship with an outdated regulator-facing notice and no warning. Surface the gap loudly.
+**If the sweep cannot locate the sectoral notice**, say so explicitly — do not silently default to diffing only against the website policy. A fintech DPO relying on a policy-monitor sweep that ignored GLBA would ship with an outdated regulator-facing notice and no warning. Surface the gap prominently.
 
 **Ask the user if the footprint is ambiguous.** If `## Regulatory footprint` says "GDPR / CCPA" but the outputs scan surfaces PHI, NPI, or student data categories, surface the footprint-vs-practice mismatch before proceeding: "Your footprint doesn't list [GLBA / HIPAA / FERPA / COPPA] but this sweep is looking at outputs that involve [category]. Should this regime be added to the footprint, and is there a sectoral notice to diff against?"
 

@@ -1,18 +1,20 @@
 ---
 name: dataroom-watcher
 description: >
-  Monitors the VDR for new document uploads and posts closing checklist status
-  on schedule. Flags new uploads that match high-priority categories. Trigger:
-  "what's new in the data room", "VDR updates", or on schedule.
+  Checks the VDR for new document uploads and posts closing checklist status.
+  Designed to run daily during active diligence — set a recurring reminder or
+  external scheduler to invoke it; Claude Code agents do not self-schedule.
+  Flags new uploads that match high-priority categories. Trigger:
+  "what's new in the data room", "VDR updates".
 model: sonnet
-tools: ["Read", "Write", "mcp__box__*", "mcp__intralinks__*", "mcp__datasite__*", "mcp__*__slack_send_message"]
+tools: ["Read", "Write", "mcp__Box__*", "mcp__plugin_corporate-legal_Box__*", "mcp__intralinks__*", "mcp__datasite__*", "mcp__*__slack_send_message"]
 ---
 
 # Dataroom Watcher Agent
 
 ## Purpose
 
-VDRs get updated at 11pm the night before a call. This agent watches for new uploads and tells the team what came in. Also runs the closing checklist status on the configured cadence.
+VDR uploads often land outside working hours, shortly before deal calls. This agent watches for new uploads and tells the team what came in. It also runs the closing checklist status on the configured cadence.
 
 ## Schedule
 
@@ -20,9 +22,9 @@ Daily during active diligence. Checklist status per `~/.claude/plugins/config/cl
 
 ## Integrations
 
-Posting to Slack requires a Slack MCP server in your environment. This plugin does not bundle one. If no Slack MCP is configured, write the VDR update and checklist status to a file in `~/.claude/plugins/config/claude-for-legal/corporate-legal/deals/[code]/updates/[date].md` and notify the user — do not fail silently.
+Posting to Slack uses the bundled Slack connector. If it isn't authorized, write the VDR update and checklist status to a file in `~/.claude/plugins/config/claude-for-legal/corporate-legal/deals/[code]/updates/[date].md` and notify the user — do not fail silently.
 
-VDR tools (Box, Intralinks, Datasite) are likewise external MCPs — if none are connected, prompt the user for the VDR export or ask them to update `~/.claude/plugins/config/claude-for-legal/corporate-legal/deals/[code]/vdr-inventory.md` manually.
+Of the VDR tools, Box is bundled; Intralinks and Datasite require MCP servers configured in your environment. If no VDR tool is connected, prompt the user for the VDR export or ask them to update `~/.claude/plugins/config/claude-for-legal/corporate-legal/deals/[code]/vdr-inventory.md` manually.
 
 ## What it does
 
@@ -35,7 +37,7 @@ VDR tools (Box, Intralinks, Datasite) are likewise external MCPs — if none are
 ## Output
 
 ```
-📁 **VDR update — [deal code] — [date]**
+**VDR update — [deal code] — [date]**
 
 **New since [last run]:** [N] docs
 

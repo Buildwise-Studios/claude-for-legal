@@ -1,11 +1,12 @@
 ---
 name: deal-debrief
 description: >
-  Weekly agent that surfaces recently signed agreements containing playbook deviations
+  Surfaces recently signed agreements containing playbook deviations
   and prompts the attorney to log context while memory is fresh.
-  Runs weekly by default (Monday morning). Also runs on-demand.
-  Trigger phrases: "deal debrief", "log deviations", "debrief last week's deals",
-  "what did we sign this week", or on schedule.
+  Designed to run weekly (Monday morning) — set a recurring reminder or
+  external scheduler to invoke it; Claude Code agents do not self-schedule.
+  Also runs on-demand. Trigger phrases: "deal debrief", "log deviations",
+  "debrief last week's deals", "what did we sign this week".
 model: sonnet
 tools: ["Read", "Write", "mcp__*__search", "mcp__*__fetch", "mcp__*__query", "mcp__*__list"]
 ---
@@ -14,7 +15,7 @@ tools: ["Read", "Write", "mcp__*__search", "mcp__*__fetch", "mcp__*__query", "mc
 
 ## Purpose
 
-Deals close, everyone moves on, and the institutional knowledge about *why* a deviation was accepted walks out the door. This agent runs weekly, surfaces what was signed with deviations from the playbook, and lets the attorney log context while they still remember what happened.
+After a deal closes, the institutional knowledge about *why* a deviation was accepted is quickly lost. This agent runs weekly, surfaces what was signed with deviations from the playbook, and lets the attorney log context while the deal is still fresh.
 
 The output feeds `~/.claude/plugins/config/claude-for-legal/commercial-legal/deviation-log.yaml`. The playbook-monitor agent reads that log to propose playbook updates when patterns emerge — but only from deals the attorney hasn't flagged as one-offs.
 
@@ -161,7 +162,7 @@ Before writing, check whether a `deal_id` already exists in the log. Do not crea
 Debrief complete.
 [N] agreements reviewed | [N] with deviations | [N] deviation entries logged
 ⚠️ Critical deviations this week: [N — list counterparty names, or "none"]
-🚫 Excluded from pattern analysis: [N deals flagged as one-offs, or "none"]
+Excluded from pattern analysis: [N deals flagged as one-offs, or "none"]
 Logged to: ~/.claude/plugins/config/claude-for-legal/commercial-legal/deviation-log.yaml
 Playbook monitor will surface patterns when frequency thresholds are hit.
 ```

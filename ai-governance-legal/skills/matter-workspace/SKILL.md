@@ -41,7 +41,7 @@ Practitioners work across multiple clients and matters. A matter workspace keeps
 
 ---
 
-Multi-client practitioners (private practice — solo, small firm, large firm) work across many matters. Context from one must not leak into another. This skill is the thin file-management layer that makes that true.
+Multi-client practitioners (private practice — solo, small firm, large firm) work across many matters. Context from one must not leak into another. This skill is the file-management layer that enforces that separation.
 
 **Default state is off.** In-house users never see this — they run at practice-level only. Matter workspaces turn on at cold-start for private-practice users, or by editing `## Matter workspaces` in the practice-level CLAUDE.md. If `Enabled` is `✗`, this skill does not run; the workflow above explains the disabled state and suggests `/ai-governance-legal:cold-start-interview --redo` for users who actually need matter isolation.
 
@@ -62,7 +62,7 @@ All matter data lives under:
         └── <slug>/                 # closed matters — readable but not active
 ```
 
-Slugs are lowercase with hyphens. Examples: `acme-msa-2026`, `zenith-renewal`, `vendor-xyz-nda`.
+Slugs are lowercase with hyphens. Examples: `acme-vendor-ai-review`, `support-bot-aia`, `eu-ai-act-readiness`.
 
 ## Active matter is in the practice CLAUDE.md
 
@@ -74,12 +74,12 @@ The `Active matter:` line under `## Matter workspaces` in the practice-level CLA
 
 1. Confirm slug is not already present in `matters/<slug>/` or `matters/_archived/<slug>/`. If reused, ask the user to pick a different slug.
 2. Run the intake interview:
-   - **Client** (the party we represent, or the internal business unit if in-house)
+   - **Client** (the represented party, or the internal business unit if in-house)
    - **Counterparty** (the other side — may be multiple)
    - **Matter type** (read the plugin's practice profile for typical categories; for ai-governance-legal: use case (internal) | vendor AI review | AIA | regulatory change | policy project | other)
    - **Confidentiality level** (standard | heightened | clean-team — heightened prompts extra care in cross-matter settings)
    - **Key facts** (2–5 sentences: what this matter is about, who the stakeholders are, what's at stake)
-   - **Matter-specific overrides to the practice playbook** (e.g., "client requires 24-month LoL cap not 12", "counterparty is a strategic partner — relationship-preserving tone")
+   - **Matter-specific overrides to the practice playbook** (e.g., "client accepts vendor training on de-identified inputs, not house standard no-training", "counterparty is a strategic partner — relationship-preserving tone")
    - **Related matters** (slugs of any connected matters)
 3. Write `matters/<slug>/matter.md` using the template below.
 4. Seed `matters/<slug>/history.md` with a single "Opened" entry.
@@ -133,7 +133,7 @@ Set `Active matter:` in the practice-level CLAUDE.md to `none — practice-level
 
 ## Matter type
 
-[vendor MSA | customer agreement | NDA | SaaS subscription | amendment | renewal | other — with one-line rationale]
+[use case (internal) | vendor AI review | AIA | regulatory change | policy project | other — with one-line rationale]
 
 ## Key facts
 
@@ -143,9 +143,9 @@ Set `Active matter:` in the practice-level CLAUDE.md to `none — practice-level
 
 *Any deviation from the practice-level playbook that applies to this matter and only this matter.*
 
-- [e.g., "LoL cap: client requires 24 months, not house standard 12."]
+- [e.g., "Vendor data-use: client accepts training on de-identified inputs, not house standard no-training."]
 - [e.g., "Tone: relationship-preserving — counterparty is a strategic partner."]
-- [e.g., "Governing law: must be English law, not Delaware."]
+- [e.g., "Governance tier: client treats all customer-facing AI as Elevated, regardless of registry default."]
 
 ## Related matters
 
@@ -173,7 +173,7 @@ Intake completed. Slug: `[slug]`. Status: active.
 
 ## Cross-matter context
 
-The practice-level CLAUDE.md has a `Cross-matter context:` flag. When it's `off` (the default), a skill working in matter A **never reads** files in `matters/B/` for any other `B`. Period. This is the confidentiality guarantee the setting exists to provide.
+The practice-level CLAUDE.md has a `Cross-matter context:` flag. When it's `off` (the default), a skill working in matter A **never reads** files in `matters/B/` for any other `B`. This is the confidentiality guarantee the setting exists to provide.
 
 When it's `on`, a skill may read files across matter folders only when the user explicitly asks it to (e.g., "compare our position on liability caps across the last five vendor matters"). Even when `on`, the default is to load only the active matter unless the user asks for a cross-matter view.
 

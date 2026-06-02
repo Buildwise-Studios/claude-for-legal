@@ -12,8 +12,10 @@ argument-hint: "[path-to-subpoena] [--slug=custom-slug]"
 4. Load `~/.claude/plugins/config/claude-for-legal/litigation-legal/matters/_log.yaml` for cross-check. Load `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` → landscape, privilege conventions, escalation norms.
 5. Follow the workflow and reference below.
 6. Extract key fields, analyze scope/burden/privilege, produce objections framework + compliance plan + deadline calendar.
-7. Write `~/.claude/plugins/config/claude-for-legal/litigation-legal/inbound/[slug]/triage.md`. Copy or link subpoena to `~/.claude/plugins/config/claude-for-legal/litigation-legal/inbound/[slug]/incoming.[ext]`.
+7. Write `~/.claude/plugins/config/claude-for-legal/litigation-legal/inbound/[slug]/triage.md`. Copy or link subpoena to `~/.claude/plugins/config/claude-for-legal/litigation-legal/inbound/[slug]/incoming.[ext]`. The slug defaults to a short identifier derived from the issuing party and date; `--slug=custom-slug` overrides it.
 8. Hand off: `/legal-hold --issue` if hold not in place; `/matter-intake` if materiality warrants; `/matter-briefing [slug]` if party subpoena in existing matter.
+
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
 
 ---
 
@@ -21,11 +23,11 @@ argument-hint: "[path-to-subpoena] [--slug=custom-slug]"
 
 ## Purpose
 
-Subpoenas arrive with deadlines. The failure modes: missing the deadline, over-producing (privilege waiver, burden we should have objected to), under-producing (contempt exposure), or missing a motion-to-quash window. This skill classifies, analyzes, and produces a compliance plan with objections framework.
+Subpoenas arrive with deadlines. The failure modes: missing the deadline, over-producing (privilege waiver, burden that should have been objected to), under-producing (contempt exposure), or missing a motion-to-quash window. This skill classifies, analyzes, and produces a compliance plan with objections framework.
 
 ## Jurisdiction assumption
 
-The rule cited in Step 0 is the operative one for this subpoena in this forum. Subpoena practice varies materially: federal (FRCP 45) vs. state equivalents, state-to-state variants, local rules, court-specific standing orders, and the subpoena type (trial, deposition, document production) all change objection deadlines, place-of-compliance limits, privilege-log requirements, and cost-shifting. Every rule output here is a starting-point heuristic — confirm currency and the local variant before asserting in writing.
+The rule cited in Step 0 is the operative one for this subpoena in this forum. Subpoena practice varies materially: federal (FRCP 45) vs. state equivalents, state-to-state variants, local rules, court-specific standing orders, and the subpoena type (trial, deposition, document production) all change objection deadlines, place-of-compliance limits, privilege-log requirements, and cost-shifting. Every rule output here is a starting-point heuristic — confirm currency and the local variant before asserting in writing. (England & Wales: there is no subpoena in E&W civil procedure — see `references/uk.md` for the instruments that exist instead: witness summonses (CPR 34), third-party disclosure (CPR 31.17), Norwich Pharmacal orders, and pre-action disclosure (CPR 31.16).)
 
 ## Side context
 
@@ -35,7 +37,7 @@ This skill is inherently defensive — a subpoena has been served on the recipie
 
 - The subpoena document (user provides path or drops it in-session)
 - `~/.claude/plugins/config/claude-for-legal/litigation-legal/matters/_log.yaml` — for related matter lookup and legal hold status
-- `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` → landscape (regulators we deal with), house privilege conventions, escalation norms
+- `~/.claude/plugins/config/claude-for-legal/litigation-legal/CLAUDE.md` → landscape (regulators the company deals with), house privilege conventions, escalation norms
 
 ## Workflow
 
@@ -49,11 +51,11 @@ This skill is inherently defensive — a subpoena has been served on the recipie
 
 ### Step 1: Classify
 
-Subpoenas come in flavors with different rules; confirm the specifics against the rule you just researched:
+Subpoenas come in several types with different rules; confirm the specifics against the rule researched in Step 0 (England & Wales: classify against the instrument table in `references/uk.md` § 1 instead — the categories below are US-specific):
 
-- **Third-party document subpoena (civil)** — we're not a party to the litigation; someone wants our documents. Usual objection categories: relevance, burden, privilege, place-of-compliance / geographic reach.
+- **Third-party document subpoena (civil)** — the company is not a party to the litigation; the request seeks its documents. Usual objection categories: relevance, burden, privilege, place-of-compliance / geographic reach.
 - **Third-party deposition subpoena** — someone wants an employee to testify. Scope, relevance, burden; possible motion to quash; witness prep required.
-- **Party subpoena** — we ARE a party; this is discovery in a litigation we're tracking. Treat as discovery, not inbound — it should map to an existing matter.
+- **Party subpoena** — the company IS a party; this is discovery in a litigation already tracked. Treat as discovery, not inbound — it should map to an existing matter.
 - **Regulatory civil investigative demand (CID)** — FTC, SEC, DOJ, state AG. Different rules, different posture; often more deferential but also more consequential.
 - **Grand jury subpoena** — criminal. Escalate immediately to criminal counsel; different skill path (outside this skill's scope — flag for escalation).
 
@@ -61,7 +63,7 @@ Subpoenas come in flavors with different rules; confirm the specifics against th
 
 - **Issuing authority** — court (which), agency (which), counsel (if civil)
 - **Issuing party** — who requested (if civil)
-- **Case / matter caption** — the litigation we're being asked about
+- **Case / matter caption** — the underlying litigation
 - **Document categories sought** — numbered list
 - **Testimony topics** (if depo) — Rule 30(b)(6) designations
 - **Deadline for response/objection** — date served + computing the response window per applicable rule
@@ -72,13 +74,13 @@ Subpoenas come in flavors with different rules; confirm the specifics against th
 ### Step 3: Portfolio cross-check
 
 - **Party subpoena → related to existing matter:** verify the caption matches a matter in `_log.yaml`. If yes, route to that matter's workflow; this triage is informational.
-- **Third-party subpoena → caption we don't recognize:** capture the parties; log as standalone inbound.
+- **Third-party subpoena → unrecognized caption:** capture the parties; log as standalone inbound.
 - **Multiple subpoenas from same case:** flag coordinated issuance; a single response strategy may apply.
 
 ### Step 4: Analyze scope, burden, privilege
 
 **Scope / relevance**
-- Do the categories map to actual documents we plausibly have?
+- Do the categories map to actual documents the company plausibly has?
 - Is any category a fishing expedition (overbroad, untethered to claims/defenses of the underlying case)?
 - Place of compliance / geographic reach — apply the researched rule; limits differ by subpoena type (trial vs. document vs. deposition).
 
@@ -95,7 +97,7 @@ Subpoenas come in flavors with different rules; confirm the specifics against th
 **Other objection grounds**
 - Confidentiality — protective order needed?
 - Duplicative — do they already have this from another party?
-- Not possessed — we don't have what they're asking for (document with specificity)
+- Not possessed — the company doesn't have what's being asked for (document with specificity)
 - Improperly served — check the researched rule's service requirements
 
 ### Step 5: Objections framework
@@ -109,18 +111,18 @@ Each objection:
 
 ### Step 6: Compliance plan
 
-Even when objecting, we often produce some of what's requested. Plan:
+Even when objecting, some of what's requested is often produced. Plan:
 
-- **Scope of likely production** — after objections, what we'd produce
+- **Scope of likely production** — after objections, what would be produced
 - **Custodians to search** — names and systems
 - **Date range**
-- **Review protocol** — who reviews for privilege (us, outside counsel, contract reviewers)
+- **Review protocol** — who reviews for privilege (in-house, outside counsel, contract reviewers)
 - **Production format** — per the subpoena or per negotiated protocol (TIFF+load file, native, PDF)
 - **Privilege log requirements** — format, fields
 
 ### Step 7: Deadlines
 
-Use the deadlines identified in the Step 0 research. Note that objection deadlines often run from the EARLIER of the compliance date or a fixed number of days after service — do not default to a single number without checking the applicable rule and local variant.
+Use the deadlines identified in the Step 0 research. Note that objection deadlines often run from the EARLIER of the compliance date or a fixed number of days after service — do not default to a single number without checking the applicable rule and local variant. (England & Wales: this heuristic does not apply — see `references/uk.md` § 4; the question is whether the instrument is an application to respond to or an order to comply with / set aside.)
 
 - **Response deadline** — per researched rule; note if user needs more time (meet-and-confer to extend is standard)
 - **Objection deadline** — per researched rule (federal / state rule + any local variant)
@@ -272,7 +274,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **Draft the final objections letter.** Produces the framework; the letter is drafted by user + outside counsel (future: a dedicated objections-draft skill).
+- **Draft the final objections letter.** Produces the framework; the letter is drafted by user + outside counsel.
 - **Move to quash.** Surfaces the option; the motion is legal work that requires jurisdiction-specific analysis.
 - **Validate rules across jurisdictions.** The Step 0 research produces the operative rule for this subpoena; the skill doesn't independently confirm currency or local variants. Flag for counsel verification before acting.
 - **Handle grand jury subpoenas.** Escalates. This is outside the triage scope.

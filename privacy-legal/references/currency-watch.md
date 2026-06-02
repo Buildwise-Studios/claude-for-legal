@@ -4,12 +4,12 @@
 
 > **⚠️ Staleness check.** If the last-verified date above is more than 90 days old, treat this file as stale and verify each entry before relying on it. A stale watch list is worse than no watch list — it looks current while being wrong. When a skill reads this file, check the last-verified date first. If stale, say: "The currency watch was last verified [date] — [N] months ago. I'm using it as a checklist of areas to search, not as a source of current status." When you update any entry, also update the last-verified date at the top.
 
-Privacy law moves. Before relying on an effective date, threshold, or obligation, verify it. These are the areas most likely to have moved since model training:
+Privacy law changes frequently. Before relying on an effective date, threshold, or obligation, verify it. These are the areas most likely to have moved since model training:
 
 ## COPPA (16 CFR Part 312)
 
 - **2025 Amendments — compliance deadline April 22, 2026.** Major changes: biometric identifiers and government IDs are now "personal information"; separate verifiable parental consent required for third-party disclosure tied to targeted advertising; written information security program mandatory; indefinite retention prohibited.
-- A plugin that knows pre-2025 COPPA looks competent while being stale. Verify at [FTC COPPA page](https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa).
+- Model knowledge of pre-2025 COPPA is out of date. Verify at [FTC COPPA page](https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa).
 
 ## State privacy laws (comprehensive)
 

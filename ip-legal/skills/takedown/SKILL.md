@@ -48,14 +48,14 @@ Three modes. Pick one:
 
 - The outgoing notice and counter-notice do not carry the work-product header. Internal drafts, fair-use analyses, and triage memos do.
 - §512(c)(3) and §512(g)(3) are element-by-element statutes — every required element must be present or the notice is defective.
-- Counter-notices consent to federal court jurisdiction in the claimant's district (or a designated district for non-US subscribers). This is not a formality.
+- Counter-notices consent to federal court jurisdiction in the district where the subscriber's address is located (or, for non-US subscribers, any district in which the service provider may be found). This is not a formality.
 - Non-lawyer users get a one-page brief for the attorney conversation before the gate clears — particularly important for counter-notices, which are the step before litigation.
 
 ---
 
 ## Purpose
 
-The DMCA §512 notice-and-takedown system is fast, cheap, and consequential in equal measure. A takedown is a sworn statement under penalty of perjury that gets content pulled with no judicial review. A counter-notice is another sworn statement that consents to federal jurisdiction and puts the content back. Both decisions can become litigation. This skill handles all three moves with the guardrails each warrants.
+The DMCA §512 notice-and-takedown system is fast, cheap, and consequential. A takedown is a sworn statement under penalty of perjury that gets content pulled with no judicial review. A counter-notice is another sworn statement that consents to federal jurisdiction and puts the content back. Both decisions can become litigation. This skill handles all three moves with the guardrails each warrants.
 
 Three modes:
 
@@ -172,12 +172,14 @@ Most service providers publish a preferred form or a web intake (YouTube Content
 │  consequences.                                              │
 │                                                             │
 │  • 17 U.S.C. §512(f) creates LIABILITY for knowing          │
-│    material misrepresentations. People have been sued,      │
-│    and have lost, for bad-faith takedowns — *Lenz v.        │
-│    Universal*, 801 F.3d 1126 (9th Cir. 2015); *Online       │
-│    Policy Group v. Diebold*, 337 F. Supp. 2d 1195 (N.D.     │
-│    Cal. 2004); *Stephens v. Clash*, 796 F.3d 281 (3d        │
-│    Cir. 2015).                                              │
+│    material misrepresentations. Senders have been sued      │
+│    and lost for bad-faith takedowns — *Online Policy        │
+│    Group v. Diebold*, 337 F. Supp. 2d 1195 (N.D. Cal.       │
+│    2004) — and have had damages awarded against them —      │
+│    *Automattic Inc. v. Steiner*, 82 F. Supp. 3d 1011        │
+│    (N.D. Cal. 2014). And *Lenz v. Universal*, 801 F.3d      │
+│    1126 (9th Cir. 2015) requires the sender to consider     │
+│    fair use BEFORE sending.                                 │
 │                                                             │
 │  • The accuracy and authority statement is sworn under      │
 │    penalty of perjury. That is a real statement, not a      │
@@ -247,7 +249,7 @@ Extract:
 ### Step 2: Assess
 
 - **Do we have a license?** Negotiated, implied, Creative Commons, prior settlement, assignment — anything that authorizes the use.
-- **Is it fair use?** Walk the *Lenz* four factors. Be honest; this is for us, not the response.
+- **Is it fair use?** Walk the *Lenz* four factors. Assess honestly — this analysis is internal, not part of the response.
 - **Is the notice defective?** Missing any of the §512(c)(3)(A) elements, lacking the perjury statement, signed by someone without apparent authority? Defective notices are not properly compliant; the host may still act on them but the sender's §512(f) exposure rises and our leverage rises.
 - **Did the host comply properly with §512(g)?** Were we given notice and an opportunity to counter? If the host acted without giving us the chance, that is a separate issue with the host (not the sender).
 - **Is the sender a troll?** Repeat pattern of overbroad takedowns on this platform?
@@ -263,7 +265,7 @@ Present 4 options with tradeoffs:
 
 **B — Send a counter-notice** (§512(g)(3))
 - When: we have a good-faith belief the material was misidentified or removed by mistake — often applies where the use is licensed, fair use, or the sender doesn't own the work
-- Tradeoff: sworn under penalty of perjury, consents to federal court jurisdiction in the sender's district (or our own if outside the US and we designate), puts the decision in the sender's hands for 10–14 business days — if they sue, content stays down; if they don't, content is restored
+- Tradeoff: sworn under penalty of perjury, consents to federal court jurisdiction in the district where our address is located (or, if we are outside the US, any district in which the service provider may be found), puts the decision in the sender's hands for 10–14 business days — if they sue, content stays down; if they don't, content is restored
 - Next step: `/ip-legal:takedown --counter`
 
 **C — Engage the sender directly**
@@ -346,7 +348,7 @@ Counter-notices put content back up unless the original sender sues within 10–
 
 - The content was taken down in response to a §512 notice (not a terms-of-service action by the host).
 - You have a good-faith belief the material was removed by mistake or misidentification — the statutory test.
-- You are prepared to consent to federal court jurisdiction in the original sender's district (or designate if you are outside the US).
+- You are prepared to consent to federal court jurisdiction in the district where your address is located (or, if you are outside the US, any district in which the service provider may be found).
 - The decision has been made deliberately — not in reaction, not without attorney input.
 
 ### Step 2: Draft per §512(g)(3)
@@ -381,13 +383,17 @@ Structure:
 │    business days after your counter-notice, the content     │
 │    stays down pending the suit. 17 U.S.C. §512(g)(2)(C).    │
 │                                                             │
-│  • If they do not sue within the window, the host must      │
-│    restore the content within 14 business days of your      │
-│    counter-notice.                                          │
+│  • If they do not sue within the window, §512(g)            │
+│    conditions the host's safe harbor on restoring the       │
+│    content in 10–14 business days after receiving your      │
+│    counter-notice — but the host may still refuse under     │
+│    its own terms of service. Restoration is not             │
+│    guaranteed.                                              │
 │                                                             │
 │  • You are consenting to be sued in federal court in the    │
-│    claimant's judicial district (or, if you are outside     │
-│    the US, designating a district). This is a jurisdiction  │
+│    judicial district where your address is located (or,     │
+│    if you are outside the US, any district in which the     │
+│    service provider may be found). This is a jurisdiction   │
 │    admission you make by signing.                           │
 │                                                             │
 │  • The perjury statement is real. §512(f) liability runs    │
@@ -402,8 +408,8 @@ Structure:
 │       licensed, fair use, not actually infringing, or the   │
 │       sender doesn't own the work.                          │
 │    3. You are prepared to be sued in federal court in the   │
-│       claimant's district. Budget, counsel, and risk        │
-│       tolerance are all set.                                │
+│       district where your address is located. Budget,       │
+│       counsel, and risk tolerance are all set.              │
 │    4. An attorney has reviewed this before it is sent.      │
 │                                                             │
 │  Approver per your practice profile: [approver from         │
@@ -428,9 +434,9 @@ Do not write the final output without explicit engagement.
 
 **Reviewer-facing closing note** (in-chat only):
 
-> This is a draft counter-notice for attorney review, not a counter ready to send. Sending it is a sworn statement and consents to federal court jurisdiction in the claimant's district. A licensed attorney reviews before submission. Do not send this unreviewed.
+> This is a draft counter-notice for attorney review, not a counter ready to send. Sending it is a sworn statement and consents to federal court jurisdiction in the district where the subscriber's address is located. A licensed attorney reviews before submission. Do not send this unreviewed.
 
-**Post-submission record.** After submission, write `<matter-folder>/takedown/<slug>/counter-submission.md`: service provider, date submitted, confirmation ID, 10–14 business-day watch window end date calendared, watch for suit filing in the claimant's district, plan if content is restored, plan if suit is filed.
+**Post-submission record.** After submission, write `<matter-folder>/takedown/<slug>/counter-submission.md`: service provider, date submitted, confirmation ID, 10–14 business-day watch window end date calendared, watch for suit filing, plan if content is restored, plan if suit is filed.
 
 ## Decision posture
 

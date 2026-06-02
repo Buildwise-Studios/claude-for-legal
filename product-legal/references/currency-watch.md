@@ -4,7 +4,7 @@
 
 > **⚠️ Staleness check.** If the last-verified date above is more than 90 days old, treat this file as stale and verify each entry before relying on it. A stale watch list is worse than no watch list — it looks current while being wrong. When a skill reads this file, check the last-verified date first. If stale, say: "The currency watch was last verified [date] — [N] months ago. I'm using it as a checklist of areas to search, not as a source of current status." When you update any entry, also update the last-verified date at the top.
 
-Product/consumer protection law moves. These are the areas most likely to have changed since model training:
+Product and consumer protection law changes frequently. These are the areas most likely to have changed since model training:
 
 ## Children's online safety
 

@@ -54,7 +54,7 @@ configure as "manual" or set up web-page change detection.
 | Colorado AG | `https://coag.gov/press-releases/` | HTML | Press releases, CPA rulemaking | None | ⚠️ No public RSS located. Colorado Privacy Act rulemaking also published via SOS. |
 | Connecticut AG | `https://portal.ct.gov/ag/press-releases/press-releases` | HTML | Press releases | None | ⚠️ No public RSS located. |
 | Virginia AG | `https://www.oag.state.va.us/media-center/news-releases` | HTML | Press releases, VCDPA oversight | None | ⚠️ No public RSS located. |
-| Massachusetts AG | `https://www.mass.gov/orgs/office-of-attorney-general-maura-healey/news` | HTML | Press releases | None | ⚠️ No public RSS located. Mass.gov has per-org newsroom pages. |
+| Massachusetts AG | `https://www.mass.gov/orgs/office-of-attorney-general-andrea-joy-campbell/news` (verify — mass.gov org slugs are officeholder-named and change with administrations) | HTML | Press releases | None | ⚠️ No public RSS located. Mass.gov has per-org newsroom pages. |
 | NYDFS | `https://www.dfs.ny.gov/reports_and_publications/press_releases` | HTML | Enforcement, regulations, cybersecurity (Part 500) | None | ⚠️ No public RSS located. |
 
 ---
@@ -100,7 +100,7 @@ Tag items pulled from these feeds as `[secondary source]` in the digest.
 | Covington & Burling | `https://www.cov.com/` (verify per blog) | RSS by blog | InsidePrivacy, Global Policy Watch, Inside Global Tech, Inside Tech Media | None | Each topic blog is a WordPress-style site with a standard `/feed` endpoint. |
 | WilmerHale | `https://www.wilmerhale.com/` | Email / HTML | Client alerts | None | ⚠️ No consolidated public RSS located; email subscription is primary. |
 | Wilson Sonsini | `https://www.wsgr.com/` | Email / HTML | Client alerts | None | ⚠️ No consolidated public RSS located. |
-| Lexology | `https://www.lexology.com/account/rss` | RSS (customizable by topic/jurisdiction) | Aggregated firm alerts | Account (free) | Powerful: build topic+jurisdiction feeds. Owned by LBR. |
+| Lexology | `https://www.lexology.com/account/rss` | RSS (customizable by topic/jurisdiction) | Aggregated firm alerts | Account (free) | Supports custom topic+jurisdiction feeds. Owned by LBR. |
 | JD Supra | `https://www.jdsupra.com/legal-news/rss-law-feeds.aspx` | RSS (multiple by topic) | Aggregated firm alerts | None | Broader and noisier than Lexology. |
 | Artificial Lawyer | `https://www.artificiallawyer.com/feed/` | RSS | Legal tech / AI regulation news | None | |
 | LawSites (Bob Ambrogi) | `https://www.lawsitesblog.com/feed` | RSS | Legal tech, also covers regulation of legal AI | None | |
@@ -111,7 +111,7 @@ Tag items pulled from these feeds as `[secondary source]` in the digest.
 
 Some important sources don't publish feeds, or their RSS has been retired.
 Monitoring them requires either:
-- Web-page change detection (not currently built in)
+- Web-page change detection (not built in)
 - Email newsletter forwarding (requires Gmail/Outlook MCP integration)
 - Manual checking via the reg-feed-watcher "manual entry" path
 

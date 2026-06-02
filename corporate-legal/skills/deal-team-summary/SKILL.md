@@ -17,7 +17,7 @@ description: >
 
 ## Purpose
 
-The deal lead doesn't read 200 findings. They read: what's material, what changed since last brief, what needs a decision. This skill compresses the diligence output to the right level for the reader.
+A deal lead doesn't read 200 findings; they read what's material, what changed since the last brief, and what needs a decision. This skill compresses the diligence output to the right level for the reader.
 
 ## Load context
 

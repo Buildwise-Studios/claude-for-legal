@@ -34,12 +34,12 @@ files inside a first-party plugin.
 ## Built-in plugins (do not touch)
 
 The 12 core plugins that ship with claude-for-legal are off-limits from this
-command. The canonical list lives in the hub's CLAUDE.md under "Built-in
-plugins." Examples include `commercial-legal`, `corporate-legal`,
-`employment-legal`, `privacy-legal`, `product-legal`, `regulatory-legal`,
-`ai-governance-legal`, `litigation-legal`, `litigation-legal`,
-`law-student`, `legal-clinic`, and the hub itself (`legal-builder-hub`). If
-the caller names a skill that resolves into any of these, refuse.
+command. The canonical list lives in the hub's CLAUDE.md under "## Built-in
+plugins": `ai-governance-legal`, `commercial-legal`, `corporate-legal`,
+`employment-legal`, `ip-legal`, `law-student`, `legal-clinic`,
+`litigation-legal`, `privacy-legal`, `product-legal`, `regulatory-legal`,
+and the hub itself (`legal-builder-hub`). If the caller names a skill that
+resolves into any of these, refuse.
 
 ## Workflow — uninstall
 
@@ -115,7 +115,7 @@ to re-enable: reverse the renames, log `action: enable`.
 
 ## Safety rules (apply to every workflow)
 
-1. Refuse on first-party plugin paths. Always.
+1. Refuse on first-party plugin paths — no exceptions.
 2. Refuse on any skill not in the install log.
 3. No file operation without explicit typed `yes`.
 4. Every action appended to the install log.

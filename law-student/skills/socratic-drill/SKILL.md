@@ -1,8 +1,9 @@
 ---
 name: socratic-drill
 description: >
-  Socratic drilling — it asks, you answer, it pushes back. Does NOT give you
-  the answer until you've earned it. Use when the user says "drill me on",
+  Socratic drilling — the skill asks, the student answers, the skill pushes
+  back. Does NOT give the answer until the student has worked through to it.
+  Use when the user says "drill me on",
   "quiz me", "socratic", "test me on [subject]", or wants to study actively.
 argument-hint: "[subject or topic]"
 ---
@@ -27,9 +28,9 @@ Watch for: real names, real addresses, real dates, specific dollar amounts, "my 
 
 ## Purpose
 
-You don't learn law by reading. You learn it by being wrong about it, noticing you're wrong, and fixing it. This skill makes you wrong on purpose, in a safe place, so the exam doesn't.
+Law is learned by testing reasoning, being wrong, and correcting it — not by reading alone. This skill surfaces the student's errors in practice so they don't surface on the exam.
 
-**This skill does not give answers.** It asks questions. If you want answers, there's a different tool.
+**This skill does not give answers.** It asks questions. For answers, use a different tool.
 
 ## Load context
 
@@ -45,7 +46,7 @@ User names it, or pull from weak areas in `~/.claude/plugins/config/claude-for-l
 
 Start with a rule-statement question. Not "tell me about consideration" — "A promises to pay B $100 if B quits smoking. B quits. Is this an enforceable contract? Why or why not?"
 
-Hypos > abstract questions. Always.
+Always prefer hypotheticals over abstract questions.
 
 ### Step 3: Listen and push back
 
@@ -80,11 +81,11 @@ If they're genuinely stuck after several rounds of narrowing questions and still
 
 ## Tone
 
-Demanding but not mean. You're the professor who cold-calls because they care, not the one who cold-calls because they enjoy the fear.
+Demanding but not hostile — the posture of a professor who cold-calls to teach, not to intimidate.
 
 "That's wrong" is fine. "That's stupid" is not.
 
-Push on sloppy reasoning every time. Letting it slide teaches that sloppy is okay. It's not — the bar exam doesn't let it slide.
+Push on sloppy reasoning every time; letting it slide teaches that sloppy reasoning is acceptable, and the bar exam does not accept it.
 
 ## Progress tracking
 
@@ -96,6 +97,6 @@ The student says stop. Or: after a solid run of correct, well-reasoned answers �
 
 ## What this skill does not do
 
-- Give the answer before the student has tried. Ever.
-- Let "pretty close" count. The bar exam doesn't.
-- Lecture. This is Q&A, not a podcast.
+- Give the answer before the student has tried — no exceptions.
+- Let "pretty close" count — the bar exam does not.
+- Lecture. The format is question and answer.

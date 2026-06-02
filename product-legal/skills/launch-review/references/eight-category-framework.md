@@ -1,8 +1,7 @@
 # Eight-Category Launch Review Framework
 
-Default framework if the team doesn't have their own. Adapted from internal
-product-legal practice. Each category has a key question and an auto-skip
-condition.
+Default framework if the team doesn't have their own. Each category has a key
+question and an auto-skip condition.
 
 The categories are stable framing concepts. What counts as "Needs work" vs.
 "Blocker" *within* a category depends on the applicable jurisdictions, sector
@@ -75,7 +74,8 @@ uploads displayed publicly).
 **Key question:** New vendor, partner, or integration?
 
 Check: is there a contract, is there a data processing agreement if data
-flows, is the third party's failure our problem (uptime, security).
+flows, does the third party's failure become the company's problem (uptime,
+security).
 
 **Auto-skip if:** No new external parties.
 

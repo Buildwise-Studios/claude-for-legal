@@ -21,7 +21,8 @@ agents, hooks), plugin metadata, or cookbook config — not application code.
 external_plugins/<vendor>/        # vendor-maintained plugins (CoCounsel)
 managed-agent-cookbooks/<name>/   # CMA agent.yaml + subagents/ + steering-examples.json
 scripts/                          # validate.py, lint-tool-scope.py, orchestrate.py,
-                                  # deploy-managed-agent.sh, test-cookbooks.sh
+                                  # deploy-managed-agent.sh, test-cookbooks.sh,
+                                  # check-guardrail-sync.py
 references/                       # shared templates (company-profile, dashboard)
 ```
 
@@ -41,6 +42,10 @@ python3 scripts/lint-tool-scope.py
 
 # 3. JSON/YAML sanity
 python3 -c "import json,glob; [json.load(open(f)) for f in glob.glob('**/*.json', recursive=True)]"
+python3 -c "import yaml,glob; [yaml.safe_load(open(f)) for f in glob.glob('**/*.yaml', recursive=True)]"
+
+# 4. Shared-guardrail sync across the 12 plugin CLAUDE.md templates
+python3 scripts/check-guardrail-sync.py
 ```
 
 ### Marketplace invariants (I1–I11)
@@ -64,7 +69,7 @@ here too — the ones most likely to trip a contributor:
 
 Every `agents/*.md` needs `name` and `description`. Every
 `skills/<name>/SKILL.md` needs `description`. Every `commands/*.md` needs
-`description`. Multi-line descriptions use `>` block scalars and that's fine —
+`description`. Multi-line descriptions may use `>` block scalars —
 `claude plugin validate` parses them correctly.
 
 ## Conventions
@@ -105,8 +110,8 @@ fine since the vendor lands changes via PR rather than mirroring a fork.
 - 2-space indent in all JSON and `.mcp.json` files.
 - Final newline at end of every text file.
 - No trailing whitespace.
-- Markdown tables: pipe-aligned columns are nice but not required; just keep
-  the column count consistent.
+- Markdown tables: pipe-aligned columns are optional; keep the column count
+  consistent.
 
 ## Cookbooks
 
@@ -125,6 +130,9 @@ rules that `scripts/lint-tool-scope.py` enforces:
   intentional; ask before unifying.
 - `hooks/hooks.json` is missing in two plugins. Hooks are optional; the missing
   files are not a bug.
-- `references/` lives only at repo root and is not shipped inside any plugin
-  directory. Several plugin `CLAUDE.md` templates reference it as if it were —
-  that's a known gap, not a thing to silently move.
+- The shared templates (`references/company-profile-template.md`,
+  `references/dashboard-template.md`) live only at repo root, but five plugins
+  (`ai-governance-legal`, `privacy-legal`, `product-legal`, `legal-clinic`,
+  `legal-builder-hub`) ship their own `references/` content that their skills
+  depend on — leave those in place. Plugin `CLAUDE.md` templates that point at
+  the root-only shared templates are a known gap, not a thing to silently move.

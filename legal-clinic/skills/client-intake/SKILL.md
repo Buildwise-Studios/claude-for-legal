@@ -27,7 +27,7 @@ argument-hint: "[optional: practice area hint]"
 
 ## Purpose
 
-Intake is one of the biggest bottlenecks in clinics. A student might spend 45 minutes interviewing, another hour writing it up, more time spotting the issues. Meanwhile the waitlist grows.
+Intake is one of the biggest bottlenecks in clinics: a student might spend 45 minutes interviewing, another hour writing it up, and more time spotting the issues, while the waitlist grows.
 
 This skill structures the conversation, produces the write-up, spots issues across practice areas, and flags conflicts — so the student's time goes to analysis, not transcription.
 
@@ -51,7 +51,7 @@ Which practice area does this intake start in? The client may not know — they 
 
 > "Tell me what's going on — what brought you to the clinic today?"
 
-From the answer, route to the appropriate intake template. If the clinic handles multiple areas and the problem spans them (housing client mentions immigration status, family client mentions domestic violence), note all relevant areas — cross-area issue spotting is a feature, not a bug.
+From the answer, route to the appropriate intake template. If the clinic handles multiple areas and the problem spans them (housing client mentions immigration status, family client mentions domestic violence), note all relevant areas — cross-area issue spotting is an intended part of this workflow.
 
 ### Step 2: Practice-area-specific intake
 
@@ -163,11 +163,11 @@ Rules:
 
 ## Bottom line
 
-[Take the case / Decline because X / Need more info on Y — next step is Z]
+[Triage classification + driving deadline + next step. Do NOT state take/decline — case acceptance is the student's analysis and the professor's decision.]
 
 ## Client's situation (in their words)
 
-[The narrative the client gave, before legal categorization. This is the human story.]
+[The narrative the client gave, before legal categorization.]
 
 ## Legal issues identified
 
@@ -233,7 +233,7 @@ so you can spend your time on the analysis instead of the write-up.
 
 ## Practice-area intake template references
 
-Store practice-area-specific question sets at `references/intake-templates/[area].md`. Cold-start populates these from the professor's intake form(s); if none provided, use the defaults above.
+Store practice-area-specific question sets at `~/.claude/plugins/config/claude-for-legal/legal-clinic/intake-templates/[area].md` — the version-independent config path, so the professor's templates survive plugin updates. Cold-start populates these from the professor's intake form(s); if none provided, use the defaults above.
 
 ## What this skill does NOT do
 

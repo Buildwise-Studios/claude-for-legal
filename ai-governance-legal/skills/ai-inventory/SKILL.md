@@ -138,7 +138,9 @@ Summaries, not definitive text:
 - Subliminal or deceptive techniques materially distorting behavior
 - Exploiting vulnerabilities (age, disability, socio-economic status) to
   materially distort behavior
-- Social scoring by public authorities leading to detrimental treatment
+- Social scoring (by public or private actors) leading to detrimental or
+  unfavorable treatment in unrelated contexts, or disproportionate to the
+  behavior
 - Real-time remote biometric ID in publicly accessible spaces for law
   enforcement (narrow exceptions)
 - Biometric categorization inferring race, political opinions, union
@@ -147,7 +149,8 @@ Summaries, not definitive text:
 - Emotion recognition in the workplace or education (medical and safety
   exceptions)
 - Facial image database scraping from the internet or CCTV
-- Predictive policing based solely on personality traits
+- Predictive policing based solely on profiling or on assessment of
+  personality traits and characteristics
 
 If matched → tier is `prohibited`. Flag the use case as stop and route to
 the governance team's prohibited-practice workflow.
@@ -166,8 +169,8 @@ Summaries:
 5. Essential private and public services (public benefits, credit scoring
    for individuals, risk assessment and pricing for life/health insurance,
    emergency dispatch)
-6. Law enforcement (risk assessment, polygraphs, deepfake detection,
-   reliability of evidence, profiling)
+6. Law enforcement (victim risk assessment, polygraphs, reliability of
+   evidence, offending / re-offending risk assessment, profiling)
 7. Migration, asylum, border control (risk assessment, travel document
    verification, examination of applications)
 8. Administration of justice and democratic processes (research and
@@ -235,7 +238,8 @@ if needed.
 
 This is deliberate:
 - Article mapping is complex and the AI Act is phasing in through 2027.
-- Confident-and-wrong on a compliance obligation ends up in a board memo.
+- A compliance obligation stated confidently but wrongly ends up in a
+  board memo.
 - The inventory is a registry for the lawyer. The lawyer owns the
   obligation analysis.
 
@@ -243,8 +247,8 @@ This is deliberate:
 
 - **Never classify silently.** The classification walk-through must be
   visible; do not auto-classify from a system description.
-- **`[verify]` tags stay.** They are not hedging — they are the point.
-  Do not strip them in outputs.
+- **`[verify]` tags stay.** They are not hedging — they mark where the
+  lawyer's verification is required. Do not strip them in outputs.
 - **Flag substantial modification.** Whenever a system is modified beyond
   configuration, prompt the user to re-run `/ai-inventory classify` —
   modification can change role.

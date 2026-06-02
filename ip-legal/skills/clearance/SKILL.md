@@ -6,7 +6,7 @@ description: >
   asked whether a mark is available or to run a knockout search, or when
   assessing likelihood-of-confusion factors before a full professional search.
   This skill never concludes a mark is clear.
-argument-hint: "[describe the proposed mark, goods/services, and jurisdictions — or just the mark and I'll ask]"
+argument-hint: "[describe the proposed mark, goods/services, and jurisdictions — or just the mark and the skill will ask]"
 ---
 
 # /clearance
@@ -56,7 +56,7 @@ decides.
 **Say this at the top of every output. Do not drop it. Do not soften it.**
 
 > **This is a first pass, not a clearance opinion.** A trademark clearance opinion
-> requires a full professional search (TESS, state registries, common law sources,
+> requires a full professional search (the USPTO trademark search system, state registries, common law sources,
 > international registries, domain and social, trade dress and design marks where
 > relevant) and attorney judgment on likelihood of confusion, which depends on
 > factors a structured triage cannot fully assess. A "no obvious conflicts" result
@@ -162,7 +162,7 @@ Read `## Available integrations` from `~/.claude/plugins/config/claude-for-legal
   across the relevant classes and jurisdictions. Attribute every result to its
   source. Note the date of the search and the scope (which registries, which
   classes, exact-match vs. fuzzy, design search or not).
-- **If a legal research connector is available** (CourtListener for litigation for case law and TTAB decisions): sweep for reported disputes involving
+- **If a legal research connector is available** (CourtListener for case law and TTAB decisions): sweep for reported disputes involving
   the mark or a close variant. Same attribution rule.
 - **If no search connector is available:** say so, explicitly, in the output.
   Do not infer results from model knowledge and present them as search findings.
@@ -171,8 +171,9 @@ Read `## Available integrations` from `~/.claude/plugins/config/claude-for-legal
 
 Write out, in the output, this exact statement:
 
-> **No database search was run.** This triage did not hit TESS, Solve
-> Intelligence, Descrybe, CourtListener, state registries, Madrid/WIPO, or any
+> **No database search was run.** This triage did not hit the USPTO trademark
+> search system (successor to TESS), Solve Intelligence, Descrybe,
+> CourtListener, state registries, Madrid/WIPO, or any
 > common law / unregistered-mark sources. A knockout or full search across those
 > databases is required before any conclusion about availability. The triage
 > below is limited to intrinsic-bar analysis and structured confusion factors
@@ -186,7 +187,7 @@ just labeled honestly.
 Capture:
 
 - **Mark** (exact characters, any stylization)
-- **Source** (TESS registration no., Madrid designation, state registry, case
+- **Source** (USPTO registration no., Madrid designation, state registry, case
   citation, domain, social handle — whichever)
 - **Classes / goods-services description** from the register
 - **Owner**
@@ -236,7 +237,7 @@ with a confirmation prompt:
 > the category before I continue.
 
 > **When non-English-speaking jurisdictions are in scope,** the English-only phonetic sweep misses the most common source of cross-border conflicts. Add:
-> - **Translation equivalents.** The mark translated into the relevant languages. The EU's foreign-equivalents doctrine treats a translation as the same mark for confusion purposes.
+> - **Translation equivalents.** The mark translated into the relevant languages. EU practice assesses translations under conceptual similarity within the global-appreciation framework; the US doctrine of foreign equivalents may treat a translation as equivalent where purchasers would stop and translate.
 > - **Transliteration.** The mark written in the relevant script (Cyrillic, Chinese/Japanese/Korean, Arabic, Hangul, Thai). Phonetic equivalence across scripts is a recognized conflict basis.
 > - **Script variations.** Marks registered in a non-Latin script that sound like your mark when romanized.
 >
@@ -256,7 +257,7 @@ do not silently skip the sweep.
 > **Confusion framework is jurisdiction-specific.** The US and EU assess likelihood of confusion differently. Don't apply the wrong one.
 >
 > - **US (federal circuits):** Multi-factor tests (*du Pont*, *Polaroid*, *Sleekcraft*) — strength of the mark, similarity (sight/sound/meaning), proximity of goods, channels, buyer sophistication, actual confusion, intent.
-> - **EU (Art. 8(1)(b) EUTMR):** Global appreciation — all relevant factors assessed holistically through the eyes of the average consumer. Key differences: greater weight on phonetic similarity; translation equivalents as standard (the mark translated into EU languages); "likelihood of association" beyond source confusion; the distinctiveness of the earlier mark carries more weight.
+> - **EU (Art. 8(1)(b) EUTMR):** Global appreciation — all relevant factors assessed holistically through the eyes of the average consumer. Key differences: greater weight on phonetic similarity; translation equivalents assessed as conceptual similarity (the mark translated into EU languages); "likelihood of association" defines the scope of confusion, not an independent ground — association without likely confusion is insufficient (*Sabel v. Puma*, C-251/95); the distinctiveness of the earlier mark carries more weight.
 > - **UK (TMA 1994 §5(2)):** Follows the EU global appreciation approach post-Brexit but diverging case law. Check for UK-specific decisions.
 > - **Other jurisdictions:** If the intake includes a jurisdiction without a framework above, say: "I don't have [jurisdiction]'s confusion framework. Applying the US test would give you a wrong answer that looks right. Options: (a) I search for the applicable standard, (b) you route to a [jurisdiction] trademark specialist, (c) I note this jurisdiction is out of scope." Never silently apply US doctrine.
 
@@ -270,8 +271,8 @@ test that applies:
 - **Ninth Circuit:** *AMF Inc. v. Sleekcraft Boats*, 599 F.2d 341 (9th Cir. 1979)
   (8 factors).
 - **Other circuits:** walk through the circuit's named multi-factor test (e.g.,
-  *Frisch's Restaurants* in the Sixth Circuit, *Scotch Whisky Association* in the
-  Seventh, *Lapp* in the Third).
+  *Frisch's Restaurants* in the Sixth Circuit, *CAE* / *Helene Curtis* in the
+  Seventh `[model knowledge — verify]`, *Lapp* in the Third).
 
 Pick based on where the user plans to enforce (practice profile), the TTAB if
 the immediate forum is registration, or the primary commercial forum otherwise.
@@ -385,9 +386,10 @@ to the full professional search — not silently skipped.*
 | [exact] | [registration no. / citation / URL] | [class list] | [owner from record] | [reg/pending/abandoned/cancelled] | [date or "not available"] | [why it matters — exact match / adjacent family] |
 
 *If no search was run:* **No database search was run.** This triage did not hit
-TESS, Solve Intelligence, Descrybe, CourtListener, state registries,
-Madrid/WIPO, or any common law / unregistered-mark sources. A knockout or full
-search across those databases is required before any conclusion about availability.
+the USPTO trademark search system (successor to TESS), Solve Intelligence,
+Descrybe, CourtListener, state registries, Madrid/WIPO, or any common law /
+unregistered-mark sources. A knockout or full search across those databases is
+required before any conclusion about availability.
 
 ## Confusion factors — flags for attorney review
 
@@ -473,9 +475,9 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **Conclude a mark is clear.** Ever. The loudest guardrail in the plugin.
-- **Substitute for TESS search, state-registry search, common-law search,
-  international search, watch-service check, or design-mark search.**
+- **Conclude a mark is clear** — no exceptions. This is the loudest guardrail in the plugin.
+- **Substitute for USPTO trademark search, state-registry search, common-law
+  search, international search, watch-service check, or design-mark search.**
 - **File a trademark application.** Filing is an attorney task; this skill
   informs the decision to file.
 - **Evaluate trade dress, trademark dilution, or famous-mark claims** beyond a

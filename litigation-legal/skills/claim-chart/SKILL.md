@@ -12,6 +12,9 @@ argument-hint: '[--patent | --civil] [--infringement | --invalidity | --review] 
 4. Mode selection:
    - `--patent` → patent claim chart. Require patent number and at least one asserted claim. Sub-modes: `--infringement`, `--invalidity`, `--review`.
    - `--civil` → civil element chart. Require the cause of action (or defense) and the side.
+   - `--claim <n>` → chart only asserted claim *n* (patent mode); repeat the flag for multiple claims.
+   - `--count <name>` → chart only the named count or defense from the complaint (civil mode).
+   - `--target <slug>` → the mapping target: an identifier for the accused product or prior-art reference (NOT a matter slug — unlike `<slug>` elsewhere in this plugin).
    - No flag → ask the user which.
 5. For civil mode: consult `references/element-templates.md` in the skill directory for the baseline element list. Confirm the controlling pattern instruction or statute with the user before mapping.
 6. For patent mode: parse asserted claims into elements, flag disputed terms for construction, apply any Markman order.
@@ -20,6 +23,8 @@ argument-hint: '[--patent | --civil] [--infringement | --invalidity | --review] 
 9. Write markdown, CSV (values + `_sources` companion), and Excel or Sheets per user preference. Work-product header on every output.
 10. Write to the matter's `claim-charts/` folder if a matter is active; otherwise the practice-level `claim-charts/` folder. Append a one-line entry to `history.md` if a matter is active.
 11. Return a summary readout: claim(s), target(s), jurisdiction, phase, element counts by state, the gap list, file paths, and the reminder that every cell is a lead.
+
+**Jurisdiction routing.** Read the practice profile's `## Jurisdiction` block (primary jurisdiction and procedural frame, plus the matter's governing law/forum if a matter is active). If the block is missing from the profile, ask for the jurisdiction and offer to record it before proceeding. If the procedural frame is **England & Wales (CPR)**, load `references/uk.md` from this skill's directory and work in that frame — its rules replace the US-specific steps below where they conflict. If the jurisdiction is neither US nor England & Wales: say "My doctrine for this skill is US-built (with an England & Wales reference available). You're in [jurisdiction] — I can proceed using the US structure with every conclusion tagged `[US framework — verify against [jurisdiction] law]`, or stop here and you take this to a [jurisdiction] practitioner. Which do you want?" Never silently apply US doctrine to non-US facts.
 
 ---
 
@@ -63,14 +68,14 @@ If `CLAUDE.md` has `[PLACEHOLDER]` markers, surface this bounce:
 > I notice you haven't configured your practice profile yet — that's how I tailor risk calibration, landscape, and house style to your practice.
 >
 > **Two choices:**
-> - Run `/litigation-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll run this tailored to YOUR practice.
+> - Run `/litigation-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll run this tailored to your practice.
 > - Say **"provisional"** and I'll run this against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," build the claim chart normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no practice-level playbook (work from the matter's pleadings and the elements of the claims as pleaded). Tag the reviewer note and every row of the chart with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/litigation-legal:cold-start-interview` to get output calibrated to YOUR practice — your risk calibration, your landscape, your house style. 2 minutes."
+> "That was a generic run against default assumptions. Run `/litigation-legal:cold-start-interview` to get output calibrated to your practice — your risk calibration, your landscape, your house style. It takes about 2 minutes."
 
 **Conflicts gate — unbypassable.** Before building a claim chart, check `~/.claude/plugins/config/claude-for-legal/litigation-legal/matters/_log.yaml` for the matter slug. If the matter is not in `_log.yaml`, refuse and route:
 
@@ -225,9 +230,9 @@ For §103: primary reference + secondary reference(s) + documented motivation un
 
 Also flag:
 - **§101** — *Alice Corp. Pty. Ltd. v. CLS Bank Int'l*, 573 U.S. 208 (2014); *Mayo Collaborative Servs. v. Prometheus Labs., Inc.*, 566 U.S. 66 (2012)
-- **§112 ¶ 1** — written description, enablement (*Amgen Inc. v. Sanofi*, 598 U.S. 594 (2023))
-- **§112 ¶ 2** — definiteness (*Nautilus*, supra)
-- **§112 ¶ 6** — means-plus-function structure
+- **§112(a)** — written description, enablement (*Amgen Inc. v. Sanofi*, 598 U.S. 594 (2023))
+- **§112(b)** — definiteness (*Nautilus*, supra)
+- **§112(f)** — means-plus-function structure (pre-AIA: ¶¶ 1, 2, 6 — use the numbering matching the patent's effective filing date)
 - **Unenforceability** — inequitable conduct, prosecution laches, assignor/licensee estoppel (attorney-only flags)
 
 Invalidity must be shown by clear and convincing evidence — *Microsoft Corp. v. i4i Ltd. P'ship*, 564 U.S. 91 (2011). Prima facie in a chart is not proof at trial.
@@ -248,7 +253,7 @@ For each row: is the mapping supported? Is the pin cite accurate? Is the element
 
 # MODE 2 — Civil element chart
 
-Map the elements of a cause of action (or affirmative defense) against the evidence. The killer outputs are (a) a chart that says what evidence goes with what element and (b) a gap list that tells the attorney what's missing.
+Map the elements of a cause of action (or affirmative defense) against the evidence. The two priority outputs are (a) a chart that says what evidence goes with what element and (b) a gap list that tells the attorney what's missing.
 
 ## Workflow
 
@@ -263,22 +268,22 @@ Map the elements of a cause of action (or affirmative defense) against the evide
 
 Three paths:
 
-**(a) Template library.** Reference `references/element-templates.md` (in this skill's directory). Baseline elements for common causes of action and common affirmative defenses, with citations to the Restatement / pattern instructions and a jurisdiction caveat. Select the template that matches the pleaded count.
+**(a) Template library.** Reference `references/element-templates.md` (in this skill's directory). Baseline elements for common causes of action and common affirmative defenses, with citations to the Restatement / pattern instructions and a jurisdiction caveat. Select the template that matches the pleaded count. (England & Wales: see `references/uk.md` § 4 for E&W baselines — breach of contract, negligence, misrepresentation under the Misrepresentation Act 1967; there are no pattern jury instructions in E&W.)
 
 **(b) Custom.** User defines elements, or pastes a jury instruction / statute / a count from the complaint to parse. Parse into numbered elements.
 
 **(c) Affirmative defenses.** Also support mapping defenses — statute of limitations, laches, estoppel, waiver, unclean hands, release, accord and satisfaction, failure to mitigate, comparative fault, contributory negligence, assumption of risk, etc. Defenses have their own elements the defendant must prove (or, for some, the plaintiff must negate once raised).
 
-**Jurisdiction-specific formulations — surface proactively.** If the practice profile's `## Company profile → Core jurisdictions` or the active matter's `matter.md` names **Delaware, New York, or California** (the three most-common commercial fora), surface the state-specific formulation proactively alongside the baseline — do not ask "does your jurisdiction add/drop/reword" first. The user shouldn't have to teach the skill the local rule; the skill should offer it and let the user choose.
+**Jurisdiction-specific formulations — surface proactively.** If the practice profile's `## Jurisdiction` block or the active matter's `matter.md` names **Delaware, New York, or California** (the three most-common commercial fora), surface the state-specific formulation proactively alongside the baseline — do not ask "does your jurisdiction add/drop/reword" first. The user shouldn't have to teach the skill the local rule; the skill should offer it and let the user choose.
 
 Divergences to surface without being asked (non-exhaustive — add to this list as patterns recur):
 
 | Cause of action / defense | Baseline (Restatement / pattern) | Jurisdiction-specific formulation |
 |---|---|---|
-| Breach of contract | 4 elements (contract, performance, breach, damages; CACI 303) | **DE:** 3 elements — contractual obligation, breach, damages (causation folded into breach) per *VLIW Tech., LLC v. Hewlett-Packard Co.*, 840 A.2d 606 (Del. 2003). **DE adds a 5th element** — no adequate remedy at law — when the claim seeks specific performance. |
+| Breach of contract | 5 elements (contract, performance, breach, causation, damages; CACI 303) | **DE:** 3 elements — contractual obligation, breach, damages (causation folded into breach) per *VLIW Tech., LLC v. Hewlett-Packard Co.*, 840 A.2d 606 (Del. 2003). **DE adds a further element** — no adequate remedy at law — when the claim seeks specific performance. |
 | Breach of contract — goods | Common-law breach elements | **If goods + U.C.C. Article 2 jurisdiction (all 50 states except LA):** load U.C.C. breach elements (conforming tender, acceptance / rejection / revocation, cure, cover, seller's remedies). Present both; let user pick. |
 | Breach of contract — multi-lot goods / installment contract | Common-law breach or U.C.C. § 2-711 (single-delivery breach framework) | **Installment contracts under U.C.C. § 2-612** — "substantial impairment of the value of the installment" replaces the perfect-tender rule; aggregate breach requires "substantial impairment of the value of the whole contract." If the contract calls for goods to be delivered in separate lots (multiple shipments, deliveries), default to § 2-612 framing — it is the governing regime and the analysis is materially different from single-delivery breach. Flag for signer: "This is drafted as an installment contract under § 2-612 — confirm that characterization matches the contract's delivery structure." |
-| Negligence | 4 elements (duty, breach, causation, damages; Restatement (Second) Torts § 281) | **CA:** follow CACI No. 400 formulation (negligence per se per CACI 418 when applicable). **NY:** PJI 2:10 formulation — slightly different language on proximate cause. |
+| Negligence | 5 elements (duty, breach, actual cause, proximate cause, damages; Restatement (Second) Torts § 281) | **CA:** follow CACI No. 400 formulation (negligence per se per CACI 418 when applicable). **NY:** PJI 2:10 formulation — slightly different language on proximate cause. |
 | Negligent misrepresentation | Restatement (Second) Torts § 552 — justifiable reliance, pecuniary loss | **NY:** requires **contemporaneous privity** or a relationship "so close as to approach that of privity" per *Credit Alliance Corp. v. Arthur Andersen & Co.*, 65 N.Y.2d 536 (1985). |
 | Fraud | 9 elements (often condensed to 5 — representation, materiality, knowledge of falsity, intent to induce, justifiable reliance, damages) | **DE:** 5 elements per *Stephenson v. Capano Dev.*, 462 A.2d 1069 (Del. 1983). **CA:** CACI 1900 formulation — 5 elements with reliance being "justifiable." **NY:** requires pleading with particularity under CPLR 3016(b), and scienter is a distinct element. |
 | Breach of fiduciary duty | Restatement / common law — fiduciary duty, breach, damages | **DE:** the most-developed body of fiduciary-duty law (*Aronson v. Lewis*, *Cede & Co. v. Technicolor*, *In re Trados*) — default to the Delaware formulation for any DE-entity matter regardless of forum. |
@@ -307,13 +312,13 @@ For each element:
 - **Strength** — `strong` / `moderate` / `weak` / `none`. Keep it simple. Over-calibrated strength scores are noise; `weak` and `none` are the rows that matter.
 - **State per cell** — `supported` / `partial` / `disputed` / `gap` / `needs-discovery`.
 
-### Step 4: Gap detection — the killer output
+### Step 4: Gap detection — the priority output
 
 After mapping, produce a gap list. This is the point of the chart.
 
 > **Elements with thin or no evidence:** [list]
 >
-> - If asserting (plaintiff): these defeat your complaint's plausibility (Iqbal/Twombly), your MSJ opposition, or your case at trial. Close them before the next motion.
+> - If asserting (plaintiff): these defeat your complaint's plausibility (Iqbal/Twombly), your MSJ opposition, or your case at trial. Close them before the next motion. (England & Wales: see `references/uk.md` § 2 — strike-out under CPR 3.4(2)(a) and summary judgment under CPR Part 24 replace the plausibility/MSJ framing.)
 > - If defending: these are your MSJ targets and your directed-verdict motion. The plaintiff has to prove each element; a gap is a defense.
 > - If pre-discovery: these are your discovery priorities — the depositions, document requests, and interrogatories that turn a gap into `supported` or confirm `none`.
 
@@ -323,7 +328,7 @@ Gap detection is not a conclusion about the merits. It's a map of where the case
 
 Ask the phase. Same chart; different framing on the output:
 
-- **Pre-filing / pleadings.** Does the complaint allege each element with plausibility (*Ashcroft v. Iqbal*, 556 U.S. 662 (2009); *Bell Atl. Corp. v. Twombly*, 550 U.S. 544 (2007))? Any element pleaded on information and belief without factual support is a 12(b)(6) target.
+- **Pre-filing / pleadings.** Does the complaint allege each element with plausibility (*Ashcroft v. Iqbal*, 556 U.S. 662 (2009); *Bell Atl. Corp. v. Twombly*, 550 U.S. 544 (2007))? Any element pleaded on information and belief without factual support is a 12(b)(6) target. (England & Wales: see `references/uk.md` §§ 1–2 — CPR 16 / PD 16 fact pleading and CPR 3.4(2)(a) strike-out.)
 - **Discovery.** For each `gap` or `needs-discovery` element, what discovery is needed? Which witnesses, which document custodians, which interrogatories, which RFAs.
 - **MSJ.** For each element, is there a genuine dispute of material fact? A `supported` cell for the movant with no contradicting evidence is summary-judgment ammunition; a `disputed` cell is MSJ-defeating.
 - **Trial.** Order of proof. Which witness proves element 1, which exhibit proves element 2, who authenticates, what's the foundation. The chart becomes the trial outline.
@@ -373,7 +378,7 @@ One table per claim / defense / patent-claim per target.
 ```
 
 Follow with:
-- **Defenses / thresholds** (patent mode: invalidity / indirect / willfulness flags; civil mode: affirmative-defense flags, Iqbal/Twombly flags pre-pleading)
+- **Defenses / thresholds** (patent mode: invalidity / indirect / willfulness flags; civil mode: affirmative-defense flags, Iqbal/Twombly flags pre-pleading — England & Wales: see `references/uk.md` § 2)
 - **Gap list** (civil mode) / **needs-evidence list** (patent mode) — **the priority output**
 - **What cuts which way — summary** — strongest elements, weakest elements
 - **Conclusion line** — *"This skill does not conclude."* Elements mapped/supported: [list]. Elements needing evidence / in a gap state: [list]. Elements construction-dependent (patent) / disputed (civil): [list]. Attorney judgment required.
@@ -468,7 +473,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **It does not conclude.** Not infringement, not non-infringement, not liability, not non-liability. Ever.
+- **It does not conclude.** Not infringement, not non-infringement, not liability, not non-liability — ever.
 - **It does not decide claim construction** (patent) or **the controlling elements** (civil). It flags disputed terms / baseline elements and charts under stated assumptions.
 - **It does not meet the clear-and-convincing burden for invalidity** or **the preponderance at trial**. It produces a prima facie draft for attorney review.
 - **It does not substitute for expert analysis.** Source code review, teardowns, technical experts, damages experts are separate work products this chart routes to, not replaces.

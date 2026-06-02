@@ -39,7 +39,7 @@ A count that isn't in this library — map from the jury instruction, statute, o
 4. Defendant unfairly interfered with plaintiff's right to receive the benefits of the contract
 5. Plaintiff was harmed by defendant's conduct
 
-*Jurisdiction caveat: Recognized in most states but not an independent tort in New York (limited to insurance context); in California requires a contract and is a separate cause of action distinct from breach of contract itself.*
+*Jurisdiction caveat: Not an independent tort. In California, tort recovery for breach of the implied covenant is limited to the insurance context (Foley v. Interactive Data); otherwise the claim is contractual and duplicative if it merely restates the breach claim. In New York, the claim is contract-based and is dismissed as duplicative when premised on the same facts as the breach-of-contract claim.*
 
 ### Promissory estoppel
 
@@ -311,7 +311,7 @@ A count that isn't in this library — map from the jury instruction, statute, o
 2. The owner took reasonable measures to maintain secrecy
 3. Misappropriation — acquisition by improper means, or disclosure / use in breach of a duty to maintain secrecy
 
-*Jurisdiction caveat: DTSA requires interstate nexus. UTSA adopted in most states but not New York (which follows common-law Restatement of Torts § 757 approach) or Massachusetts (MUTSA). Preemption of related common-law tort claims varies.*
+*Jurisdiction caveat: DTSA requires interstate nexus. UTSA adopted in nearly every state; New York is the principal holdout (common-law Restatement of Torts § 757 approach). Massachusetts adopted its UTSA variant (MUTSA, G.L. c. 93 §§ 42-42G) in 2018. Preemption of related common-law tort claims varies by state.*
 
 ### Copyright infringement
 

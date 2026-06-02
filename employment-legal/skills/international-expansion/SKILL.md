@@ -18,7 +18,7 @@ user-invocable: false
 
 ## Purpose
 
-International hiring gets handled sloppily at scaleups because nobody owns
+International hiring often goes wrong because no single function owns
 the full picture. Legal knows the employment-law questions but not the PE
 risk questions. Finance knows the cost model but not the employee-representation
 triggers. HR knows the comp benchmarks but not the Day 1 compliance requirements.

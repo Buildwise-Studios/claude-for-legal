@@ -15,7 +15,6 @@ Checks regulatory feeds on a schedule, filters by the deploying team's materiali
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-export GDRIVE_MCP_URL=...
 ../../scripts/deploy-managed-agent.sh reg-monitor
 ```
 
@@ -30,14 +29,14 @@ Regulatory feed content (Federal Register entries, agency RSS posts, paid feed a
 | Tier | Touches untrusted docs? | Tools | Connectors |
 |---|---|---|---|
 | **`feed-reader`** | **Yes** | `Read`, `Grep`, `WebFetch` only | None |
-| `materiality-filter` / Orchestrator | No | `Read`, `Grep`, `Glob`, `Agent` | gdrive (orchestrator only) |
+| `materiality-filter` / Orchestrator | No | `Read`, `Grep`, `Glob`, `Agent` | None |
 | **`digest-writer`** (Write-holder) | No | `Read`, `Write`, `Edit` | None |
 
-`feed-reader` returns length-capped, schema-validated JSON. `materiality-filter` is pure computation over that JSON plus the regulatory-legal configuration on disk — no MCP, no web. `digest-writer` produces `./out/reg-digest-<YYYY-MM-DD>.md` and emits a `handoff_request` for Slack delivery.
+`feed-reader` returns length-capped JSON conforming to the schema in its manifest (enforce with `scripts/validate.py` in your own harness; the deploy script does not wire validation in). `materiality-filter` is pure computation over that JSON plus the regulatory-legal configuration on disk — no MCP, no web. `digest-writer` produces `./out/reg-digest-<YYYY-MM-DD>.md` and emits a `handoff_request` for Slack delivery.
 
 **Handoffs:** the orchestrator routes the `handoff_request` from `digest-writer` to a Slack send worker using the channel from the deploying team's House style configuration. The agent never sends Slack messages itself.
 
-**Not guaranteed:** this agent surfaces changes and flags potential policy gaps; a lawyer decides whether a regulatory change requires action and who owns the response.
+**Not guaranteed:** this agent surfaces changes and flags potential policy gaps; a human configures the watchlist and materiality threshold, and a lawyer decides whether each flagged change requires action, disclosure, or policy work — the agent never decides materiality.
 
 ## Adaptation notes
 

@@ -37,19 +37,18 @@ Set up a recurring reminder in your own scheduler to run `/ai-governance-legal:p
 
 ## Purpose
 
-AI policies drift from practice faster than almost any other policy document — the
-field moves quickly, use cases multiply, and each approved AIA or triage result
-represents a new commitment the policy may not have caught up with. An AIA approves
-a new AI use case with a human-oversight condition. A vendor AI agreement permits
-data processing the policy doesn't mention. A triage result marks a new category
-of deployment as conditional with a disclosure requirement. The policy sits there
-unchanged.
+AI policies drift from practice quickly — the field moves fast, use cases multiply,
+and each approved AIA or triage result represents a new commitment the policy may
+not have caught up with. An AIA approves a new AI use case with a human-oversight
+condition. A vendor AI agreement permits data processing the policy doesn't mention.
+A triage result marks a new category of deployment as conditional with a disclosure
+requirement. Each of these changes practice without changing the policy.
 
 This skill catches the drift — either by crawling the outputs folder weekly, or by
 answering the direct question: "we're about to start doing X, what does that mean
 for our AI policy?"
 
-The output is always the same: here's the gap, here's the suggested language.
+The output in both modes is the same: the gap, and the suggested policy language to close it.
 
 ---
 

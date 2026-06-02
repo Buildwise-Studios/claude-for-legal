@@ -2,14 +2,14 @@
 name: plain-language-letters
 description: >
   Reference: DEPRECATED — use `/client-letter` for routine correspondence or
-  `/status client` for substantive updates. Split into two more focused skills
-  during the v2 rebuild. Kept as a redirect for migration.
+  `/status client` for substantive updates. Split into two more focused skills.
+  Kept as a redirect.
 user-invocable: false
 ---
 
 # [DEPRECATED] Plain-Language Letters → see `/client-letter` and `/status client`
 
-This skill was split during the v2 rebuild:
+This skill was split:
 
 - **Routine correspondence** (appointment confirms, document requests, brief
   "we filed it" updates) → `skills/client-letter/` — use `/client-letter [type]`

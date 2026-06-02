@@ -27,10 +27,10 @@ argument-hint: "[offer letter file, or describe the hire]"
 
 ## Purpose
 
-Offer letters are mostly boilerplate until they're not. The jurisdiction check
-and the restrictive-covenant check are where this skill earns its keep. The
-skill does not state the law — every jurisdiction-specific rule is researched
-and cited at the time of review.
+Most offer-letter content is boilerplate; the jurisdiction check and the
+restrictive-covenant check are where the issues concentrate. The skill does
+not state the law — every jurisdiction-specific rule is researched and cited
+at the time of review.
 
 ## Load context
 
@@ -71,7 +71,7 @@ Exempt or non-exempt? The offer should say, and the role should support it.
 > test(s) for the role. Cite primary sources. Verify currency.
 
 If the offer says exempt but the role description does not support the
-exempt duties — flag it. Misclassification is expensive.
+exempt duties, flag it — misclassification carries significant liability.
 
 ### Step 3: Restrictive covenants
 
@@ -128,11 +128,11 @@ Read the letter. Check:
 
 - **US (most states):** At-will is the default. Offer letters often include "at-will" language to defeat implied-contract arguments. Check that it's present if US.
 - **Montana:** Not at-will — Wrongful Discharge from Employment Act requires cause after probation.
-- **UK:** No at-will. Employees have statutory protections from day 1 (unfair dismissal after 2 years of service, automatic unfair dismissal for protected reasons from day 1). The offer letter must contain the written statement of particulars (ERA 1996 s.1): pay, hours, notice period, holidays, pension, disciplinary/grievance procedures.
-- **EU:** No at-will. Termination requires cause, notice, and often works council consultation or collective redundancy procedures. The offer letter requirements vary by member state but notice periods and written particulars are standard.
-- **Australia:** No at-will. Fair Work Act minimum notice periods, unfair dismissal protections, NES.
-- **Canada:** No at-will. Common law reasonable notice (can be months), ESA minimums, wrongful dismissal exposure.
-- **Singapore, other APAC:** No at-will. Employment Act and contract-based protections.
+- **UK:** No at-will. Automatic unfair dismissal for protected reasons applies from day 1. Ordinary unfair-dismissal protection has required a 2-year qualifying period, but pending UK employment-law reform is set to remove the qualifying period — research the current status before relying on it. `[model knowledge — verify]` A written statement of particulars (ERA 1996 s.1) — pay, hours, notice period, holidays, pension, disciplinary/grievance procedures — must be provided from day one, but it need not be the offer letter itself: the contract or a separate statement satisfies it. `[model knowledge — verify]`
+- **EU:** No at-will. Termination requires cause, notice, and often works council consultation or collective redundancy procedures. The offer letter requirements vary by member state but notice periods and written particulars are standard. `[model knowledge — verify]`
+- **Australia:** No at-will. Fair Work Act minimum notice periods, unfair dismissal protections, NES. `[model knowledge — verify]`
+- **Canada:** No at-will. Common law reasonable notice (can be months), ESA minimums, wrongful dismissal exposure. `[model knowledge — verify]`
+- **Singapore, other APAC:** No at-will. Employment Act and contract-based protections. `[model knowledge — verify]`
 
 **Check for at-will language ONLY if the jurisdiction is US.** For non-US jurisdictions, check instead for: notice period (and whether it meets statutory minimum), the written-statement particulars the jurisdiction requires, probation period terms, and any jurisdiction-specific mandatory clauses.
 

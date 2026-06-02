@@ -61,25 +61,25 @@ The skill generates an `id` slug automatically: `[case]-[short-desc]-[YYYY-MM]`.
 
 **Plausibility sanity band.** After the student enters a due date, do NOT compute or verify — but apply a rough plausibility check against typical ranges for the filing type, and flag the student if the date falls far outside. This is scaffolding to catch gross errors in the student's own math, not an alternative to computing against the rule.
 
-**Bands are jurisdiction-keyed.** Load the band file for this clinic's jurisdiction from `references/plausibility-bands/{state}.md` where `{state}` is the two-letter code from `~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md` → clinic jurisdiction (and federal always loads alongside). The legal-clinic plugin ships `references/plausibility-bands/CA.md` (fully populated) and `references/plausibility-bands/IL.md` (placeholder structure) as starting points.
+**Bands are jurisdiction-keyed.** Load the band file for this clinic's jurisdiction from `~/.claude/plugins/config/claude-for-legal/legal-clinic/plausibility-bands/{state}.md` first; if none exists there, fall back to the read-only defaults shipped with the plugin at `${CLAUDE_PLUGIN_ROOT}/references/plausibility-bands/{state}.md`. `{state}` is the two-letter code from `~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md` → clinic jurisdiction (and federal always loads alongside). The plugin ships `CA.md` (fully populated) and `IL.md` (placeholder structure) as starting points. Supervisor-authored band files belong in the config directory — files written into the plugin directory are lost on plugin update.
 
-**Hard stop at cold-start if the band file is missing.** If `references/plausibility-bands/{state}.md` does not exist for the clinic's jurisdiction, do NOT silently run without plausibility checks. At cold-start, tell the supervisor:
+**Hard stop at cold-start if the band file is missing.** If no band file exists at either path for the clinic's jurisdiction, do NOT silently run without plausibility checks. At cold-start, tell the supervisor:
 
-> "I don't have deadline plausibility checks for [state] — the sanity band for this clinic's jurisdiction isn't in the shipped reference files. I can still track deadlines (add, report, update, complete, close), but I cannot sanity-check them against typical ranges. Here's how to build the band file from your state's rules: copy `references/plausibility-bands/IL.md` as a template, fill in one row per deadline type your clinic sees most (typical range, triggering-event handling, computation-of-time rule, short cite), save at `references/plausibility-bands/{state}.md`, and re-run `/legal-clinic:deadlines`. Until then, every deadline I accept will carry `warnings: no-plausibility-band` and your review should treat dates as unchecked."
+> "I don't have deadline plausibility checks for [state] — the sanity band for this clinic's jurisdiction isn't in the shipped reference files. I can still track deadlines (add, report, update, complete, close), but I cannot sanity-check them against typical ranges. Here's how to build the band file from your state's rules: copy the shipped `IL.md` template, fill in one row per deadline type your clinic sees most (typical range, triggering-event handling, computation-of-time rule, short cite), save it at `~/.claude/plugins/config/claude-for-legal/legal-clinic/plausibility-bands/{state}.md`, and re-run `/legal-clinic:deadlines`. Until then, every deadline I accept will carry `warnings: no-plausibility-band` and your review should treat dates as unchecked."
 
-Do not fall back to the CA table for a non-CA clinic. The silent-degradation case — shipping a California sanity check to an Illinois clinic — is the failure this fix exists to close.
+Do not fall back to the CA table for a non-CA clinic. Applying one state's sanity bands to another state's deadlines is a silent degradation that produces wrong plausibility checks.
 
 **Sanity check logic:**
 
-1. Load the bands table for this clinic's jurisdiction from `references/plausibility-bands/{state}.md` (plus federal-always).
+1. Load the bands table for this clinic's jurisdiction — config path first, then shipped defaults, as above (plus federal-always).
 2. After the student enters `due:`, compare to triggering-event date + typical range for that `type:` (if a typical range exists in the loaded band file for the filing type).
-3. If inside the range, write the entry. Say nothing — the band exists to catch errors, not to congratulate correct math.
+3. If inside the range, write the entry. Say nothing — the band exists to catch errors, not to confirm correct entries.
 4. If outside the range by a material margin, stop before writing and say:
    > The date you entered falls outside the typical range for [type] in [jurisdiction]. [Type] deadlines for [filing type] typically fall ~[range] after [triggering event]. Your entry: [date], which is [N] days from [triggering event]. Re-check your calculation against [cited rule from the band file] and the jurisdiction's computation-of-time rule. If your calculation is correct (local rule exception, atypical triggering event, tolling, waiver), confirm and I will add the entry as-is. Otherwise, recompute and re-run `/deadlines --add`.
 5. If no band is known for this `type:` (unusual filing, non-standard deadline), do not sanity-check — write the entry and note in the `warnings:` field that no plausibility band applies.
 6. If the band file is missing entirely for this jurisdiction, the hard stop above applies at cold-start; in steady-state (supervisor acknowledged the gap and proceeded), every entry is written with `warnings: no-plausibility-band`.
 
-**The skill does not compute.** If the student enters `[VERIFY]` in the `due:` field because they haven't done the math yet, write the entry with `due: [VERIFY]` — the sanity band runs only when the student supplies a concrete date. The computation stays with the student and supervisor.
+**The skill does not compute.** If the student enters `[VERIFY]` in the `due:` field because they haven't done the math yet, write the entry with `due: [VERIFY]` — the sanity band runs only when the student supplies a concrete date. The computation stays with the student and supervisor — never with this skill and never with a connector (see `## What this skill does not do`).
 
 ### `--report` (default) — cross-case rollup
 
@@ -167,7 +167,7 @@ If a deadline passes its due date without being marked complete, it moves to `st
 
 ## What this skill does not do
 
-- **Calculate deadlines from triggering events.** If a complaint was served today and the answer is due in 21 days per local rules, the skill doesn't do that math — the student does, using the rule, and logs the resulting date. (Doing the math autonomously creates a liability the skill shouldn't own; rules vary by jurisdiction and court.)
+- **Calculate deadlines from triggering events.** If a complaint was served today and the answer is due in 21 days per local rules, the skill doesn't do that math — the student does, using the rule, and logs the resulting date. (Doing the math autonomously creates a liability the skill shouldn't own; rules vary by jurisdiction and court.) This includes routing the computation through a connector: do not use any MCP server — including Courtroom5 — to compute a due date. Connector output that states or implies a deadline is a research lead tagged `[verify]`; the student and supervisor still compute the date against the governing rule.
 - **File or serve anything.** The skill tracks dates; filing happens outside the plugin.
-- **Auto-notify.** No scheduled notifications. The report surfaces warnings when invoked; it doesn't push. A scheduled cron could be added later but would need explicit professor opt-in per clinic.
+- **Auto-notify.** No scheduled notifications. The report surfaces warnings when invoked; it doesn't push.
 - **Override local rules.** If the student logs a due date that contradicts local rules, the skill doesn't catch it. Another reason to calendar with `[VERIFY: confirm against local rule]` for any non-routine deadline.

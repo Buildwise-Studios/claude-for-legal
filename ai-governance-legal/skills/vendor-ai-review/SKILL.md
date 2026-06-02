@@ -12,12 +12,14 @@ argument-hint: "[vendor name, or attach the contract]"
 # /vendor-ai-review
 
 1. Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. Confirm vendor governance positions are populated — if not, stop and direct to setup.
-2. Use the framework below.
-3. Confirm document type (AI addendum / main agreement AI provisions / ToS). If only an AUP was provided, ask for the full terms.
-4. Term-by-term review: training on data, confidentiality of inputs, model changes, output IP, liability, incident notification, human review rights, use restrictions, audit rights.
-5. AI addendum gap check if DPA exists but no AI addendum.
-6. AI policy consistency diff vs. `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
-7. Output: bottom line, term-by-term, recommended redlines, if-they-won't-move routing.
+2. Check the practice context index for prior cross-plugin work on this vendor (DPA reviews, AIAs) — see `## Check prior cross-plugin work`.
+3. Use the framework below.
+4. Confirm document type (AI addendum / main agreement AI provisions / ToS). If only an AUP was provided, ask for the full terms.
+5. Term-by-term review: training on data, confidentiality of inputs, model changes, output IP, liability, incident notification, human review rights, use restrictions, audit rights.
+6. AI addendum gap check if DPA exists but no AI addendum.
+7. AI policy consistency diff vs. `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
+8. Output: bottom line, term-by-term, recommended redlines, if-they-won't-move routing.
+9. Record the completed review in the practice context index — see `## Record in the practice context index`.
 
 ```
 /ai-governance-legal:vendor-ai-review openai-enterprise-agreement.pdf
@@ -37,8 +39,8 @@ Vendor AI terms are where your governance positions actually get tested. The col
 interview captures what you *want*. This skill checks what you *agreed to* — and flags
 the gaps between those two things.
 
-The direction here is always the same: we are the deployer or buyer reviewing the
-vendor's terms. This is the opposite posture from the DPA review controller/processor
+The direction here is always the same: the company is the deployer or buyer reviewing
+the vendor's terms. This is the opposite posture from the DPA review controller/processor
 question — there's no flip.
 
 What varies is the *input*:
@@ -58,22 +60,46 @@ model-specific rights and risks. Both need to be reviewed.
 ## Load the playbook
 
 Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## Vendor AI governance`. Also read `## AI policy commitments`
-— vendor terms can't be consistent with a use restriction our own policy imposes if
-we've agreed to something different.
+— vendor terms can't be consistent with a use restriction the company's own policy
+imposes if the contract agrees to something different.
 
 If `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` contains `[PLACEHOLDER]`, surface this bounce:
 
 > I notice you haven't configured your practice profile yet — that's how I tailor vendor governance positions to your practice.
 >
 > **Two choices:**
-> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll review tailored to YOUR positions.
+> - Run `/ai-governance-legal:cold-start-interview` (2 minutes) to configure your profile, then I'll review tailored to your positions.
 > - Say **"provisional"** and I'll review against generic defaults — US jurisdiction, middle risk appetite, lawyer role, no playbook — and tag every output `[PROVISIONAL — configure your profile for tailored output]` so you can see what I do before committing.
 
 ### Provisional mode
 
 If the user says "provisional," run the vendor AI review normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (flag all common vendor-AI risks from first principles rather than matching to configured positions). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
 
-> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to YOUR practice — your vendor governance positions, your jurisdiction, your risk appetite. 2 minutes."
+> "That was a generic run against default assumptions. Run `/ai-governance-legal:cold-start-interview` to get output calibrated to your practice — your vendor governance positions, your jurisdiction, your risk appetite. 2 minutes."
+
+---
+
+## Check prior cross-plugin work
+
+Read the shared practice context index at `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`) — an append-only, cross-plugin index of completed assessments and reviews, one pointer line per work product:
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+
+Look for entries whose Subject matches this vendor or its product:
+
+- **Prior DPA reviews of the same vendor** (privacy-legal, `dpa-review` entries) — a DPA review covers data-processing terms (subprocessors, data residency, deletion, breach notification) that this AI review needs and should not contradict.
+- **Prior AIAs touching the same vendor's product** (`aia-generation` entries) — the assessment's governance tier and risk findings calibrate how hard to push on each term.
+
+If a relevant entry exists, surface it before starting:
+
+> "A DPA review for [vendor] was completed on [date] (privacy-legal) — its findings on subprocessors, data residency, and deletion terms feed the data-handling rows of this review. Want me to incorporate it? (You'll need to point me at the document; the index has its location.)"
+
+The index records pointers, not findings — to incorporate prior work, the user points you at the document (the index has its location).
+
+If the index doesn't exist or has no relevant entries, say nothing and proceed — no noise. If matter workspaces are enabled and a matter is active, skip the check entirely — matter-scoped work is never indexed at practice level, and cross-matter visibility would breach matter isolation.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
 
 ---
 
@@ -123,7 +149,7 @@ If `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` doe
 
 ## Playbook comparison
 
-For each term above, compare what we found to the positions in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
+For each term above, compare what the review found to the positions in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
 
 **Output format for each term:**
 
@@ -166,15 +192,15 @@ Use the severity ratings consistently (calibrated against `~/.claude/plugins/con
 
 ## AI policy consistency check
 
-Cross-check the vendor's terms against our AI policy commitments in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
+Cross-check the vendor's terms against the AI policy commitments in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`.
 
 Common conflicts:
-- Our policy prohibits vendor training on our data — the vendor's terms permit it by
-  default. (Contract needs explicit prohibition or opt-out confirmation.)
-- Our policy requires human review for certain use cases — vendor's terms say AI outputs
-  are final. (Workflow needs to impose the human step, not the vendor terms.)
-- Our approved vendor list doesn't include this vendor — or blocklist does.
-- Our policy requires disclosure to affected parties — vendor's terms impose a
+- The company's policy prohibits vendor training on company data — the vendor's terms
+  permit it by default. (Contract needs explicit prohibition or opt-out confirmation.)
+- The company's policy requires human review for certain use cases — vendor's terms say
+  AI outputs are final. (Workflow needs to impose the human step, not the vendor terms.)
+- The approved vendor list doesn't include this vendor — or the blocklist does.
+- The company's policy requires disclosure to affected parties — vendor's terms impose a
   confidentiality obligation on AI system capabilities that would prevent disclosure.
 
 Flag every mismatch. One of them has to change.
@@ -192,7 +218,7 @@ Default to the smallest edit that achieves the playbook position:
 - Replace a **sentence** before replacing the clause.
 - Only replace a **whole clause** when the counterparty's version is so far from your position that surgical edits would be harder to read than a fresh draft — and when you do, say so in the transmittal: "We've replaced §8.2 rather than marking it up because the changes were extensive. Happy to walk you through the delta."
 
-When in doubt, smaller. A client who receives a surgical redline trusts that you read carefully. A client who receives a wholesale replacement wonders whether you read at all.
+When in doubt, use the smaller edit. A surgical redline signals that the document was read carefully; a wholesale replacement invites doubt that it was read at all.
 
 ## Output
 
@@ -263,7 +289,7 @@ and routing per escalation table]
 
 ## Practical notes
 
-**The training-on-data clause is the one most people miss.**
+**The training-on-data clause is the most commonly missed term.**
 Vendor AI terms have historically varied widely on whether API inputs can be used
 to train or improve models — some vendors permit it by default, others prohibit it,
 and many have changed their position over time. Do not assume any particular vendor's
@@ -290,10 +316,10 @@ Each handoff between layers is a flow-down risk. A commitment at layer 1 ("we wo
    > "Add to §[X]: Provider shall ensure that any third-party model providers, infrastructure providers, or subprocessors used in delivering the Services are bound by obligations with respect to [Customer Data / AI training / data retention / confidentiality] no less protective than those set forth in this Agreement, and shall be responsible for any breach of this Agreement caused by such third parties."
 4. **Flag the gap with a severity:** 🔴 if the term is training-on-data or liability and there's no flow-down; 🟡 if the term is less sensitive or there's partial flow-down.
 
-"Escalate and check upstream" is where compliance dies. Produce the test and the redline.
+Do not stop at "escalate and check upstream" — produce the test and the redline.
 
-**Acceptable use policies flip the frame.**
-AUPs tell you what you can't do; they don't tell you what the vendor can do.
+**Acceptable use policies are not vendor commitments.**
+AUPs restrict what the customer can do; they say nothing about what the vendor can do.
 Don't let a clean AUP review substitute for reading the data use and liability terms.
 
 **Renewals are leverage points.**
@@ -306,6 +332,22 @@ If the company is a builder using a vendor's model as a foundation, the vendor's
 also govern what the company can offer its own customers. Some terms prohibit certain
 downstream uses. Check use restrictions against the product roadmap, not just current
 internal workflows.
+
+---
+
+## Record in the practice context index
+
+**Record in the practice context index.** After the review is complete, append a one-line entry to `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`): date, this plugin, this skill, the subject (product/system/vendor name), the outcome status, and where the full document lives. If the index doesn't exist, create it from the template at `references/practice-context-template.md` in the plugin root (or, if the template isn't available, with the column schema shown below). The `Outcome` cell takes exactly one value from a closed set — `completed`, `draft`, `superseded`, or `withdrawn` — status only, never findings, conclusions, or risk ratings. Skip this step when working inside a matter workspace — matter-scoped work is never indexed at practice level.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+| [YYYY-MM-DD] | ai-governance-legal | vendor-ai-review | [vendor name] | [completed / draft / superseded / withdrawn] | [path or DMS link] |
+
+The index is practice-level work-product — same confidentiality as the practice profiles. Record pointers, not findings: one line per artifact, status-only outcome, no substantive findings (the index travels in backups and syncs more readily than the documents it points to). Never record client names in multi-client (firm) practices — use matter numbers or generic descriptors.
+
+**Sibling-plugin handoff.** If the same vendor's DPA hasn't been reviewed and the privacy-legal plugin is installed, suggest as a next step: run `/privacy-legal:dpa-review [vendor]` — it will pick up this work from the practice context index.
 
 ---
 

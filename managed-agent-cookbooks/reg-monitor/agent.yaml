@@ -26,8 +26,10 @@ tools:
       - { name: grep, enabled: true }
       - { name: glob, enabled: true }
 
-mcp_servers:
-  - { type: url, name: gdrive, url: "${GDRIVE_MCP_URL}" }
+# The orchestrator holds no MCP servers — feed-reader uses an allowlisted
+# web_fetch, not a connector (scripts/lint-tool-scope.py enforces an empty
+# list here). The policy library and configuration are read from local disk.
+mcp_servers: []
 
 skills:
   - { from_plugin: ../../regulatory-legal }

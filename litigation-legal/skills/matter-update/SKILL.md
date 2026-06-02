@@ -110,7 +110,7 @@ If materiality moves to `reserved` or `disclosed`, and the matter did not previo
 
 ### 5. Seed doc prompt (optional)
 
-If the update references a document (order, filing, correspondence), ask if there's a path to link. Not pushy.
+If the update references a document (order, filing, correspondence), ask once if there's a path to link; do not press.
 
 ## Writing
 

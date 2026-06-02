@@ -33,11 +33,9 @@ tools:
       - { name: grep, enabled: true }
       - { name: glob, enabled: true }
 
-mcp_servers:
-  - { type: url, name: ironclad, url: "${IRONCLAD_MCP_URL}" }
-  - { type: url, name: gdrive,   url: "${GDRIVE_MCP_URL}" }
-  - { type: url, name: imanage,  url: "${IMANAGE_MCP_URL}" }
-  - { type: url, name: docusign, url: "${DOCUSIGN_MCP_URL}" }
+# The orchestrator holds no MCP servers — repo-reader declares its own
+# (scripts/lint-tool-scope.py enforces an empty list here).
+mcp_servers: []
 
 skills:
   - { from_plugin: ../../commercial-legal }

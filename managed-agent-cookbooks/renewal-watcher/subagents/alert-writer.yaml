@@ -11,12 +11,17 @@ system:
     earlier tiers already validated.
 
     Prepend the deploying team's work-product header from the playbook
-    configuration — the alert report is attorney work product in most
-    deployments.
+    configuration. The header is applied per that configuration; whether
+    work-product protection attaches is a legal question for the deploying
+    team, and the header does not create the protection.
 
     Report structure:
       1. Overdue — needs immediate action (tagged business owner, cancel-by
-         already passed)
+         already passed). For auto-renewing contracts, include the proposed
+         roll-forward from the deadline-calculator (new current term end,
+         next cancel-by date) so the reviewer can apply it via the
+         renewal-tracker skill — the report proposes the register update,
+         it never applies it
       2. Next 30 days
       3. 30–60 days
       4. 60–90 days

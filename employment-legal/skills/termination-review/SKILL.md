@@ -27,8 +27,9 @@ argument-hint: "[describe the termination, or attach documentation]"
 
 ## Purpose
 
-Most terminations are fine. A few are lawsuits waiting to happen. This skill
-runs the checklist that catches the second kind before the decision is final.
+Most terminations are routine; a small number carry significant litigation
+risk. This skill runs the checklist that identifies the high-risk ones before
+the decision is final.
 The skill does not state the law — every jurisdiction-specific rule and
 release-period requirement is researched and cited at the time of review.
 
@@ -95,8 +96,8 @@ When all three fire, emit:
 > plaintiff with unpaid-OT exposure is the most litigated wage-and-hour
 > fact pattern in these states.
 
-Do not suppress this flag because the title "looks managerial" — the whole
-premise of the misclassification claim is that titles lie. Route to
+Do not suppress this flag because the title "looks managerial" —
+misclassification claims commonly turn on actual duties, not titles. Route to
 `/employment-legal:wage-hour-qa` for the actual duties-and-salary test.
 
 **If a back-pay number is being computed as part of this review (severance
@@ -110,8 +111,7 @@ carries `[verify — consult wage-and-hour counsel before asserting or
 paying]`. A clean-looking wrong number here is the specific failure mode
 this scaffold prevents.
 
-**Any flag fires → escalate per `~/.claude/plugins/config/claude-for-legal/employment-legal/CLAUDE.md` before the term proceeds.** Not
-after. Before.
+**Any flag fires → escalate per `~/.claude/plugins/config/claude-for-legal/employment-legal/CLAUDE.md` before the term proceeds, not after.**
 
 ### Step 3: Jurisdiction-specific requirements
 
@@ -202,7 +202,7 @@ Match the memo format from seed term memos referenced in `~/.claude/plugins/conf
 
 ### High-risk flags
 
-[Every flag from Step 2. ✅ Clear or 🔴 FLAG with detail.]
+[Every flag from Step 2. 🟢 Clear or 🔴 FLAG with detail.]
 
 **Escalation:** [None needed | Escalate to [name] before proceeding — [which flag]]
 

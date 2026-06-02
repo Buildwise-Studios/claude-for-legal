@@ -128,7 +128,7 @@ Separate section, after the IRAC blocks:
 
 ## Bottom line
 
-[Take the case / Decline because X / Need more info on Y — next step is Z]
+[STUDENT BOTTOM LINE — your one-paragraph assessment, written after you complete the analysis below]
 
 ---
 

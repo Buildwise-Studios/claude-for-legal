@@ -29,6 +29,10 @@ re-running the whole cold-start interview and without hand-editing YAML.
    > You haven't run setup yet. Run `/legal-clinic:cold-start-interview`
    > first — customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/legal-clinic/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -87,13 +91,26 @@ re-running the whole cold-start interview and without hand-editing YAML.
   inconsistent (e.g., formal review queue on + informal supervision note;
   or practice area on + no jurisdiction rules configured), flag the
   tension.
-- **Flag guardrail degradation.** These are load-bearing and should not be
-  removed: the "NOT final work product" framing on `/draft`, plain-language
-  standards on client-facing outputs, "does NOT decide case acceptance" on
+- **Guardrail baselines are not removable.** These are load-bearing: the
+  "NOT final work product" framing on `/draft`, plain-language standards on
+  client-facing outputs, "does NOT decide case acceptance" on
   `/client-intake`, "NOT substantive advice" on `/client-letter`, and the
-  scaffold-not-analysis framing on `/memo`. These exist because students
+  scaffold-not-analysis framing on `/memo`. They exist because students
   ship work product — if the safeguards go, the risk of student work
-  reaching a client without supervisor review goes up. Confirm the
-  trade-off with the user, and if they're a student rather than the
-  professor, suggest they discuss it with the supervisor first.
+  reaching a client without supervisor review goes up. Consistent with the
+  profile's `## Output safeguards` ("built-in and not configurable"), do
+  not remove or soften them through customize for any user; parameters
+  within a safeguard (e.g., the plain-language reading-level target) remain
+  adjustable by the supervising attorney. If a requested change touches one
+  of these safeguards or the supervision style, check Role in `## Who's
+  using this` first — if the user is not the supervising attorney, stop and
+  redirect (mirror the cold-start role check): these gates are the
+  supervising attorney's call under the student practice rule, so ask the
+  supervising attorney to run `/legal-clinic:customize`.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, gates, or the allowlist:
+  update `Last material change: [today's date]` in the profile header, and ask
+  whether the authorizing attorney has reviewed this change. If yes, update
+  `Authorized by:` with the new date; if no, append ` (pending attorney review
+  since [date])` to the existing `Authorized by:` line.

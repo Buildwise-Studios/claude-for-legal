@@ -28,7 +28,7 @@
       "name": "product-legal",
       "displayName": "Product Legal",
       "source": "./product-legal",
-      "description": "Reviews product launches against your risk calibration, answers 'is this a problem?' questions in minutes, checks marketing copy for claims that need substantiation, and flags upcoming launches that need legal eyes before anyone asks.",
+      "description": "Reviews product launches against your risk calibration, answers 'is this a problem?' questions in minutes, checks marketing copy for claims that need substantiation, and flags upcoming launches that need legal review.",
       "author": {
         "name": "Anthropic"
       }
@@ -55,7 +55,7 @@
       "name": "regulatory-legal",
       "displayName": "Regulatory Legal",
       "source": "./regulatory-legal",
-      "description": "Watches regulatory feeds, diffs new rules against your policy library, tracks comment deadlines and open gaps, and writes the digest your team reads Monday morning.",
+      "description": "Watches regulatory feeds, diffs new rules against your policy library, tracks comment deadlines and open gaps, and writes a digest filtered by your materiality threshold.",
       "author": {
         "name": "Anthropic"
       }
@@ -82,7 +82,7 @@
       "name": "law-student",
       "displayName": "Law Student",
       "source": "./law-student",
-      "description": "Drills Socratically, briefs cases, builds outlines, runs bar prep sessions tuned to your jurisdiction, grades IRAC practice, and plans the study schedule — without ever writing it for you.",
+      "description": "Drills Socratically, scaffolds case briefs and outlines, runs bar prep sessions tuned to your jurisdiction, grades IRAC practice, and plans the study schedule — your briefs, outlines, and essays stay your own work.",
       "author": {
         "name": "Anthropic"
       }

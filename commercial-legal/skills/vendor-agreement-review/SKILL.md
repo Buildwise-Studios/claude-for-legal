@@ -18,7 +18,7 @@ user-invocable: false
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
@@ -38,7 +38,11 @@ The output is a review memo the lawyer can act on in one pass. Every issue has a
 
 ### Provisional mode
 
-If the user says "provisional," run the review normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (flag the common vendor-side risks from first principles — unlimited liability, no data-breach carveout, uncapped indemnity, auto-renewal without notice, etc. — rather than matching to configured positions). Tag the reviewer note and every finding block with `[PROVISIONAL]`. At the end of the output, append:
+If the user says "provisional," run the review normally using these generic defaults: middle risk appetite, lawyer role, US jurisdiction, no playbook (flag the common vendor-side risks from first principles — unlimited liability, no data-breach carveout, uncapped indemnity, auto-renewal without notice, etc. — rather than matching to configured positions). Tag the reviewer note and every finding block with `[PROVISIONAL]`.
+
+**Liability-cap items in provisional mode are NOTES, not severity-rated findings.** With no playbook, there is no position to grade a cap structure against — a severity rating would be graded against nothing. Still flag unlimited liability, uncapped indemnity, missing carveouts, and ambiguous cap bases, but as notes: "worth checking against your positions once configured — run `/commercial-legal:cold-start-interview` to set them." Do not assign 🔴/🟠/🟡/🟢 to cap-related items in provisional mode; the severity scale comes back once a playbook exists.
+
+At the end of the output, append:
 
 > "That was a generic run against default assumptions. Run `/commercial-legal:cold-start-interview` to get output calibrated to YOUR practice — your playbook, your jurisdiction, your risk appetite. 2 minutes."
 
@@ -53,7 +57,7 @@ The playbook in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAU
 - Who approves what
 - The one deal-breaker to check first
 
-If the contract has the deal-breaker, flag it at the top of the memo and stop the detailed review. There's no point spending 30 minutes on liability caps if the agreement gives the vendor rights to use customer data for training.
+If the contract has the deal-breaker, flag it at the top of the memo and stop the detailed review. Detailed analysis of secondary terms is wasted effort while a deal-breaker is unresolved.
 
 ## Workflow
 
@@ -64,8 +68,8 @@ Read the whole agreement once, fast. Answer:
 | Question | Answer |
 |---|---|
 | What kind of agreement is this? | MSA / SaaS subscription / Professional services / License / Other |
-| Who are we? | Customer / Vendor (this plugin assumes customer — flag if not) |
-| Counterparty | Name, and are they a BigCo (won't negotiate) or a startup (will)? |
+| Who are we? | Customer / Vendor (from the side check above) |
+| Counterparty | Name, and are they a large enterprise (unlikely to negotiate) or a startup (likely to)? |
 | Dollar value | Annual / total contract value if stated |
 | Term | Length, renewal mechanics |
 | Is there a DPA? | Attached / referenced by URL / missing |
@@ -95,7 +99,7 @@ Do not silently proceed as if the DPA were absent when it is incorporated by ref
 Check the "one thing" from `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` first. If present:
 
 ```markdown
-## ⛔ DEAL-BREAKER PRESENT
+## DEAL-BREAKER PRESENT
 
 **Section [X.X]** contains [the deal-breaker]. Per the team playbook, this is a
 hard no. Recommend:
@@ -123,7 +127,7 @@ For each playbook category in `~/.claude/plugins/config/claude-for-legal/commerc
 
 **Gap:** [Missing term | Weaker than standard | Weaker than fallback | Non-standard structure | Unacceptable]
 
-**Legal risk:** 🔴 Critical | 🟠 High | 🟡 Medium | 🟢 Low
+**Legal risk:** 🔴 Blocking | 🟠 High | 🟡 Medium | 🟢 Low
 **Business friction:** 🔴 Blocks deals | 🟠 Slows deals | 🟡 Confuses customers | 🟢 Invisible
 
 **Why it matters:** [one or two sentences in plain English — what goes wrong
@@ -140,7 +144,7 @@ if no fallback exists]
 
 | Level | Means |
 |---|---|
-| 🔴 Critical | Don't sign without fixing. A term on the team's "never accept" list in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`, or a deal-breaker. |
+| 🔴 Blocking | Don't sign without fixing. A term on the team's "never accept" list in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`, or a deal-breaker. |
 | 🟠 High | Strongly push; escalate if they won't move. A term outside the playbook's stated fallback range. |
 | 🟡 Medium | Push in first round; accept if it's the last open item. A term inside the fallback range but short of the standard position. |
 | 🟢 Low | Note it, don't spend capital. A term the playbook explicitly tolerates, or a purely stylistic deviation. |
@@ -149,13 +153,20 @@ Severity is always applied *against `~/.claude/plugins/config/claude-for-legal/c
 
 #### Liability cap decision procedure
 
-**The cap amount is the least important part of the cap.** When reviewing the limitation-of-liability clause, do not produce a single "check liability cap against playbook" line item. Work through the four dimensions below and state each one explicitly in the finding:
+**The cap amount is the least important part of the cap.** When reviewing the limitation-of-liability clause, do not produce a single "check liability cap against playbook" line item. Work through the four dimensions below.
+
+**Conforming-clause shortcut — check this first.** If all four dimensions conform to the playbook position, record a one-line pass — "LoL conforms: [cap base], [carveouts] — matches playbook" — and move on. The full four-part write-up is for deviations; writing it for a conforming clause buries the findings that matter (see the plugin CLAUDE.md `## Proportionality`).
+
+For deviations, state each dimension explicitly in the finding:
 
 1. **Direct vs. indirect/consequential damages.** Does the cap apply to ALL liability, or only direct damages? A 12-month cap on direct damages with uncapped consequential damages is a completely different position than a 12-month aggregate cap. State both treatments explicitly.
 
 2. **The cap base — quote it verbatim.** "12-month cap" could mean: (a) fees paid in the 12 months preceding the claim, (b) fees payable in the current 12-month period, (c) fees over the last 12 months of usage, (d) fees under the current order form, (e) total fees ever paid. These can differ by an order of magnitude. Quote the exact language. If ambiguous, flag it: "Cap base is ambiguous — `[the quoted language]` — could mean [X] or [Y]. Confirm before signing."
 
-3. **Cap-carveout interaction.** A $100K cap with uncapped indemnity for data breach, IP, and confidentiality is functionally uncapped for the claims that actually arise in SaaS disputes. Enumerate what sits ABOVE the cap (the carveouts), what sits BELOW (what's actually capped), and assess whether the capped surface is meaningful: "The cap covers [general contract breach]. Data breach, IP indemnity, and confidentiality are carved out and uncapped. For this vendor's risk profile, the capped surface is [meaningful / nominal]."
+3. **Cap-carveout interaction — read it by which side you're on.** Enumerate what sits ABOVE the cap (the carveouts) and what sits BELOW (what's actually capped). Then read the result for the side this review is running on:
+
+   - **Sales-side paper (we're the vendor):** carveouts above OUR cap are OUR exposure. A $100K cap with uncapped indemnity for data breach, IP, and confidentiality is functionally uncapped for the claims that actually arise in commercial disputes. Assess whether the capped surface is meaningful: "The cap covers [general contract breach]. Data breach, IP indemnity, and confidentiality are carved out and uncapped. For this risk profile, the capped surface is [meaningful / nominal]."
+   - **Purchasing-side paper (we're the customer):** supplier-liability carveouts above the VENDOR's cap — data breach, IP infringement, confidentiality — typically FAVOR us; they're what makes the vendor's cap survivable for the claims we'd actually bring. Flag them as "favorable — confirm it survives negotiation," not as risk findings. The exposure reading on purchasing-side paper applies to carveouts above OUR OWN liability (e.g., uncapped customer indemnity for data or use), not the vendor's.
 
 4. **Your playbook position per dimension.** The practice profile should have positions for: direct cap (multiple of fees), indirect damages (excluded / capped / uncapped), carveout list (what's acceptable above the cap), and cap base (which definition you'll accept). If the playbook has one "standard position" field, note: "Your playbook has a single cap position — consider splitting into direct/indirect/carveouts/base for more precise review."
 
@@ -164,8 +175,8 @@ Severity is always applied *against `~/.claude/plugins/config/claude-for-legal/c
 **The playbook applies one governing-law preference globally. Enforceability varies materially.** Check the contract's actual governing law against the top divergences before accepting playbook positions at face value:
 
 - **Non-solicits/non-competes:** Unenforceable in CA (Bus. & Prof. Code §16600). Restricted in many EU jurisdictions. Enforceable with limitations elsewhere. `[jurisdiction — verify]`
-- **Auto-renewal:** CA GBL §17600-17606, NY GBL §527-a, IL 815 ILCS 601 have specific consumer/B2B notice requirements. Other states vary. `[jurisdiction — verify]`
-- **Liability exclusions:** EU and UK unfair contract terms rules (UCTA 1977, Consumer Rights Act 2015) constrain consumer exclusions. Some US states limit exclusion of gross negligence or willful misconduct. `[jurisdiction — verify]`
+- **Auto-renewal:** CA Bus. & Prof. Code §§17600–17606, NY GBL §527-a, and IL 815 ILCS 601 impose consumer auto-renewal notice requirements; B2B auto-renewals are separately regulated in some states (e.g., NY GOL §5-903, Wis. Stat. §134.49). Other states vary. `[jurisdiction — verify]`
+- **Liability exclusions:** UK: UCTA 1977 applies a reasonableness test to B2B exclusion/limitation clauses on standard terms and voids exclusions of liability for death or personal injury caused by negligence; the Consumer Rights Act 2015 governs consumer contracts. EU: the Unfair Contract Terms Directive 93/13/EEC constrains consumer exclusions. Some US states limit exclusion of gross negligence or willful misconduct. `[jurisdiction — verify]`
 - **Indemnification:** Some states void indemnification for the indemnitee's own negligence. `[jurisdiction — verify]`
 - **Confidentiality term:** Some jurisdictions limit "perpetual" confidentiality to a reasonable period. `[jurisdiction — verify]`
 
@@ -175,15 +186,15 @@ When the playbook position conflicts with the contract's governing-law enforceab
 
 Two short lists:
 
-**Better than our standard:** Terms where the vendor gave us more than we'd ask for. Note these — they're trade bait if you need to give something up elsewhere.
+**Better than our standard:** Terms where the vendor gave us more than we'd ask for. Note these — they can be traded if something has to be conceded elsewhere.
 
-**Missing entirely:** Standard provisions that just aren't there. Most common: assignment restrictions, audit rights (if we want them), force majeure, insurance requirements.
+**Missing entirely:** Standard provisions that are absent. Most common: assignment restrictions, audit rights (if we want them), force majeure, insurance requirements.
 
 ### Step 5: Escalation routing
 
 Check the escalation matrix in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` against:
 - Contract dollar value
-- Presence of any 🔴 critical issues
+- Presence of any 🔴 blocking issues
 - Any automatic-escalation triggers (unlimited liability, IP assignment, etc.)
 
 State clearly who needs to approve this:
@@ -221,13 +232,13 @@ Default to the smallest edit that achieves the playbook position:
 - Replace a **sentence** before replacing the clause.
 - Only replace a **whole clause** when the counterparty's version is so far from your position that surgical edits would be harder to read than a fresh draft — and when you do, say so in the transmittal: "We've replaced §8.2 rather than marking it up because the changes were extensive. Happy to walk you through the delta."
 
-When in doubt, smaller. A client who receives a surgical redline trusts that you read carefully. A client who receives a wholesale replacement wonders whether you read at all.
+When in doubt, choose the smaller edit. A surgical redline signals careful reading; a wholesale replacement invites doubt about whether the document was read at all.
 
 ### Step 6: Assemble the memo
 
 Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` `## Outputs` (it differs by user role — see `## Who's using this`).
 
-This memo and the underlying agreement may be privileged, confidential, or both. The output inherits that status from the source. Distribute only within the privilege circle; mark and store it where privileged materials live; strip the work-product header before any external delivery (e.g., counterparty redlines, stakeholder summaries).
+The underlying agreement is a confidential business record, not a privileged communication — a contract exchanged with a counterparty is discoverable. This memo's protection comes from being attorney analysis (work product / legal advice), not from the agreement it analyzes. Distribute only within the privilege circle; mark and store it where privileged materials live; strip the work-product header before any external delivery (e.g., counterparty redlines, stakeholder summaries).
 
 The playbook positions applied below reflect the jurisdiction recorded in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` → `Governing law and venue`. Legal rules and enforceability vary materially by jurisdiction. If this deal implicates a different governing law or a choice-of-law question, flag it in the memo — the analysis may not transfer as written.
 
@@ -242,7 +253,7 @@ The playbook positions applied below reflect the jurisdiction recorded in `~/.cl
 
 **Reviewed:** [date]
 **Contract value:** $[amount] / [term]
-**Our role:** Customer
+**Our role:** [Customer / Vendor — per the side check]
 
 ---
 
@@ -259,13 +270,13 @@ The playbook positions applied below reflect the jurisdiction recorded in `~/.cl
 
 ## Deal-breaker check
 
-[✅ Clear | ⛔ Present — see above]
+[Clear | PRESENT — see above]
 
 ---
 
 ## Issues by severity
 
-[All the deviation blocks from Step 3, grouped Critical → Low]
+[All the deviation blocks from Step 3, grouped Blocking → Low]
 
 ---
 
@@ -333,9 +344,9 @@ Do not proceed past this gate without an explicit yes.
 - [ ] `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` was loaded and quoted — not generic market positions
 - [ ] Deal-breaker checked first
 - [ ] Every issue has specific replacement language
-- [ ] Risk levels are calibrated (not everything is Critical)
+- [ ] Risk levels are calibrated (not everything is Blocking)
 - [ ] Approver is named, not "escalate to legal"
-- [ ] Counterparty context considered (BigCo vs. startup — affects what's worth fighting over)
+- [ ] Counterparty context considered (large enterprise vs. startup — affects negotiation priorities)
 
 ## Close with the next-steps decision tree
 

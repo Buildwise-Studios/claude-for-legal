@@ -14,7 +14,7 @@ argument-hint: "[PRD file | Drive link | tracker ticket ID]"
 2. Get PRD + related docs. If tracker connected, pull ticket and comments.
 3. Walk every framework category using the workflow below.
 4. Calibrate each finding against the table. Novel = flag explicitly.
-5. Output review memo in house format. Post summary to ticket if connected.
+5. Output review memo in house format plus the redacted SAFE-TO-POST ticket block (Step 6). The user posts the redacted block to the ticket — the skill does not write to the tracker.
 6. Hand off: marketing-claims-review if substantial marketing; feature-risk-assessment if a finding needs depth.
 
 ```
@@ -31,7 +31,7 @@ argument-hint: "[PRD file | Drive link | tracker ticket ID]"
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
@@ -91,20 +91,20 @@ For each category in `~/.claude/plugins/config/claude-for-legal/product-legal/CL
 | 4 | **IP** | Third-party code/content? Open-source license check? Outputs that could infringe? | No new dependencies, no user-generated content |
 | 5 | **Third-party** | New vendor, partner, or integration? | No new external parties |
 | 6 | **Regulatory** | Does this touch a regulated sector, audience, or jurisdiction? Research the applicable regimes. | Same users, same sectors, same jurisdictions as existing product |
+| 7 | **Marketing claims** | Any claims that need substantiation? | No marketing component |
+| 8 | **AI governance** | Does this use AI in any form? Is the use case in the registry? AIA done? Vendor AI terms reviewed? | No AI component detected in Step 2 |
 
 > **No silent supplement.** If a research query to the configured legal research tool (Westlaw, CourtListener, regulator sites, or firm platform) returns few or no results for a regime, enforcement precedent, or regulator guidance, report what was found and stop. Do NOT fill the gap from web search or model knowledge without asking. Say: "The search returned [N] results from [tool]. Coverage appears thin for [regime / topic]. Options: (1) broaden the search query, (2) try a different research tool, (3) search the web — results will be tagged `[web search — verify]` and should be checked against the issuing authority before relying, or (4) flag as unverified and stop. Which would you like?" A lawyer decides whether to accept lower-confidence sources.
 >
 > **Source attribution tiering.** Tag every citation in the review with its source. For model-knowledge citations, use one of three tiers rather than a single blanket "verify" tag:
 >
-> - `[settled]` — stable, well-known statutory and regulatory references unlikely to have changed (e.g., FTC Act § 5, GDPR Art. 33, CCPA § 1798.100). Still verify before relying on it to clear a launch, but lower priority.
+> - `[settled — last confirmed YYYY-MM-DD]` — stable, well-known statutory and regulatory references that have been checked against a primary source on the stated date (e.g., FTC Act § 5, GDPR Art. 33, CCPA § 1798.100). The date matters — even "stable" references change. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead; an unconfirmed "settled" is a confident overclaim. Still verify before relying on it to clear a launch, but lower priority.
 > - `[verify]` — model-knowledge citations that are real but should be verified: specific implementing regulations, agency guidance, enforcement actions, case holdings, thresholds, effective dates, post-2023 amendments.
 > - `[verify-pinpoint]` — pinpoint citations (specific subsection letters, volume/page numbers, paragraph numbers) carry the highest fabrication risk and should ALWAYS be verified against a primary source.
 >
-> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[CourtListener]`, `[regulator site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations (from the PRD or seed materials) remain `[user provided]`. The tiering surfaces the real verification work — a reader who verifies everything verifies nothing. Never strip or collapse the tags.
+> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[CourtListener]`, `[regulator site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations (from the PRD or seed materials) remain `[user provided]`. The tiering directs the reader's verification effort to the citations that carry the most risk. Never strip or collapse the tags.
 >
 > `[platform policy — verify against live docs]` — platform rules (Apple App Store Review Guidelines, Google Play policies, Meta / Snap / TikTok creator rules, ESRB / PEGI descriptors, card-network rules, app-store in-app-purchase policies) cited without fetching the live page. Never use `[settled]` for a platform policy — these change without notice and the model's snapshot is almost always stale. If the launch hinges on a platform rule, fetch the current policy page in-session before relying on it.
-| 7 | **Marketing claims** | Any claims that need substantiation? | No marketing component |
-| 8 | **AI governance** | Does this use AI in any form? Is the use case in the registry? AIA done? Vendor AI terms reviewed? | No AI component detected in Step 2 |
 
 **For each category, output:**
 
@@ -125,13 +125,13 @@ For each category in `~/.claude/plugins/config/claude-for-legal/product-legal/CL
 | Sector | Overlay regimes to surface |
 |---|---|
 | **Children / minors** | COPPA (US — operators of services directed to children under 13 or with actual knowledge), CA AADC / state age-appropriate design codes, platform age ratings (ESRB, PEGI), addictive-design scrutiny (NY Safe for Kids Act, CA SB 976 and analogs), FTC endorsement guides for kid-directed influencers |
-| **Gaming / loot boxes / in-game currency** | Loot-box odds disclosure (CA AB 2476-style, Chinese / Korean / Belgian / Dutch regimes), ESRB / PEGI descriptors (In-Game Purchases, Loot Boxes, Real Gambling), state gambling law (games-of-chance vs. games-of-skill lines, sweepstakes promotions law), FTC dark-patterns guidance, platform-store policies (Apple, Google, console) |
+| **Gaming / loot boxes / in-game currency** | Loot-box odds disclosure (platform mandates — Apple / Google / console — plus Chinese / Korean / Belgian / Dutch regimes; US state bills proposed but not enacted `[verify current status]`), ESRB / PEGI descriptors (In-Game Purchases, Loot Boxes, Real Gambling), state gambling law (games-of-chance vs. games-of-skill lines, sweepstakes promotions law), FTC dark-patterns guidance, platform-store policies (Apple, Google, console) |
 | **Financial / fintech** | GLBA (NPI, Safeguards Rule, Reg P), state money transmission licensing (MTLs across ~50 states + DC), CFPB UDAAP, state UDAP, bank-partner sponsorship requirements and "true lender" exposure, Reg E / Reg Z where applicable, FINRA if brokerage |
 | **Health** | HIPAA (if CE or BA), FDA SaMD / clinical decision support / general wellness exemption, state health-privacy (WA MHMDA, NV SB 370, CT HIPAA-analog), FTC Health Breach Notification Rule for non-HIPAA entities |
 | **Education** | FERPA (if school or school-acting service provider), state student-privacy (NY Ed Law 2-d, IL SOPPA, CA SOPIPA + AB 1584), COPPA if K-12 data under 13 |
 | **Employment / HR tech** | Title VII, EEOC guidance on AI in hiring, ADA, state AI-hiring laws (IL AIVIA, NYC Local Law 144, CA / CO / UT / NJ analogs under consideration or enacted), state biometric laws (IL BIPA, TX / WA analogs) for video-interview and keystroke products, FCRA for background / verification products |
 | **Government / public sector** | FedRAMP (Low / Moderate / High), FAR / DFARS, CMMC where applicable, state-level equivalents (StateRAMP), CJIS for law-enforcement data, IRS Publication 1075 for tax data, StateRAMP and state procurement rules |
-| **Consumer / retail / marketing** | FTC Act § 5, Made-in-USA rule, Green Guides, CAN-SPAM, TCPA (with TCPA-Shaken/Stir for calls), state auto-renewal (ROSCA, CA ARL, NY GBL § 527-a [consumer] or GOL § 5-903 [B2B services] — verify which applies), state sweepstakes/promotions law |
+| **Consumer / retail / marketing** | FTC Act § 5, Made-in-USA rule, Green Guides, CAN-SPAM, TCPA (with STIR/SHAKEN caller-ID authentication under the TRACED Act / FCC rules for calls), auto-renewal / negative option (federal: ROSCA; state: CA ARL, NY GBL § 527-a [consumer] or GOL § 5-903 [B2B services] — verify which applies), state sweepstakes/promotions law |
 
 If a sector hint fires and no dedicated category in the base framework covers it, insert it as a category (e.g., "6a. Sector overlay — children / COPPA + CA AADC"). Don't let it disappear into category 6 Regulatory as an afterthought; the sector regime often supplies the controlling floor, not a footnote.
 

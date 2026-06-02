@@ -1,7 +1,7 @@
 {
   "name": "regulatory-legal",
-  "version": "1.0.2",
-  "description": "Watches regulatory feeds, diffs new rules against your policy library, tracks comment deadlines and open gaps, and writes the digest your team reads Monday morning.",
+  "version": "1.2.0",
+  "description": "Watches regulatory feeds, diffs new rules against your policy library, tracks comment deadlines and open gaps, and writes a digest filtered by your materiality threshold.",
   "author": {
     "name": "Anthropic"
   }

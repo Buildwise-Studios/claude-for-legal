@@ -7,7 +7,7 @@ description: >
   launch, or to build a claim-chart first pass against the most plausible
   patents before patent counsel review. This skill never concludes a product
   is clear to launch.
-argument-hint: "[describe the product / process / feature and jurisdictions — or just the subject and I'll ask]"
+argument-hint: "[describe the product / process / feature and jurisdictions — or just the subject and the skill will ask]"
 ---
 
 # /fto-triage
@@ -15,9 +15,10 @@ argument-hint: "[describe the product / process / feature and jurisdictions — 
 **This is not a freedom-to-operate opinion.** A formal FTO opinion requires a
 comprehensive search, full claim construction, and element-by-element
 infringement analysis by registered patent counsel. Patent infringement is
-strict liability; willful infringement triples damages. A "no obvious blocking
-patents" result from this skill means the triage didn't find one — it does
-not mean the product is clear.
+strict liability; willful infringement can support enhanced damages — up to
+treble, at the court's discretion — under 35 U.S.C. § 284. A "no obvious
+blocking patents" result from this skill means the triage didn't find one — it
+does not mean the product is clear.
 
 ## Instructions
 
@@ -69,7 +70,8 @@ not drop it. Do not soften it. Do not let the reader skim past it.**
 > patents" result means the triage didn't find one — it does not mean the
 > product is clear. Patent infringement is strict liability; willful
 > infringement (which can follow from knowing about a patent and proceeding
-> anyway) triples damages under 35 U.S.C. § 284. The decision to launch, make,
+> anyway) can support enhanced damages — up to treble, at the court's
+> discretion — under 35 U.S.C. § 284. The decision to launch, make,
 > use, sell, or import is a business decision informed by a formal FTO study
 > and counsel's judgment — not by this triage. A registered patent attorney or
 > agent evaluates before anyone relies on this for a product decision.
@@ -77,13 +79,13 @@ not drop it. Do not soften it. Do not let the reader skim past it.**
 Under-flagging a blocking patent is a one-way door — a product launched, a
 deposition a year later, treble damages on the table. Over-flagging is a
 two-way door — the attorney narrows the list in a read-through. Stay on the
-two-way door side. Always.
+two-way door side.
 
 ### A note on willfulness
 
-Reading this triage is reading something about patents. Reading something about
-patents can, in some circumstances, factor into a willfulness analysis down the
-road. This is one reason the output is marked as privileged when a lawyer is
+This triage surfaces specific patents, and knowledge of a specific patent can,
+in some circumstances, factor into a later willfulness analysis. This is one
+reason the output is marked as privileged when a lawyer is
 using it, and why the non-lawyer output is framed as research to take to
 counsel. Do not discuss specific patents surfaced by this triage outside
 privileged channels.
@@ -367,9 +369,10 @@ Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/
 **This is not a freedom-to-operate opinion.** A formal FTO opinion requires a
 comprehensive search, full claim construction, and element-by-element
 infringement analysis by registered patent counsel. Patent infringement is
-strict liability; willful infringement triples damages. A "no obvious blocking
-patents" result means the triage didn't find one — it does not mean the product
-is clear. A registered patent attorney or agent evaluates before anyone relies
+strict liability; willful infringement can support enhanced damages — up to
+treble, at the court's discretion — under 35 U.S.C. § 284. A "no obvious
+blocking patents" result means the triage didn't find one — it does not mean
+the product is clear. A registered patent attorney or agent evaluates before anyone relies
 on this for a product decision.
 
 **Triage result:** [GREEN / YELLOW / RED — one sentence why]
@@ -513,7 +516,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **Issue an FTO opinion.** Ever. The loudest guardrail in the plugin.
+- **Issue an FTO opinion** — no exceptions. This is the loudest guardrail in the plugin.
 - **Construe claims.** Where construction is dispositive, it flags the term and
   both plausible constructions. It does not pick one.
 - **Adjudicate validity.** It may note known PTAB proceedings; it does not

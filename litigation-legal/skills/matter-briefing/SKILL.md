@@ -96,7 +96,7 @@ If `last_updated > 30 days ago`: flag at the top AND suggest running `/litigatio
 
 ## Tone
 
-This is not marketing. Say what's known; flag what's not. If a matter has thin history and was just opened, the briefing is short — and that's correct. Don't pad.
+Say what's known; flag what's not. If a matter has thin history and was just opened, the briefing is short — and that's correct. Don't pad.
 
 ## Close with the next-steps decision tree
 

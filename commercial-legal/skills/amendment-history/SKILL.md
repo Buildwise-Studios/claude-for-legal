@@ -6,7 +6,7 @@ description: >
   clause. Use when the user says "what changed in this contract over time", "show
   me the amendment history", "where's the latest [clause]", "how has [provision]
   evolved", or uploads multiple versions of an agreement.
-argument-hint: "[file(s) | [CLM ID (coming soon)] | [repository link (coming soon)]] [--provision <clause name>]"
+argument-hint: "[file(s) | [CLM ID] | repository link] [--provision <clause name>]"
 ---
 
 # /amendment-history
@@ -17,7 +17,7 @@ controlling language.
 
 ## Instructions
 
-1. **Get the documents:** From file upload, [CLM ID (coming soon)], or [repository link (coming soon)]. Accept multiple files in one invocation. If none
+1. **Get the documents:** From file upload, [CLM ID], or repository link. Accept multiple files in one invocation. If none
    provided, ask.
 
 2. **Detect the mode** by parsing the request per the mode
@@ -59,7 +59,7 @@ controlling language.
 
 ## Purpose
 
-Contracts accumulate amendments. By the third amendment, nobody remembers
+Contracts accumulate amendments, and after several it becomes unclear
 what the original said or which version of a clause controls. This skill
 reads the base agreement and all amendments in chronological order and
 either summarizes what changed across the whole contract or traces a
@@ -102,12 +102,12 @@ If the overall request is ambiguous between modes, ask one question:
 
 Accept documents from any of these sources:
 
-**[CLM integration coming soon] (if connected):**
+**[CLM] (if connected):**
 Search by counterparty name or agreement title. Pull the base agreement
 and all amendments. Record metadata typically includes execution dates —
 use these to establish chronological order.
 
-**[Document repository integration coming soon] (if connected):**
+**[Document repository] (if connected):**
 Search by counterparty name or filename. Look for files matching patterns
 like "Amendment", "Addendum", "Amendment No. 1", "First Amendment", or
 numbered suffixes. Pull all matches and sort by file date or filename
@@ -141,9 +141,9 @@ top of the output only where uncertain:
 
 ---
 
-## Privilege inheritance
+## Privilege and confidentiality
 
-This skill reads the base agreement and amendments — often privileged or confidential in their own right, and typically used for privileged analysis. The output inherits the source's privilege and confidentiality status. Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` `## Outputs` to every output below, distribute only within the privilege circle, and store it where privileged materials live. Strip the header before any external delivery.
+This skill reads the base agreement and amendments. Executed agreements exchanged with a counterparty are confidential business records, not privileged communications — do not assert privilege over the contracts themselves. The protection attaches to this skill's analysis of them, as attorney work product or legal advice. Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` `## Outputs` to every output below, distribute only within the privilege circle, and store it where privileged materials live. Strip the header before any external delivery.
 
 ## Step 2: Read and index
 

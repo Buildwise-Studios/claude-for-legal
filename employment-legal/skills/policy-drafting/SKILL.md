@@ -59,7 +59,7 @@ If the topic has no jurisdictional variance (dress code, say), skip this step.
 
 ### Step 3: Draft the core policy
 
-One policy. Applies everywhere. Clear and readable — employees should understand it without a lawyer.
+Draft one core policy that applies everywhere. Keep it clear and readable — employees should understand it without a lawyer.
 
 Structure:
 - Purpose (one sentence — why this policy exists)
@@ -128,4 +128,4 @@ To handbook-updates skill: when this policy is approved, it diffs against the cu
 
 - Approve the policy. It drafts; a human approves.
 - Roll out the policy. Communication to employees is an HR workflow.
-- Cover every jurisdiction on earth — only the ones in the footprint. If the footprint expands, re-run.
+- Cover every jurisdiction — only the ones in the footprint. If the footprint expands, re-run.

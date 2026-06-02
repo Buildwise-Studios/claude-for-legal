@@ -5,7 +5,7 @@ vendor AI review, and regulation-to-policy gap analysis. Built around a team pra
 learned from your AI policy, a reference impact assessment, and your key vendor AI
 agreements.
 
-**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. A lawyer reviews, verifies, and decides. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
+**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. The professional acts stay human: you configure the use-case registry and red lines, an attorney authorizes them, you verify the citations, and you decide risk tier, materiality, and whether a use case proceeds. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
 
 ## Who this is for
 
@@ -32,6 +32,7 @@ positions and house style.
 | Command | Does |
 |---|---|
 | `/ai-governance-legal:cold-start-interview` | Cold-start interview — writes your practice profile |
+| `/ai-governance-legal:customize [section]` | Change one practice-profile setting (risk posture, escalation contacts, registry entries) without re-running the full interview; maintains attestation dates |
 | `/ai-governance-legal:ai-inventory [list \| add \| edit \| classify \| show]` | Manage the EU AI Act per-system inventory — track each system's role and risk tier |
 | `/ai-governance-legal:use-case-triage [use case]` | Classify a use case against your registry (approved / conditional / never) |
 | `/ai-governance-legal:aia-generation [use case]` | Run an AI impact assessment (AIA) in your house style |
@@ -46,6 +47,7 @@ positions and house style.
 | Skill | Purpose |
 |---|---|
 | **cold-start-interview** | Writes `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` from interview + seed docs |
+| **customize** | Guided edit of one practice-profile section without re-running the cold-start interview; maintains attestation dates |
 | **ai-inventory** | EU AI Act per-system inventory — role (provider, deployer, importer, distributor, authorized rep, product manufacturer) and risk tier per system |
 | **use-case-triage** | Classifies use cases against the registry; flags missing assessments |
 | **aia-generation** | AI impact assessment (AIA) in house format |
@@ -66,7 +68,7 @@ positions and house style.
 Have ready (if they exist): your AI or acceptable use policy, one prior impact assessment,
 key vendor AI agreements, model inventory or approved tool list.
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` and survives plugin updates. In Claude Cowork, where that path isn't writable, setup saves to `claude-for-legal-config/` in your working folder instead — keep using the same folder across sessions.
 
 ### 2. Triage a new use case
 
@@ -112,10 +114,16 @@ question to answer there.
 
 ```
 ai-governance-legal/
+├── .claude-plugin/plugin.json
+├── .mcp.json
 ├── CLAUDE.md
 ├── README.md
+├── references/
+│   └── currency-watch.md
 └── skills/
     ├── cold-start-interview/
+    ├── customize/
+    ├── ai-inventory/
     ├── use-case-triage/
     ├── aia-generation/
     ├── vendor-ai-review/
@@ -127,7 +135,18 @@ ai-governance-legal/
 
 ## How it learns
 
-Your practice profile at `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` agent watches for drift between your AI governance policy and your practice and proposes updates. You can re-run setup, edit the file directly, or tell a skill to record a new position.
+Your practice profile at `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` skill sweeps for drift between your AI governance policy and your practice when you run it (weekly, via your own scheduler) and proposes updates. You can re-run setup, run `/ai-governance-legal:customize` to change one setting, edit the file directly, or tell a skill to record a new position.
+
+## Connectors
+
+Ships with Slack and Google Drive in `.mcp.json` — productivity connectors, not research sources. This plugin does not ship a case-law or regulatory research connector; add CourtListener or your firm's research tool via `/mcp` to enable retrieval-backed citations. Without one, cites to the EU AI Act, state AI statutes, and regulatory guidance come from model knowledge and are tagged `[verify]`.
+
+## What this plugin does not do
+
+- **No research connector ships with it.** AI-regulation and case-law cites come from model knowledge or web search until you connect a research tool.
+- **No citator.** Nothing here checks whether an authority is still good law — keep your citator subscription.
+- **It does not derive your obligations.** The AI inventory registers systems, roles, and risk tiers; the obligation analysis stays with the lawyer.
+- **Consequential actions are gated.** Nothing is filed, sent, or published without explicit confirmation.
 
 ## Notes
 
@@ -141,6 +160,6 @@ Your practice profile at `~/.claude/plugins/config/claude-for-legal/ai-governanc
   ask which hat you're wearing for each task.
 - Gap analysis is manual (you point it at a regulation or guidance doc). For automated
   monitoring, pair with the `regulatory-legal` plugin, if the plugin is installed.
-- The `## Company profile` section is the first block of `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` by convention. If
-  you run other `-counsel` plugins, you can copy it across rather than re-entering
-  the same context.
+- The `## Company profile` section is the first block of `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` by convention. Company-level
+  facts come from the shared `~/.claude/plugins/config/claude-for-legal/company-profile.md`,
+  used by all plugins in this suite — edit that file to change the context everywhere.

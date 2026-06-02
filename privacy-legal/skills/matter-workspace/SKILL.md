@@ -63,7 +63,7 @@ All matter data lives under:
         └── <slug>/                 # closed matters — readable but not active
 ```
 
-Slugs are lowercase with hyphens. Examples: `acme-msa-2026`, `zenith-renewal`, `vendor-xyz-nda`.
+Slugs are lowercase with hyphens. Examples: `acme-dpa-2026`, `zenith-dsar-batch`, `vendor-xyz-pia`.
 
 ## Active matter is in the practice CLAUDE.md
 
@@ -80,7 +80,7 @@ The `Active matter:` line under `## Matter workspaces` in the practice-level CLA
    - **Matter type** (read the plugin's practice profile for typical categories; for privacy-legal: PIA (processing activity) | DPA review | DSAR | regulator inquiry | transfer-mechanism review | incident | other)
    - **Confidentiality level** (standard | heightened | clean-team — heightened prompts extra care in cross-matter settings)
    - **Key facts** (2–5 sentences: what this matter is about, who the stakeholders are, what's at stake)
-   - **Matter-specific overrides to the practice playbook** (e.g., "client requires 24-month LoL cap not 12", "counterparty is a strategic partner — relationship-preserving tone")
+   - **Matter-specific overrides to the practice playbook** (e.g., "client agreed 48-hour breach notice window, not house standard 72", "counterparty is a strategic partner — relationship-preserving tone")
    - **Related matters** (slugs of any connected matters)
 3. Write `matters/<slug>/matter.md` using the template below.
 4. Seed `matters/<slug>/history.md` with a single "Opened" entry.
@@ -134,7 +134,7 @@ Set `Active matter:` in the practice-level CLAUDE.md to `none — practice-level
 
 ## Matter type
 
-[vendor MSA | customer agreement | NDA | SaaS subscription | amendment | renewal | other — with one-line rationale]
+[PIA (processing activity) | DPA review | DSAR | regulator inquiry | transfer-mechanism review | incident | other — with one-line rationale]
 
 ## Key facts
 
@@ -144,9 +144,9 @@ Set `Active matter:` in the practice-level CLAUDE.md to `none — practice-level
 
 *Any deviation from the practice-level playbook that applies to this matter and only this matter.*
 
-- [e.g., "LoL cap: client requires 24 months, not house standard 12."]
+- [e.g., "Breach notice window: client agreed 48 hours, not house standard 72."]
 - [e.g., "Tone: relationship-preserving — counterparty is a strategic partner."]
-- [e.g., "Governing law: must be English law, not Delaware."]
+- [e.g., "Transfer mechanism: client requires SCCs plus UK Addendum, even where adequacy applies."]
 
 ## Related matters
 
@@ -174,7 +174,7 @@ Intake completed. Slug: `[slug]`. Status: active.
 
 ## Cross-matter context
 
-The practice-level CLAUDE.md has a `Cross-matter context:` flag. When it's `off` (the default), a skill working in matter A **never reads** files in `matters/B/` for any other `B`. Period. This is the confidentiality guarantee the setting exists to provide.
+The practice-level CLAUDE.md has a `Cross-matter context:` flag. When it's `off` (the default), a skill working in matter A **never reads** files in `matters/B/` for any other `B`. This is the confidentiality guarantee the setting exists to provide.
 
 When it's `on`, a skill may read files across matter folders only when the user explicitly asks it to (e.g., "compare our position on liability caps across the last five vendor matters"). Even when `on`, the default is to load only the active matter unless the user asks for a cross-matter view.
 

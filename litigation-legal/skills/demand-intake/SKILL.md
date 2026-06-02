@@ -19,7 +19,7 @@ argument-hint: "[title] [--full]"
 
 ## Purpose
 
-The drafting is downstream. The value is in the pre-writing — forcing the questions a careless letter skips. Leverage, BATNA, downside tolerance, privilege filters, the actual audience. A demand letter sent without thinking about those is worse than no letter.
+The value of intake is in the pre-writing: it forces the questions a careless letter skips — leverage, BATNA, downside tolerance, privilege filters, the actual audience. A demand letter sent without considering those is worse than no letter.
 
 ## Load context
 
@@ -48,7 +48,7 @@ Record the answers in the intake under a `## Posture` section before `## Parties
 `payment | breach-cure | cease-desist | employment-separation | preservation | other`
 
 **2. Parties**
-- **Sender:** our company (and any specific entity if multi-entity)
+- **Sender:** the company (and any specific entity if multi-entity)
 - **Recipient:** counterparty — name, entity, address
 - **Recipient audience:** who actually reads (GC? CEO? individual? in-house legal?)
 - **Relationship:** `customer | vendor | ex-employee | competitor | third-party | other`
@@ -70,7 +70,7 @@ Record the answers in the intake under a `## Posture` section before `## Parties
 
 **6. Deadlines**
 - External deadline driving this (SoL, ongoing harm window, business event)
-- Demand compliance deadline — how long we give the recipient. Use the response window captured in `## Posture for this matter` above; do not fall back to a practice-level default.
+- Demand compliance deadline — how long the recipient is given. Use the response window captured in `## Posture for this matter` above; do not fall back to a practice-level default.
 
 **7. Prior outreach**
 - Has this been raised informally? When, by whom, in what form?

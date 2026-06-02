@@ -38,7 +38,7 @@ Some clinics want a formal gate: student drafts, professor reviews, output relea
 
 **This skill is only active if `~/.claude/plugins/config/claude-for-legal/legal-clinic/CLAUDE.md` → Supervision style is "formal review queue."** Otherwise it's dormant — the cold-start interview asks the professor which model they want, and this is one of three options.
 
-Whether to use a formal review workflow is genuinely an open question for clinic adoption. It depends on student experience level, caseload, and how the professor already runs supervision. The professor decides at setup and can change it later.
+Whether to use a formal review workflow depends on student experience level, caseload, and how the professor already runs supervision. The professor decides at setup and can change it later.
 
 ## Load context
 
@@ -48,7 +48,7 @@ If formal queue IS enabled → read flag triggers and proceed.
 
 ## The queue
 
-Lives at `references/review-queue.yaml`. Each entry:
+Lives at `~/.claude/plugins/config/claude-for-legal/legal-clinic/review-queue.yaml` — the same version-independent config root as `deadlines.yaml`, so the approval log survives plugin updates. On first use, if the file doesn't exist, create it from the empty template shipped at `${CLAUDE_PLUGIN_ROOT}/skills/supervisor-review-queue/references/review-queue.yaml`. Each entry:
 
 ```yaml
 - id: Q-001
@@ -99,7 +99,7 @@ Every action logged. Approval logs are clinic records — they document that a l
 
 ## Teaching signal
 
-The queue is also data. Pattern in returns ("Student X keeps missing the service requirement") is a coaching conversation. Pattern in edits ("Everyone's demand letters are too long") is a `/ramp` update for next semester.
+Queue history is also a teaching signal. A pattern in returns ("Student X keeps missing the service requirement") suggests a coaching conversation. A pattern in edits ("Everyone's demand letters are too long") suggests a `/ramp` update for next semester.
 
 ## What this skill does NOT do
 

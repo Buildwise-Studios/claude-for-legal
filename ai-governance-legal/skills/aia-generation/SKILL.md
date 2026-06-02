@@ -14,12 +14,14 @@ argument-hint: "[describe the use case or system, or pass a triage result]"
 # /aia-generation
 
 1. Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. Confirm impact assessment house style is populated.
-2. Determine risk track (fast or full) from governance tier and use case characteristics, using the framework below.
-3. Run intake — conversational, not a form.
-4. Regulatory classification for each regime in the footprint — research tier, prohibited-practice exposure, and applicable obligations; cite primary sources.
-5. Write assessment in house style (from seed doc, or default if none captured).
-6. Policy diff against `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` AI policy commitments.
-7. Output: assessment doc + conditions list + handoff flags (privacy PIA, vendor review if needed).
+2. Check the practice context index for prior cross-plugin work on this system (PIAs/DPIAs, vendor AI reviews) — see `## Check prior cross-plugin work`.
+3. Determine risk track (fast or full) from governance tier and use case characteristics, using the framework below.
+4. Run intake — conversational, not a form.
+5. Regulatory classification for each regime in the footprint — research tier, prohibited-practice exposure, and applicable obligations; cite primary sources.
+6. Write assessment in house style (from seed doc, or default if none captured).
+7. Policy diff against `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` AI policy commitments.
+8. Output: assessment doc + conditions list + handoff flags (privacy PIA, vendor review if needed).
+9. Record the completed assessment in the practice context index — see `## Record in the practice context index`.
 
 ```
 /ai-governance-legal:aia-generation "AI résumé screening for HR"
@@ -56,7 +58,31 @@ Read `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` �
 If the seed structure is in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`, **use it**. The point is that this assessment
 looks like the other assessments this team produces.
 
-**Jurisdictional scope.** This assessment applies the regulatory regimes listed in `## Regulatory footprint` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. AI legal rules, risk classifications, and deployment obligations vary materially by jurisdiction and are moving fast. If this system is (or will be) deployed outside that footprint, or if a choice-of-law question is in play, this analysis may not apply as written — re-run or expand the footprint.
+**Jurisdictional scope.** This assessment applies the regulatory regimes listed in the **Regulatory footprint** field under `## Company profile` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. AI legal rules, risk classifications, and deployment obligations vary materially by jurisdiction and are moving fast. If this system is (or will be) deployed outside that footprint, or if a choice-of-law question is in play, this analysis may not apply as written — re-run or expand the footprint.
+
+---
+
+## Check prior cross-plugin work
+
+Read the shared practice context index at `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`) — an append-only, cross-plugin index of completed assessments and reviews, one pointer line per work product:
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+
+Look for entries whose Subject matches this system, product, or its vendor:
+
+- **Prior PIAs/DPIAs on the same product/system** (privacy-legal, `pia-generation` entries) — a privacy assessment's data-flow mapping and risk findings feed this AIA's data inputs and risks sections.
+- **Prior AI vendor reviews on the same vendor** (`vendor-ai-review` entries) — the reviewed terms (training-on-data, liability, model changes) feed the system description and risks.
+
+If a relevant entry exists, surface it before starting:
+
+> "A privacy assessment for [system] was completed on [date] (privacy-legal) — its data-flow mapping and risk findings feed sections 3 (data inputs) and 8 (risks and mitigations) of this AIA. Want me to incorporate it? (You'll need to point me at the document; the index has its location.)"
+
+The index records pointers, not findings — to incorporate prior work, the user points you at the document (the index has its location).
+
+If the index doesn't exist or has no relevant entries, say nothing and proceed — no noise. If matter workspaces are enabled and a matter is active, skip the check entirely — matter-scoped work is never indexed at practice level, and cross-matter visibility would breach matter isolation.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
 
 ---
 
@@ -80,7 +106,7 @@ If none of the above and the house trigger isn't met:
 
 ## Step 1: Risk track
 
-Before intake, determine which track to run. The tier definitions and the fast-track criteria come from `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` (`## Use case registry` and `## Governance tiers`), not from any hardcoded regime-specific framework.
+Before intake, determine which track to run. The tier definitions and the fast-track criteria come from `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` (`## Use case registry` and its `### Governance tiers` subsection), not from any hardcoded regime-specific framework.
 
 Research the applicable risk classification framework for each regime in the user's regulatory footprint. Many regimes distinguish by risk tier, affected population, and decision consequentiality — research the specific criteria. Note that most regimes treat employee data as personal data and employee monitoring as consequential; don't assume internal-only systems are out of scope.
 
@@ -88,17 +114,17 @@ Research the applicable risk classification framework for each regime in the use
 >
 > **Source attribution tiering.** Tag every citation in the AIA — regulatory text, delegated acts, guidance, standards — with its source. For model-knowledge citations, use one of three tiers rather than a single blanket "verify" tag:
 >
-> - `[settled]` — stable, well-known statutory and regulatory references unlikely to have changed (e.g., GDPR Art. 22 as a concept, the existence of Regulation (EU) 2024/1689 as the EU AI Act). Still verify before certifying, but lower priority.
+> - `[settled — last confirmed YYYY-MM-DD]` — stable, well-known statutory and regulatory references that have been checked against a primary source on the stated date (e.g., GDPR Art. 22 as a concept, the existence of Regulation (EU) 2024/1689 as the EU AI Act). The date matters — even "stable" references change. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead; an unconfirmed "settled" is a confident overclaim. Still verify before certifying, but lower priority.
 > - `[verify]` — model-knowledge citations that are real but should be verified: specific delegated / implementing acts, regulator guidance, NYC DCWP rules, Colorado AI Act provisions, harmonized standards, effective dates, EEOC guidance, and anything post-2023.
 > - `[verify-pinpoint]` — pinpoint citations (specific EU AI Act article numbers, annex references, Colorado AI Act subsections, NYC LL 144 rule sections, sub-paragraph letters) carry the highest fabrication risk and should ALWAYS be verified against a primary source. EU AI Act article numbers in particular shifted during consolidation; every pinpoint cite to the Act should be verified against the Official Journal text.
 >
-> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[EUR-Lex]`, `[regulator site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations remain `[user provided]`. The tiering surfaces the real verification work — a reader who verifies everything verifies nothing. Never strip or collapse the tags.
+> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[EUR-Lex]`, `[regulator site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations remain `[user provided]`. The tiering surfaces the real verification work — a single undifferentiated tag gives the reader no way to prioritize what to check first. Never strip or collapse the tags.
 >
 > **For non-lawyer users, uncertain dates go in a confirm-list, not inline.** A `[verify]` tag on "effective February 1, 2026" reads as "effective February 1, 2026" to a CISO who doesn't know what `[verify]` means. Read `## Who's using this` in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md`. If Role is **Non-lawyer** and a date, deadline, phase-in, threshold, or effective-date assertion is uncertain (would carry `[verify]` or `[verify-pinpoint]` if inline), replace the inline assertion with "effective date: confirm with counsel" (or "threshold: confirm with counsel", etc.) and collect all uncertain assertions in a final AIA section titled:
 >
 > > **Things I'm not certain about — ask your attorney to confirm before relying on this:**
 >
-> List each uncertain item there with (1) what I said, (2) what I'm uncertain about, (3) why it matters to the assessment. This prevents a non-lawyer reader from mistaking a flagged best-guess for a checked fact. Lawyer-role users get the inline `[verify]` treatment — they know what the tag means.
+> List each uncertain item there with (1) the assertion as written, (2) what is uncertain about it, (3) why it matters to the assessment. This prevents a non-lawyer reader from mistaking a flagged best-guess for a checked fact. Lawyer-role users get the inline `[verify]` treatment — they know what the tag means.
 
 **Fast track vs. full assessment:** `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` defines what qualifies for abbreviated treatment. If `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` doesn't define fast-track criteria, default to full assessment and ask the user what criteria they want captured for next time.
 
@@ -161,23 +187,23 @@ Ask:
 - **Scale:** "Roughly how many individuals are affected per [month/year]? How long has it been running?"
 - **History:** "Has it been assessed before? Has it produced decisions that were challenged, appealed, or reversed?"
 
-Stage changes the assessment: a proposed system gets a design review (can we build it safely?). A pilot gets a design review plus a "before you scale" gate. A live system gets a retrospective impact check (has it caused harm?) AND a go-forward review. A live-and-scaled system gets all of the above plus a remediation plan if issues are found, because you can't just turn it off.
+Stage changes the assessment: a proposed system gets a design review (can we build it safely?). A pilot gets a design review plus a "before you scale" gate. A live system gets a retrospective impact check (has it caused harm?) AND a go-forward review. A live-and-scaled system gets all of the above plus a remediation plan if issues are found, because a scaled production system cannot simply be turned off.
 
 ---
 
 ## Step 3: Regulatory classification
 
-**Step 3 pre-check — footprint freshness.** Before iterating over the captured `## Regulatory footprint`, compare the use case's affected population and decision type (from Step 2) against the footprint as written. The footprint was set at cold-start, based on the company's operating posture at that moment. If the use case introduces an affected population (e.g., children, employees in a new state, EU data subjects) or a decision type (e.g., hiring, creditworthiness, health diagnosis, law enforcement, critical infrastructure) that the footprint does not contemplate, **re-derive the applicable regimes rather than iterating over the stale list.**
+**Step 3 pre-check — footprint freshness.** Before iterating over the captured **Regulatory footprint** field, compare the use case's affected population and decision type (from Step 2) against the footprint as written. The footprint was set at cold-start, based on the company's operating posture at that moment. If the use case introduces an affected population (e.g., children, employees in a new state, EU data subjects) or a decision type (e.g., hiring, creditworthiness, health diagnosis, law enforcement, critical infrastructure) that the footprint does not contemplate, **re-derive the applicable regimes rather than iterating over the stale list.**
 
 Say to the user:
 
-> "The practice profile's regulatory footprint was set for [affected populations / decision types captured at cold-start]. This use case affects **[new population or decision type — e.g., employees in Colorado, minors under 13, credit decisions, biometric identification]**, which is not in the captured footprint. I'm going to re-derive the applicable regimes from the company's operating jurisdictions ([list from `## Company profile`]) and this use case's decision type ([Y]), rather than use the stale footprint. If this use case is representative of work you expect to see more of, update `## Regulatory footprint` at the end of this run so the next AIA doesn't have to re-derive."
+> "The practice profile's regulatory footprint was set for [affected populations / decision types captured at cold-start]. This use case affects **[new population or decision type — e.g., employees in Colorado, minors under 13, credit decisions, biometric identification]**, which is not in the captured footprint. I'm going to re-derive the applicable regimes from the company's operating jurisdictions ([list from `## Company profile`]) and this use case's decision type ([Y]), rather than use the stale footprint. If this use case is representative of work you expect to see more of, update the **Regulatory footprint** field under `## Company profile` at the end of this run so the next AIA doesn't have to re-derive."
 
 A common failure mode: the footprint lists EU AI Act + GDPR + NYC Local Law 144, and the use case is a hiring system being deployed into Illinois and Colorado. The footprint has no Illinois or Colorado entry, so iterating over it silently misses IL AIVIA, the new Colorado AI Act deployer obligations, and BIPA implications of any biometric component. Re-derive.
 
 A second failure mode: the footprint was set before a regime that now matters existed (or took effect). If re-derivation surfaces a regime not in the footprint, flag it in the output's recommendation section, cite the authority, and recommend updating the footprint.
 
-For each regime in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## Regulatory footprint` that applies to this system — **plus any regime surfaced by the re-derivation above** — research the currently operative risk classification framework and determine where the system lands.
+For each regime in `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## Company profile` → **Regulatory footprint** field that applies to this system — **plus any regime surfaced by the re-derivation above** — research the currently operative risk classification framework and determine where the system lands.
 
 Research tasks:
 - What is the regime's own tier taxonomy (e.g., prohibited / high-risk / limited / minimal, or the regime's equivalent)?
@@ -190,7 +216,7 @@ Research tasks:
 
 Don't assume internal-only systems are out of scope — most regimes treat employee data as personal data and employee monitoring as consequential. Verify the specific rule.
 
-**Provider-vs-deployer split (when `AI role: Both`).** If `~/.claude/plugins/config/claude-for-legal/ai-governance-legal/CLAUDE.md` → `## Company profile` → `AI role` is `Both` (the company is both a provider/builder and a deployer), Section 6 MUST include a provider-vs-deployer mapping table per regime. Most regimes impose materially different obligations on providers (or builders) versus deployers (or users) — collapsing them into one undifferentiated list misses obligations and conflates risks. Do not combine provider and deployer obligations into a single section. Produce, per regime:
+**Provider-vs-deployer split (when the company holds both roles).** Role is per-system, not company-level — check the AI system inventory (`~/.claude/plugins/config/claude-for-legal/ai-governance-legal/ai-systems.yaml`) and the `AI activity summary` in `## Company profile`. If the company acts as provider (or builder) of any system and deployer of any system — including holding both roles for the system under assessment — Section 6 MUST include a provider-vs-deployer mapping table per regime. Most regimes impose materially different obligations on providers (or builders) versus deployers (or users) — collapsing them into one undifferentiated list misses obligations and conflates risks. Do not combine provider and deployer obligations into a single section. Produce, per regime:
 
 | Obligation | As provider | As deployer |
 |---|---|---|
@@ -287,7 +313,7 @@ three conditions required before production deployment."]
 **Effective / enforcement date:** [date(s)]
 **Ambiguity or open interpretation:** [flag anything not yet settled]
 
-**Provider-vs-deployer obligation split (required if `AI role: Both`):**
+**Provider-vs-deployer obligation split (required when the inventory shows the company holding both provider and deployer roles):**
 
 | Obligation | As provider | As deployer |
 |---|---|---|
@@ -355,7 +381,7 @@ Same standard as the PIA skill — risks must be **specific and tied to the desi
 |---|---|---|
 | "AI hallucination" | Applies to every LLM; says nothing | "Model may generate plausible but incorrect legal citations — support agents have no current verification step before sending to customers" |
 | "Bias" | Too vague | "Résumé scoring model trained on historical hires; if historical cohort was demographically homogeneous, underrepresented candidates may be systematically scored lower" |
-| "Vendor risk" | Circular | "OpenAI's terms permit training on API inputs by default; unless the opt-out is confirmed in the agreement, customer support messages may be used to train the model" |
+| "Vendor risk" | Circular | "The vendor's terms permit training on submitted inputs by default; unless an opt-out or contractual prohibition is confirmed in the signed agreement, customer support messages may be used to train the model" |
 
 Aim for 2-5 real risks, not 12 padded ones.
 
@@ -380,9 +406,23 @@ Flag every mismatch. One of them has to change before deployment.
 - **To product / engineering:** Conditions list with owners and deadlines. Not
   "add oversight" — "add a human review step before any automated email is sent,
   owner: [product lead], before launch."
-- **To privacy:** If personal data is involved, flag: "Run `/privacy-legal:pia-generation [system name]` in parallel, if the plugin is installed — the AIA doesn't substitute for a PIA."
+- **To privacy:** If personal data is involved, flag: "If the privacy-legal plugin is installed, run `/privacy-legal:pia-generation [system name]` in parallel — it will pick up this work from the practice context index. The AIA doesn't substitute for a PIA."
 - **To vendor-ai-review:** If a new vendor is involved, flag: "If there's no AI addendum reviewed for [vendor], run `/ai-governance-legal:vendor-ai-review` before production."
 - **To reg-gap-analysis:** If new regulatory obligations emerged (EU AI Act high-risk, new sector rule), that skill tracks the gap.
+
+---
+
+## Record in the practice context index
+
+**Record in the practice context index.** After the assessment is complete, append a one-line entry to `~/.claude/plugins/config/claude-for-legal/practice-context.md` (or the working-folder fallback `./claude-for-legal-config/practice-context.md`): date, this plugin, this skill, the subject (product/system/vendor name), the outcome status, and where the full document lives. If the index doesn't exist, create it from the template at `references/practice-context-template.md` in the plugin root (or, if the template isn't available, with the column schema shown below). The `Outcome` cell takes exactly one value from a closed set — `completed`, `draft`, `superseded`, or `withdrawn` — status only, never findings, conclusions, or risk ratings. Skip this step when working inside a matter workspace — matter-scoped work is never indexed at practice level.
+
+If the practice profile sets `**Cross-plugin practice index:** off`, skip this section entirely — do not read or write the index. If the practice profile is a multi-client practice (private practice — solo, small firm, or large firm) and matter workspaces are not enabled, skip the index entirely (reading and writing) — without workspace isolation, practice-level entries would let one client's assessments inform another client's work.
+
+| Date | Plugin | Skill | Subject | Outcome | Where the full document lives |
+|---|---|---|---|---|---|
+| [YYYY-MM-DD] | ai-governance-legal | aia-generation | [product/system name] | [completed / draft / superseded / withdrawn] | [path or DMS link] |
+
+The index is practice-level work-product — same confidentiality as the practice profiles. Record pointers, not findings: one line per artifact, status-only outcome, no substantive findings (the index travels in backups and syncs more readily than the documents it points to). Never record client names in multi-client (firm) practices — use matter numbers or generic descriptors.
 
 ---
 

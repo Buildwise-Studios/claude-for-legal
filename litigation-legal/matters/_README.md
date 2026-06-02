@@ -1,6 +1,8 @@
 # matters/ — portfolio data
 
-This folder holds the portfolio. Two layers:
+> **Location.** This layout lives at `~/.claude/plugins/config/claude-for-legal/litigation-legal/matters/` (or `./claude-for-legal-config/litigation-legal/matters/` where the home path isn't writable, e.g. Claude Cowork). The copy inside the installed plugin is documentation only — never store live matter files there; the install directory is replaced on plugin update.
+
+This folder layout holds the portfolio. Two layers:
 
 - **`_log.yaml`** — the ledger. One row per matter. Parseable by skills. Source of truth for rollups.
 - **`[slug]/`** — per-matter detail. Narrative and history. Where humans read and edit.
@@ -35,8 +37,8 @@ Year makes the slug stable even if a similar matter arises later. The folder nam
 
 ## Closed matters
 
-Stay here. Don't delete. `/portfolio-status` filters them from active rollups by default; `/portfolio-status --all` includes them. Closed matters are the training set for portfolio judgment.
+Stay here. Don't delete. `/portfolio-status` filters them from active rollups by default; `/portfolio-status --all` includes them. Closed matters remain a reference point when assessing new matters.
 
 ## Corrections
 
-If a past history entry was wrong, don't edit it. Append a new entry that references and corrects it. The record of the correction is as important as the correction itself.
+If a past history entry was wrong, don't edit it. Append a new entry that references and corrects it, so the correction itself is part of the record.

@@ -33,7 +33,7 @@ Confirm: "This use is within the proceedings in which the documents were disclos
 
 ## Purpose
 
-Facts happen in order. The chronology is the spine every narrative hangs on — the statement of facts in a brief, reserve memos, settlement memos, depo prep, witness prep. Building a chron by hand is slow; AI is good at structured extraction. The catch: garbage-in, garbage-out. This skill pulls from the sources the configuration declares and from whatever the user uploads.
+The chronology is the spine every narrative hangs on — the statement of facts in a brief, reserve memos, settlement memos, depo prep, witness prep. Building a chronology by hand is slow; structured extraction automates it. Output quality depends entirely on source quality: this skill pulls from the sources the configuration declares and from whatever the user uploads.
 
 ## Modes
 
@@ -143,7 +143,7 @@ One event per document usually. Occasionally zero (undated or no event establish
 
 **Privilege flag per entry (only when privilege_posture == B-mixed). Three-state rule — never silently decide a subjective privilege test isn't met:**
 
-- `priv: ok` — source is **confidently** non-privileged (filings, regulatory correspondence, public docs, counterparty communications without our counsel). Used only when there's no plausible privilege theory.
+- `priv: ok` — source is **confidently** non-privileged (filings, regulatory correspondence, public docs, counterparty communications not involving counsel). Used only when there's no plausible privilege theory.
 - `priv: flag` — source is confidently or likely privileged (communications with counsel, work-product memos, privileged drafts, joint-defense material). **Default for anything uncertain** — if the dominant-purpose call is close, or litigation contemplation is borderline, or the content is mixed, it goes here, not in `ok`.
 - `priv: review` — source unclear on its face, but the skill could not make the call at all (no sender/recipient metadata, unreadable, etc.).
 
@@ -157,7 +157,7 @@ The same event surfaces in multiple documents: a meeting is on three calendars a
 
 Read the pivot fact and key facts from `matter.md` (`--matter` mode) or from the configuration's `## Case theory` section (`--documents` mode). Tag each event:
 
-- 🔴 **Key** — event is part of the pivot fact or a key fact for/against us
+- 🔴 **Key** — event is part of the pivot fact or a key fact for/against the client
 - 🟡 **Relevant** — context, pattern evidence, supports a secondary argument
 - ⚪ **Background** — useful for completeness, not going in the brief
 

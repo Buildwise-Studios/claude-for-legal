@@ -2,7 +2,7 @@
 
 Intellectual property practice: trademark, copyright, patent, trade secret, and open source. Drafts and triages cease-and-desist letters and DMCA takedowns (sending and responding), runs first-pass trademark clearance and freedom-to-operate triage, reviews IP clauses in agreements, tracks registrations and renewal deadlines, and checks open source license compliance. Built around a practice profile that gets written by a cold-start interview — the plugin learns *your* enforcement posture, portfolio, and approval matrix, not a generic one.
 
-**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. A lawyer reviews, verifies, and decides. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
+**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. The professional acts stay human: you configure the enforcement posture, you verify citations and registrations against the primary source, you decide whether to assert, and only the named approver sends the letter. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
 
 ## Who this is for
 
@@ -36,6 +36,7 @@ It writes what it learns to `~/.claude/plugins/config/claude-for-legal/ip-legal/
 | Command | Does |
 |---|---|
 | `/ip-legal:cold-start-interview` | Run (or re-run) the cold-start interview |
+| `/ip-legal:customize` | Change one part of the practice profile — risk posture, escalation contacts, enforcement posture, OSS rules — without re-running the interview |
 | `/ip-legal:cease-desist [context]` | Cease-and-desist — send, or triage an inbound one, with the approval routing your CLAUDE.md requires |
 | `/ip-legal:takedown [context]` | DMCA takedown — send, respond to a received notice, or draft a counter-notice |
 | `/ip-legal:clearance [mark]` | First-pass trademark clearance — knockout + confusion analysis, attorney still signs off |
@@ -63,11 +64,11 @@ It writes what it learns to `~/.claude/plugins/config/claude-for-legal/ip-legal/
 | **portfolio** | Registration register, renewal deadlines, status dashboard |
 | **matter-workspace** | Create, list, switch, and close matter workspaces for multi-client practices; isolates each client/matter so context does not leak across them |
 
-## Interactive commands vs. scheduled agents
+## Interactive commands vs. recurring agents
 
-The commands above run when you invoke them — for when you're working a matter. The agents below run on a schedule — for what moves while you're not looking:
+The commands above run when you invoke them — for when you're working a matter. The agents below are designed for a recurring cadence — they do not run on their own; trigger them with a recurring reminder or an external scheduler:
 
-| Agent | What it watches | Default cadence |
+| Agent | What it watches | Suggested cadence |
 |---|---|---|
 | **ip-renewal-watcher** | Portfolio register — computes what's due (renewals, affidavits, maintenance) in the next 90 days and posts a ranked deadline report | Weekly |
 
@@ -75,7 +76,7 @@ The commands above run when you invoke them — for when you're working a matter
 
 **Connect a research tool first — the citation guardrails depend on it.** Without one, every cite is tagged `[verify]` and the reviewer note above each deliverable records that sources weren't verified. The plugin works either way; it just does more of the verification for you when a research tool is connected.
 
-The legal research connectors in this plugin aren't just data sources — they're the difference between a verified citation and a citation you have to check. A citation retrieved through **CourtListener** (U.S. court opinions, PACER dockets, citation verification) or **Descrybe** (primary-law search, citation treatment, quoted-language verification) is tagged with its source and can be traced back. A citation from the model's knowledge or from web search is tagged `[verify]` or `[verify-pinpoint]` and should be checked against a primary source before anyone relies on it. The plugin tiers its citations so your verification time goes where it matters.
+The legal research connectors in this plugin aren't just data sources — they're the difference between a verified citation and a citation you have to check. A citation retrieved through **CourtListener** (U.S. court opinions, PACER dockets, citation verification) or **Descrybe** (primary-law search, citation treatment, quoted-language verification) is tagged with its source and can be traced back. A citation from the model's knowledge or from web search is tagged `[verify]` and should be checked against a primary source before anyone relies on it. The plugin tiers its citations so your verification time goes where it matters.
 
 ## Integrations
 
@@ -91,11 +92,18 @@ With patent research connected: FTO and prior-art skills pull references automat
 
 With a case-law tool connected: clearance and infringement-triage skills verify precedent and check whether a cited case is still good law.
 
-With Drive or Slack connected: portfolio exports, C&D templates, and enforcement-log updates route through the channel you pointed us at.
+With Drive or Slack connected: portfolio exports, C&D templates, and enforcement-log updates route through the channel named in the practice profile.
+
+## What this plugin does not do
+
+- **No citator.** CourtListener and Descrybe retrieve opinions and check treatment, but neither is a KeyCite/Shepard's replacement — keep your citator subscription.
+- **No patent claim drafting.** Patent prosecution stays with a patent agent or patent attorney; patent work here is limited to FTO triage, clause review, portfolio tracking, and infringement triage.
+- **Clearance and FTO are first-pass triage, not opinions.** The output is a research package for an attorney to take forward.
+- **It does not send anything.** C&Ds and takedowns are drafted and routed through your approval matrix; sending stays with the approver.
 
 ## Quick start
 
-### 1. Get interviewed
+### 1. Run the cold-start interview
 
 ```
 /ip-legal:cold-start-interview
@@ -103,7 +111,7 @@ With Drive or Slack connected: portfolio exports, C&D templates, and enforcement
 
 Ten to fifteen minutes. Have your portfolio list, brand guidelines (if any), a C&D template (if any), and your OSS policy (if any) ready to share.
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/ip-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/ip-legal/CLAUDE.md` and survives plugin updates. In Claude Cowork, where that path isn't writable, setup saves to `claude-for-legal-config/` in your working folder instead — keep using the same folder across sessions.
 
 ### 2. Clear a mark
 
@@ -127,7 +135,7 @@ Output: registrations with renewal, affidavit, or maintenance deadlines in the n
 ip-legal/
 ├── .claude-plugin/plugin.json
 ├── .mcp.json
-├── CLAUDE.md                    # Your practice profile — written by cold-start, edited by you
+├── CLAUDE.md                    # practice-profile template — cold-start writes your editable copy to ~/.claude/plugins/config/claude-for-legal/ip-legal/CLAUDE.md
 ├── README.md
 ├── agents/
 │   └── ip-renewal-watcher.md
@@ -163,7 +171,7 @@ Your practice profile at `~/.claude/plugins/config/claude-for-legal/ip-legal/CLA
 ## Notes
 
 - Every skill reads the practice profile first. If it finds placeholders, it stops and tells you to run `/ip-legal:cold-start-interview`. There's no generic fallback — a generic IP posture is worse than no posture.
-- Sending a C&D starts a fight. The `/ip-legal:cease-desist` skill will not send anything itself; it drafts, surfaces the approval matrix entry, and waits for the approver.
+- Sending a C&D is a consequential assertion of rights that can start a dispute. The `/ip-legal:cease-desist` skill will not send anything itself; it drafts, surfaces the approval matrix entry, and waits for the approver.
 - `/ip-legal:clearance` and `/ip-legal:fto-triage` are **first-pass** triage. The output is a research package for an attorney, not a clearance opinion. The skill says so on every run.
 - `/ip-legal:oss-review` flags license obligations and incompatibilities. It does not bless a commercial-use decision — engineering and legal decide that together.
 - Patent claim drafting is intentionally out of scope. This plugin plays well alongside a patent prosecution specialist; it does not replace one.

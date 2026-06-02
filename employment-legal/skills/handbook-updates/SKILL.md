@@ -64,7 +64,7 @@ Is the change reducing something the old version promised?
 
 If yes: that's a risk. Some states treat handbook policies as contractual. Reducing a benefit may need more than just updating the document — advance notice, consideration, or in some cases it can't be done retroactively.
 
-Flag this. Don't block it — but flag it.
+Flag this risk; do not block the change.
 
 ## Output
 
@@ -79,7 +79,7 @@ Flag this. Don't block it — but flag it.
 
 | Section | References changed section | Still accurate? | Fix needed |
 |---|---|---|---|
-| [name] | [how] | ✅/⚠️ | [what] |
+| [name] | [how] | ✓/⚠️ | [what] |
 
 ### State supplement impact
 

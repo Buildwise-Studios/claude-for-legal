@@ -8,8 +8,13 @@
 #   skills: [{path: ...}]                -> uploaded, referenced by skill_id
 #   callable_agents: [{manifest: ...}]   -> created first, referenced by agent id
 #
-# Reader subagents with an `output_schema` block get a thin validation wrapper
-# so their JSON is schema-checked before the orchestrator consumes it.
+# Subagent `output_schema` blocks document each worker's JSON contract and are
+# input to scripts/validate.py, which the deploying team runs in its own
+# harness between worker output and the orchestrator. This script strips the
+# blocks before POST — the CMA API does not accept or enforce them.
+#
+# `mcp_servers` entries whose URL env var is unset are skipped (along with any
+# `mcp_toolset` that references them), with a notice per skipped server.
 #
 # Usage: scripts/deploy-managed-agent.sh <slug>
 #   e.g. scripts/deploy-managed-agent.sh reg-monitor
@@ -31,8 +36,9 @@ REPO_SLUG="${REPO_SLUG:-$(basename -s .git "$(git config --get remote.origin.url
 : "${REPO_SLUG:?cannot derive REPO_SLUG from git remote; set REPO_SLUG env var}"
 COOKBOOK_TAG="${REPO_SLUG}/${ROLE}"
 
-# Validate SKILL_TITLE_PREFIX against the same allowlist the YAML env-var
-# substitution uses. This string flows into `curl -F display_title=...`;
+# Validate SKILL_TITLE_PREFIX with the YAML env-var substitution allowlist
+# plus space (display titles may contain spaces). This string flows into
+# `curl -F display_title=...`;
 # without validation, a hostile prefix could inject extra multipart fields
 # or smuggle newlines.
 if [[ -n "${SKILL_TITLE_PREFIX:-}" ]]; then
@@ -66,7 +72,32 @@ def sub(m):
     return v
 t = open(sys.argv[1]).read()
 t = re.sub(r"\$\{([A-Z0-9_]+)\}", sub, t)
-json.dump(yaml.safe_load(t), sys.stdout)
+doc = yaml.safe_load(t)
+# Skip mcp_servers entries whose URL env var was never set (the url is still
+# the literal ${VAR} placeholder), plus any mcp_toolset that references them.
+# This is the behavior the cookbook READMEs document for optional connectors.
+PLACEHOLDER = re.compile(r"^\$\{[A-Z0-9_]+\}$")
+if isinstance(doc, dict) and isinstance(doc.get("mcp_servers"), list):
+    dropped = {s.get("name") for s in doc["mcp_servers"]
+               if isinstance(s, dict) and PLACEHOLDER.fullmatch(str(s.get("url", "")))}
+    if dropped:
+        doc["mcp_servers"] = [s for s in doc["mcp_servers"]
+                              if not (isinstance(s, dict) and s.get("name") in dropped)]
+        if isinstance(doc.get("tools"), list):
+            doc["tools"] = [tool for tool in doc["tools"]
+                            if not (isinstance(tool, dict)
+                                    and tool.get("type") == "mcp_toolset"
+                                    and tool.get("mcp_server_name") in dropped)]
+        for name in sorted(str(n) for n in dropped):
+            print(f"note: skipping MCP server {name!r} in {sys.argv[1]} (URL env var not set)",
+                  file=sys.stderr)
+    # A url with an unresolved ${...} fragment (partial substitution) must
+    # never be POSTed — fail fast rather than create a broken connector.
+    for s in doc["mcp_servers"]:
+        if isinstance(s, dict) and "${" in str(s.get("url", "")):
+            nm = s.get("name", "<unnamed>")
+            sys.exit(f"unresolved env var in mcp_servers url for server {nm!r}")
+json.dump(doc, sys.stdout)
 ' "$1"
 }
 

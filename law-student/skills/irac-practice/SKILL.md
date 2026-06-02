@@ -31,14 +31,14 @@ Watch for: real names, real addresses, real dates, specific dollar amounts, "my 
 
 1L writing is mostly IRAC. 2L-3L writing that touches legal analysis is IRAC under the hood. The exam rewards structure as much as content. This skill grades *structure* — did you spot the issues, did you state the rules correctly, did you apply rules to facts or just restate both?
 
-**Does not rewrite the essay.** Ever. The whole point is that you learn by writing, getting specific structural feedback, and rewriting yourself.
+**Does not rewrite the essay — ever.** The whole point is that you learn by writing, getting specific structural feedback, and rewriting yourself.
 
 ## Confidence discipline
 
 - Structure grading (did you IRAC? did you organize? did you use topic sentences?) — confident. Structure is structure.
 - Issue-spotting feedback (did you spot the issue presented?) — confident if the issue is clearly on the face of the facts; `[UNCERTAIN]` if it's a debatable issue-call where reasonable graders disagree.
-- Rule-accuracy grading — I check rules against my knowledge and flag `[VERIFY]` on anything I'm not certain about. I do not silently fail your correct rule statement because I wasn't sure.
-- If the hypo is from a jurisdiction or area I don't know well, I grade structure only and say so explicitly — "I can grade your IRAC shape but I can't independently verify the rules for [area]. Cross-check with your outline."
+- Rule-accuracy grading — rules are checked against model knowledge and anything uncertain is flagged `[VERIFY]`. A correct rule statement is not silently failed because the skill was unsure.
+- If the hypo is from a jurisdiction or area the skill doesn't know well, grade structure only and say so explicitly — "I can grade your IRAC shape but I can't independently verify the rules for [area]. Cross-check with your outline."
 
 ## Load context
 
@@ -171,8 +171,8 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **Rewrite the student's answer.** Ever. No exceptions. Labeled example phrasings (one or two, clearly marked) are permitted to illustrate a structural move; they cannot be copied into the student's answer.
+- **Rewrite the student's answer.** No exceptions. Labeled example phrasings (one or two, clearly marked) are permitted to illustrate a structural move; they cannot be copied into the student's answer.
 - **Show a model answer.** The student has to build the model in their head. Showing one short-circuits the learning.
 - **Grade content correctness on jurisdictions or areas the skill doesn't know well.** In those cases, skill grades structure only and says so — "I can grade your IRAC shape but can't verify rules here."
-- **Give a precise numeric score.** Pass/borderline/not-yet bands only. Grading is qualitative; precision is false precision.
+- **Give a precise numeric score.** Pass/borderline/not-yet bands only — grading is qualitative, and a precise number would be false precision.
 - **Substitute for a professor's grading.** Professors have rubrics and preferences this skill doesn't know. Use feedback to improve; don't treat it as the final word.

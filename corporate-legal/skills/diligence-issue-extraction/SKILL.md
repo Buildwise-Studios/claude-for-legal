@@ -26,7 +26,7 @@ argument-hint: "[VDR folder path or category name]"
 
 ## Purpose
 
-The VDR has 2,000 documents. Somewhere in there are the 30 that matter for the deal. This skill reads documents against the diligence categories and materiality thresholds from `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md`, extracts issues, and writes them in house memo format.
+A VDR can hold 2,000 documents of which a few dozen matter to the deal. This skill reads documents against the diligence categories and materiality thresholds from `~/.claude/plugins/config/claude-for-legal/corporate-legal/CLAUDE.md`, extracts issues, and writes them in house memo format.
 
 ## Load context
 
@@ -170,7 +170,7 @@ Group findings by request list category. Within category, sort by severity.
   Every finding with a pre-closing action tag should reach closing-checklist, not just the ones labeled "consent." If a finding sits in the gray zone (might need a closing action, might be a post-closing covenant), hand it off with a flag — closing-checklist can drop it if the purchase agreement says otherwise. Under-handoff is a one-way door; over-handoff is corrected in review.
 
 
-**Successor liability.** Flag: pending or threatened tort/products-liability claims, environmental matters and cleanup obligations, bulk-sale/fraudulent-transfer exposure (is the seller retaining enough assets to pay its remaining creditors?), seller's post-closing dissolution plan (if seller dissolves, plaintiffs chase the buyer), and whether the purchase agreement has an assumed/excluded-liabilities schedule that actually covers the known exposures. Even in asset deals, the "de facto merger," "mere continuation," and "product line" doctrines can transfer liability — this is the analysis that surprises buy-side clients who think they're buying assets clean.
+**Successor liability.** Flag: pending or threatened tort/products-liability claims, environmental matters and cleanup obligations, bulk-sale/fraudulent-transfer exposure (is the seller retaining enough assets to pay its remaining creditors?), seller's post-closing dissolution plan (if seller dissolves, plaintiffs chase the buyer), and whether the purchase agreement has an assumed/excluded-liabilities schedule that actually covers the known exposures. Even in asset deals, the "de facto merger," "mere continuation," and "product line" doctrines can transfer liability — an asset purchase does not by itself ensure the buyer takes the assets free of these exposures.
 
 ## Batch processing
 

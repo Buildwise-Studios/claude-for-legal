@@ -74,11 +74,11 @@ Identify which right the data subject is invoking. Common categories:
 >
 > **Source attribution tiering.** Tag every citation with its source. For model-knowledge citations, use one of three tiers rather than a single blanket "verify" tag:
 >
-> - `[settled]` — stable, well-known statutory and regulatory references unlikely to have changed (e.g., GDPR Art. 33, CCPA § 1798.100, FTC Act § 5, 45-day CCPA response window under § 1798.130(a)(2) as a concept). Still verify before filing, but lower priority.
+> - `[settled — last confirmed YYYY-MM-DD]` — stable, well-known statutory and regulatory references that have been checked against a primary source on the stated date (e.g., GDPR Art. 33, CCPA § 1798.100, FTC Act § 5, 45-day CCPA response window under § 1798.130(a)(2) as a concept). The date matters — even "stable" references change. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead; an unconfirmed "settled" is a confident overclaim. Still verify before filing, but lower priority.
 > - `[verify]` — model-knowledge citations that are real but should be verified: specific implementing regulations, agency guidance, case holdings, thresholds, effective dates, post-2023 amendments.
 > - `[verify-pinpoint]` — pinpoint citations (specific subsection letters, volume/page numbers, paragraph numbers, regulatory subpart references) carry the highest fabrication risk and should ALWAYS be verified against a primary source.
 >
-> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[issuing authority site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations remain `[user provided]`. The tiering surfaces the real verification work — a reader who verifies everything verifies nothing. Never strip or collapse the tags.
+> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[issuing authority site]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations remain `[user provided]`. The tiering directs verification effort to the citations most likely to need it. Never strip or collapse the tags.
 
 Some requests are combinations — "delete my account and send me my data first" is deletion + portability. Handle as two linked requests.
 
@@ -90,7 +90,7 @@ Per the method in `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUD
 - **Email match:** Request came from an email on file → usually sufficient for low-risk requests
 - **Additional verification:** For high-value accounts or deletion requests → challenge question, phone verification, ID document
 
-**Calibrate to risk.** Over-verifying turns the DSAR process into a barrier (bad look with regulators). Under-verifying risks handing someone else's data to a fraudster.
+**Calibrate to risk.** Over-verifying turns the DSAR process into a barrier, which regulators view unfavorably. Under-verifying risks handing someone else's data to a fraudster.
 
 If identity can't be verified:
 
@@ -100,7 +100,7 @@ is at issue. To proceed, please [verification step]. We cannot provide personal
 data in response to a request we cannot verify.
 ```
 
-This pauses the clock (arguably) but don't sit on it — respond to say you need verification within a few days, not on day 29.
+Whether a pending verification pauses the response clock is regime-specific — the default rule is that the clock runs from receipt (see the Clock-start rule below). Under CCPA, the 45-day window runs from receipt regardless of the time required to verify (11 CCR § 7021) `[verify]`; under UK GDPR, the ICO treats the clock as running from receipt of the requested identity information `[model knowledge — verify]`. Cite the applicable regime's rule; do not assume tolling. Either way, send the verification request within a few days of receipt, not near the response deadline.
 
 ### Step 3: Locate the data
 
@@ -114,7 +114,7 @@ Walk the systems list from `~/.claude/plugins/config/claude-for-legal/privacy-le
 | CRM (e.g., Salesforce, HubSpot) | | | |
 | Email marketing (e.g., Marketo) | | | |
 | Logs | | | |
-| Backups | | | (note: usually exempt from deletion — see below) |
+| Backups | | | (note: typically handled via a documented backup-rotation accommodation — deleted on next rotation cycle — not a blanket exemption; see Step 4) |
 | Third-party processors | | | (they may need to be notified for deletion) |
 
 For a B2B processor: the "data subject" is usually *your customer's* end user. Check whether this is actually your customer's DSAR to handle, not yours. Many processor DPAs say "forward DSARs to the controller."
@@ -140,7 +140,7 @@ Common recurring questions to work through:
 
 > **Research-connector pre-flight.** Before emitting either letter or the internal exemption analysis, check whether a legal research connector is reachable for this session — Westlaw, an EUR-Lex / regulator-site connector, or any firm-configured research MCP. Collect this into the reviewer note per CLAUDE.md `## Outputs` — the reviewer note sits on the INTERNAL exemption-analysis and cover memo, NOT on the outward-facing DSAR letters to the data subject. If no connector returns results in Step 1 (right classification), Step 4 (exemption analysis), or the Deadline management research step (or none is configured at run time), record it in the **Sources:** line of the internal reviewer note — e.g., `not connected — cites from training knowledge; claimed exemptions, response deadlines, and extension mechanisms are especially fabrication-prone, verify before asserting any exemption to a data subject or regulator`. Per-citation `[model knowledge — verify]` tags remain inline. Do not emit a standalone banner above the output.
 
-Most regimes expect (or require) a prompt acknowledgment separate from the substantive response. Produce both; do not collapse them into one letter that waits until the 45-day deadline to go out.
+Most regimes expect (or require) a prompt acknowledgment separate from the substantive response. Produce both; do not collapse them into one letter that waits until the statutory deadline to go out.
 
 - **Step 5a — Acknowledgment letter.** Sent within days of receipt (target: same-day to 3–5 days, always well inside the regime's statutory window). Confirms receipt, states what the controller understands the request to be, states the response clock and the target date, asks for any identity-verification material still outstanding. Does NOT contain the substantive disclosure. A prompt acknowledgment is the first regulator-visible signal that the DSAR process is working; it also reduces the risk of a duplicate request or an early complaint.
 - **Step 5b — Substantive response letter.** The actual disclosure, deletion confirmation, or portability export. Goes out by the statutory deadline (or the internal SLA if tighter). Only after identity verification is complete and the Step 3 / Step 4 data location + exemption analysis is done.
@@ -176,14 +176,14 @@ We received your [access / deletion / portability / correction] request on [date
 - No fee applies to this request. [Or: the fee applies only if the regime permits it and the request is manifestly unfounded or excessive — cite the provision.]
 
 [If identity verification is outstanding:]
-**To verify your identity,** please [specific verification step — e.g., reply to this email from the address on file with the last 4 digits of the payment method we have on file]. This does not pause our deadline; we continue to work in parallel.
+**To verify your identity,** please [specific verification step — e.g., reply to this email from the address on file with the last 4 digits of the payment method we have on file]. [State the verification-tolling position for the applicable regime, with cite — e.g., under CCPA the 45-day clock runs from receipt regardless of the time required to verify (11 CCR § 7021) `[verify]`; under UK GDPR the ICO treats the clock as running from receipt of the requested identity information `[model knowledge — verify]`. Do not assert a tolling position the regime does not support.]
 
 If you have questions, contact [privacy contact].
 
 [Sender]
 ```
 
-**Clock-start rule.** The response clock starts on receipt of the request, not on completion of identity verification — unless the applicable regime says otherwise. Do not tacitly toll the clock on verification. If a regime has a different trigger, cite it; do not assume.
+**Clock-start rule.** The response clock starts on receipt of the request, not on completion of identity verification — unless the applicable regime says otherwise. Do not tacitly toll the clock on verification. If a regime has a different trigger, cite it; do not assume. Known regime splits: CCPA's 45-day window runs from receipt regardless of verification time (11 CCR § 7021) `[verify]`; under UK GDPR the ICO treats the clock as running from receipt of the requested identity information `[model knowledge — verify]`.
 
 #### Step 5b — Substantive response letter templates
 
@@ -273,13 +273,13 @@ Per `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → Esca
 
 ## Deadline management
 
-**Two-letter rule.** Every DSAR produces an acknowledgment letter (prompt — target same-day to 3–5 days after receipt) AND a substantive response letter (by the statutory deadline). Most regimes either require or expect a prompt acknowledgment separate from the substantive response; a single combined letter sent on day 45 is a process failure even if it is substantively correct.
+**Two-letter rule.** Every DSAR produces an acknowledgment letter (prompt — target same-day to 3–5 days after receipt) AND a substantive response letter (by the statutory deadline). Most regimes either require or expect a prompt acknowledgment separate from the substantive response; a single combined letter sent at the deadline is a process failure even if it is substantively correct.
 
 **Research the currently operative response deadline for the specific right invoked and the applicable jurisdictions.** Check whether an extension mechanism exists, how much extra time it buys, and what notice the data subject must receive to invoke it. Identify when the clock starts (receipt vs. verification vs. some other trigger — default rule is receipt; verify per regime). Cite the controlling statute or regulation with pinpoint references. Note effective dates — data protection response timelines are amended frequently and new state laws introduce their own clocks.
 
 If `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` → `## DSAR process` records an internal SLA that is tighter than the legal deadline, use the internal SLA and note the legal backstop.
 
-If you're going to need an extension, send the "we need more time" notice well before the first deadline. Day-of extensions look bad.
+If an extension will be needed, send the "we need more time" notice well before the first deadline; an extension invoked on the deadline itself invites regulator scrutiny.
 
 ## What this skill does not do
 

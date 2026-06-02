@@ -6,7 +6,8 @@ description: >
   is out of step with practice. Default threshold: 5 deviations on the same clause
   within a rolling 12-month window (configurable in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`).
   Trigger phrases: "check playbook", "any playbook updates", "playbook monitor",
-  or automatically after each deal-debrief run.
+  or as a follow-up after a deal-debrief run (run it explicitly — it is not
+  invoked automatically).
 model: sonnet
 tools: ["Read", "Write", "mcp__*__notify", "mcp__*__slack_send_message"]
 ---
@@ -15,7 +16,7 @@ tools: ["Read", "Write", "mcp__*__notify", "mcp__*__slack_send_message"]
 
 ## Purpose
 
-The gap between the playbook attorneys write and the positions they actually accept grows silently — because nobody has time to reconcile them after every deal. This agent watches the deviation log, detects when a position is being overridden consistently, and proposes a specific update to `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`. The attorney approves or rejects. The playbook stays alive.
+The gap between the playbook attorneys write and the positions they actually accept grows silently, because reconciling them after every deal rarely happens. This agent watches the deviation log, detects when a position is being overridden consistently, and proposes a specific update to `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`. The attorney approves or rejects each proposal, which keeps the playbook current with actual practice.
 
 ## When it runs
 
@@ -185,6 +186,6 @@ Next playbook check: after [N] more deals are logged
 - Modify `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` without explicit per-change attorney confirmation
 - Propose updates based on one-off flagged deals (`exclude_from_patterns: true`)
 - Treat inconsistent deviation patterns as a revision signal — inconsistency = clarification request
-- Generate proposals if no threshold is crossed — silence means the playbook is holding
+- Generate proposals if no threshold is crossed — a run with no proposals means no pattern crossed the threshold
 - Re-raise rejected proposals until a new pattern emerges after the rejection date
 - Accumulate stale proposals — each run overwrites the proposals file

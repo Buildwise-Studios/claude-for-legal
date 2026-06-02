@@ -28,7 +28,7 @@ Two modes. Pick one:
 
 4. **Respect the gate.** In send mode, the loud gate runs before any final draft is written to disk. Do not skip it.
 
-5. **Respect the approval matrix.** Pull the approver for the C&D row from `## Enforcement posture → Approval matrix`. Pull automatic escalations. Surface both in the gate; do not smother them.
+5. **Respect the approval matrix.** Pull the approver for the C&D row from `## Enforcement posture → Approval matrix`. Pull automatic escalations. Surface both in the gate; do not omit or downplay them.
 
 6. **Hand off where appropriate.** In receive mode, if the recommendation is to respond firmly, offer to chain into `/ip-legal:cease-desist --send` pre-populated with the response context. If the recommendation is to pre-empt with a DJ action or TTAB cancellation, escalate to outside counsel per the practice profile's IP litigation row — do not draft.
 
@@ -96,7 +96,7 @@ Record each right. Registered rights get cited by number. Common-law rights get 
 > - **Since when** — date first observed, date of the earliest use you can document?
 > - **Evidence** — screenshots, receipts, watch-service hit, customer confusion reports?
 
-Facts go in specific. "You sold product X on [URL] bearing the mark [Y] on [date]" beats "You have been infringing our rights." Adjectives tell on a thin record.
+State the facts in specifics: "You sold product X on [URL] bearing the mark [Y] on [date]" is stronger than "You have been infringing our rights." Vague adjectives signal a thin factual record.
 
 ### Step 3: Identify the relationship
 
@@ -155,7 +155,7 @@ Collect and present — in one block, for user sign-off — the following:
 
 - **Legal entity** — exact corporate name, state/country of formation, registered agent, any `d/b/a` aliases. USPTO / EUIPO ownership records; state Secretary of State business search; public company filings if any. Flag `[SME VERIFY]` if the source is unconfirmed.
 - **Size and resources** — approximate headcount, revenue band if publicly known, funding if a startup, parent company if a subsidiary. Public sources (LinkedIn headcount, press, Crunchbase, SEC filings). Flag honestly if size can't be determined.
-- **IP portfolio** — do they hold registered marks, patents, or copyrights in adjacent classes? A counterparty with its own IP portfolio is more likely to (a) understand the posture, (b) counter-assert, and (c) file DJ. USPTO TESS / TSDR quick search on the accused entity and affiliates.
+- **IP portfolio** — do they hold registered marks, patents, or copyrights in adjacent classes? A counterparty with its own IP portfolio is more likely to (a) understand the posture, (b) counter-assert, and (c) file DJ. USPTO trademark search / TSDR quick search on the accused entity and affiliates.
 - **Litigation history** — PACER / Court Listener quick pass for prior IP litigation as plaintiff or defendant. A repeat litigant or DJ-happy counterparty changes the calculus. Flag any prior C&D campaigns in the industry.
 - **Counsel** — do they have known outside IP counsel? Firm, lead partner if identifiable from prior filings. "No counsel on file" is itself a data point.
 - **DJ-plaintiff risk posture** — given size, IP portfolio, litigation history, counsel, and forum: is this a counterparty likely to welcome a C&D as an invitation to file DJ in a forum of their choosing? Flag high / medium / low with a one-sentence reason.
@@ -208,8 +208,8 @@ Draft structure:
 
 **Drafting rules:**
 
-- **Specificity over adjectives.** Dates, URLs, reg numbers, samples. Adjectives are a draftsperson's tell that the facts are thin.
-- **No overbroad assertions.** If the mark is registered in one class and the accused use is in a different class, say so — don't pretend the registration covers both. Overbroad C&Ds are evidence of bad faith and can support §43(a)(1)(B) or Rule 11 exposure.
+- **Specificity over adjectives.** Dates, URLs, reg numbers, samples. Vague adjectives signal that the facts are thin.
+- **No overbroad assertions.** If the mark is registered in one class and the accused use is in a different class, say so — don't pretend the registration covers both. Overbroad or bad-faith assertions can be used against the sender — DJ exposure, state unfair-competition or tortious-interference claims (bad-faith assertions to third parties), fee-shifting under the Lanham Act / Copyright Act if litigation follows, and Rule 11 exposure for any later court filing that repeats them.
 - **Citations as placeholders unless verified.** `[CITE: Lanham Act §32, 15 U.S.C. §1114]` stays as a placeholder unless the user provided the cite or a research tool returned it. Tag every citation with source — `[Westlaw]`, `[user provided]`, `[model knowledge — verify]`, `[web search — verify]`. Never strip the tags.
 - **Consequence language matches posture.** Aggressive → specific relief threatened (injunction, statutory damages under 15 U.S.C. §1117 / 17 U.S.C. §504, attorneys' fees). Measured → "we reserve all rights." Conservative → "we'd like to discuss before considering further steps."
 - **Jurisdiction-specific hooks** — if US, watch for Anti-Cybersquatting (15 U.S.C. §1125(d)) for domain matters, §43(a) for unregistered marks, §504(c) for pre-registration timing. Non-US: flag the forum and note the draft may need foreign associate review.
@@ -233,8 +233,11 @@ Before presenting the draft in-chat or writing the .docx, display this gate verb
 │    hostile forum.                                           │
 │                                                             │
 │  • Overbroad or bad-faith assertions can be used against    │
-│    the sender — §43(a)(1)(B) claims, Rule 11 sanctions,     │
-│    attorneys' fees under the Lanham Act / Copyright Act.    │
+│    the sender — DJ exposure, state unfair-competition or    │
+│    tortious-interference claims (bad-faith assertions to    │
+│    third parties), fee-shifting under the Lanham Act /      │
+│    Copyright Act if litigation follows, and Rule 11         │
+│    exposure for any later court filing repeating them.      │
 │                                                             │
 │  • It starts a dispute that may not settle cheaply.         │
 │                                                             │

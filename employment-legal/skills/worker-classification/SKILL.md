@@ -7,7 +7,7 @@ description: >
   Prospective use only. Use when someone says "we want to bring on a
   contractor", "is this a vendor or a temp", "how should we classify this
   person", or describes a proposed working arrangement.
-argument-hint: "[describe the proposed arrangement, or just start and I'll ask]"
+argument-hint: "[describe the proposed arrangement, or leave blank to be asked]"
 ---
 
 # /worker-classification
@@ -52,11 +52,11 @@ us, sets her own hours, uses her own laptop, project fee per placement.
 
 ## Purpose
 
-The most expensive classification decision is the one nobody made consciously.
-Someone describes what they want ("a contractor"), the engagement starts, and
-two years later the facts look like employment. This skill walks the applicable
-tests on the proposed arrangement before it starts — and tells you when what
-you're describing doesn't match the structure you're trying to use.
+Classification decisions that are never made consciously are a common source
+of liability: someone describes what they want ("a contractor"), the
+engagement starts, and two years later the facts look like employment. This
+skill walks the applicable tests on the proposed arrangement before it starts
+— and flags when the described facts don't match the structure being proposed.
 
 This skill teaches the reasoning pattern. It does not state the law. Every
 test formulation, statutory citation, threshold, and carve-out must come from
@@ -272,7 +272,7 @@ Gaps — where the arrangement doesn't match the intended structure:
    misclassification risk if the engagement proceeds as described.
 🟡 [Factor]: [What they described] is a weaker point under [test]. Not
    disqualifying alone, but combined with other factors increases risk.
-✅ [Factor]: Supports [intended classification]. No issue.
+🟢 [Factor]: Supports [intended classification]. No issue.
 ```
 
 **Escalation trigger**
@@ -333,7 +333,7 @@ Purpose: [...] | Source: [...] | Currency: [...]
 ### Gap analysis
 
 [Flags as structured in Step 4 — 🔴 significant risks, 🟡 weaker points,
-✅ clean factors]
+🟢 clean factors]
 
 ---
 
@@ -371,7 +371,7 @@ entity] — coordinate with them on worker agreement. No `/hiring-review` needed
 > - The arrangement (work, control, economics, structure) as described
 > - Jurisdiction and which tests were applied
 > - Test-by-test results with cites and currency
-> - Gap analysis (🔴 / 🟡 / ✅) with the weak prongs called out
+> - Gap analysis (🔴 / 🟡 / 🟢) with the weak prongs called out
 > - Open questions and what's unresolved
 > - What could go wrong (the misclassification theory this arrangement most likely fails on; prior-audit/settlement overlay if any)
 > - What to ask the attorney (is IC viable here; would restructuring through an agency or vendor remove the risk; what contract terms do we need to support the classification)

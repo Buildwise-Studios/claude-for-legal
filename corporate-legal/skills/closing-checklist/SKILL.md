@@ -25,7 +25,7 @@ argument-hint: "[optional: item ID + status update]"
 
 ## Purpose
 
-Deals close when the checklist is done. Everything on it, done. Nothing missing. This skill maintains the list, ingests new items as they surface from diligence, and tells the team what's blocking.
+A deal closes when every item on the checklist is complete. This skill maintains the list, ingests new items as they surface from diligence, and tells the team what's blocking.
 
 ## The checklist
 
@@ -114,7 +114,7 @@ handoff:
 
   # Corporate action fields
   approval_body: "[Shareholders | Board | Committee | Regulator]"
-  approval_threshold: "[e.g., 75% disinterested stockholder vote for §280G cleansing]"
+  approval_threshold: "[e.g., more than 75% (>75%) of disinterested stockholder voting power for §280G cleansing]"
   statutory_or_charter_source: "[e.g., IRC §280G(b)(5)(B); Charter Art. IV §2]"
 
   # Timing
@@ -157,7 +157,7 @@ CP-002: Acme responded, consent form attached, needs countersignature
 
 [same table]
 
-### ✅ Complete
+### Complete
 
 [N] items — [collapsed list]
 

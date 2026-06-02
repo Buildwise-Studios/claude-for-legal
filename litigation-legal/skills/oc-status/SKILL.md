@@ -22,7 +22,7 @@ To run weekly, set a recurring reminder to invoke `/litigation-legal:oc-status`.
 
 ## Purpose
 
-Writing the same status-request email to outside counsel every week across 5–15 matters is mechanical cognitive tax. The content is consistent per matter (status, decisions pending, budget check). The audience is consistent (OC lead partner). The tone is consistent (per house outside-counsel-directive style). A scheduled task drafts all of them; counsel reviews and sends.
+Writing the same status-request email to outside counsel every week across 5–15 matters is repetitive work. The content is consistent per matter (status, decisions pending, budget check). The audience is consistent (OC lead partner). The tone is consistent (per house outside-counsel-directive style). A scheduled task drafts all of them; counsel reviews and sends.
 
 ## Load context
 

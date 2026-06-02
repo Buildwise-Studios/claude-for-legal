@@ -82,8 +82,10 @@ Ask the following in a single block:
 >   manager observation)?
 > - Who is the respondent or subject?
 > - What is the approximate timeframe the alleged conduct occurred?
-> - Is this attorney-directed? (If yes: work product protection applies.
->   If no: flag privilege risk before proceeding.)
+> - Is this attorney-directed? (If yes: privilege/work-product protection may
+>   be available — see the privilege notice above; protection also depends on
+>   purpose and anticipation of litigation. If no: flag privilege risk before
+>   proceeding.)
 >
 > **Investigation type** (helps me suggest the right sources checklist)
 > - HR: harassment / discrimination / retaliation
@@ -429,9 +431,9 @@ Surfaced items:
 [list with one-line description and which pull criterion triggered]
 ```
 
-This report is the answer to "what about missed needles." The pull criteria
-are documented, the surface ratio is visible, and the attorney can review
-the full document log at any time. In Q&A mode, "I have not seen any document
+This report makes coverage verifiable: the pull criteria are documented, the
+surface ratio is visible, and the attorney can review the full document log
+at any time. In Q&A mode, "I have not seen any document
 on [topic] in the [N] documents reviewed" is a meaningful statement only
 because every document reviewed is logged.
 

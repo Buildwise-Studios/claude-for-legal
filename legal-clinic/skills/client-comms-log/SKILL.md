@@ -33,7 +33,7 @@ Four reasons to keep this log:
 3. **Supervision visibility.** Five unreturned voicemails over six weeks is a pattern. The log makes patterns visible that individual students might not flag on their own.
 4. **File retention.** Law school clinics have obligations to maintain complete client files. Communication history is part of that.
 
-Light. Append-only. The student's job is to write a two-sentence entry after every contact; the skill formats it and appends.
+The log is lightweight and append-only. The student writes a two-sentence entry after every contact; the skill formats it and appends.
 
 ## Load context
 
@@ -110,7 +110,7 @@ This is a supervision tool. Clinical professors running `--patterns` across thei
 ## What this skill does not do
 
 - **Store substantive legal analysis.** That lives in intake, memo, and status files. The log is communication record — facts of contact, not legal strategy.
-- **Auto-log from outside systems.** If the clinic uses a case management system (Clio), an integration could pull call logs and emails automatically. That's a future add; not v1.
+- **Auto-log from outside systems.** Entries are logged manually; the skill does not pull call logs or emails from a case management system (Clio).
 - **Edit past entries.** Append-only. If an entry is wrong, write a new entry referencing and correcting it. The integrity of the log depends on not rewriting history.
 - **Enforce log discipline.** If a student doesn't log a call, the skill can't know. Log hygiene is a clinic-culture problem; the skill just makes logging easy.
 - **Handle privileged or attorney-only notes.** If the student needs to record strategic thinking, that goes in the case's internal analysis file, not the comms log.

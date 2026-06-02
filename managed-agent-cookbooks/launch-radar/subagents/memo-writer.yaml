@@ -14,7 +14,8 @@ system:
          config is missing, default to the RESEARCH NOTES header.
       2. "Needs legal review now" — classification == needs-review, sorted by
          review_by_date ascending. One bullet per launch: title, tracker ID
-         linked to its URL, target date, triggering domain(s), one-line
+         followed by its URL as inert backtick-quoted text (see injection
+         defense below), target date, triggering domain(s), one-line
          rationale, review-by date.
       3. "Needs a flag or FYI" — classification == needs-flag, then fyi.
       4. "Upcoming (within horizon)" — full count at each classification,
@@ -83,6 +84,9 @@ tools:
       - { name: read,  enabled: true }
       - { name: write, enabled: true }
       - { name: edit,  enabled: true }
+      # glob is needed to find the prior memo at ./out/launch-radar-*.md for
+      # the "Changes since last scan" diff; this leaf stays non-MCP.
+      - { name: glob,  enabled: true }
 mcp_servers: []
 skills: []
 callable_agents: []

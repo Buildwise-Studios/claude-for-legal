@@ -13,7 +13,7 @@ user-invocable: false
 
 > Owner notifications: on by default. To opt an owner out, leave `owner_slack` empty.
 
-## Per-send confirmation — no exceptions
+## Per-send confirmation — one documented carve-out
 
 Before sending ANY Slack message (assignment notice, overdue reminder, bulk notification, status report):
 
@@ -22,7 +22,9 @@ Before sending ANY Slack message (assignment notice, overdue reminder, bulk noti
 3. If the message contains any citations, deadlines, or compliance conclusions, add: "⚠️ The citations in this message are unverified — I'm not confirming they're current before sending. Do you want me to add a 'verify before acting' line?"
 4. Never send without the confirm. Not on a cadence. Not in a batch. Not because it was sent yesterday.
 
-Auto-send without confirmation is the most irreversible action in this plugin, sending content this plugin's own footer says may be wrong, to people who have no way to check. That combination does not get to skip review.
+Auto-send without confirmation is the most irreversible action in this plugin: it sends content this plugin's own footer says may be wrong, to people who have no way to check. It always requires the per-send confirmation.
+
+**The one documented carve-out: the reg-change-monitor digest.** The scheduled reg-change-monitor agent posts its digest to the digest channel configured at cold-start — a recurring, channel-scoped post the user consented to when configuring the cadence and channel, carrying the unverified-citations footer. Nothing else is exempt. Every owner-directed message (assignment notice, overdue reminder, DM, bulk notification, status report) requires the per-send confirmation above, and the agent never sends those — it queues them into the digest for a human to send through this skill. See Integration below.
 
 ## Matter context
 
@@ -32,8 +34,9 @@ Auto-send without confirmation is the most irreversible action in this plugin, s
 
 ## Purpose
 
-Gaps get found and then forgotten. This skill tracks them until they're closed
-and notifies the people responsible for closing them.
+Tracks gaps from the moment they're found until they're closed, and notifies
+the people responsible for closing them, so a gap found by policy-diff is not
+forgotten.
 
 ## The tracker
 
@@ -71,7 +74,7 @@ gaps:
 | `watch` | Forward-looking item — ANPR, RFI, proposed rule not yet final. No compliance obligation today; policy work waits for the final rule. `due:` is a revisit date (typically the NPRM expected date or a one-year horizon), not a compliance deadline. | No auto-reminder; re-evaluate when an NPRM drops or at the revisit date. |
 | `comment-decision` | Pre-rulemaking comment decision pending — ANPR or NPRM where the team is deciding whether to file a comment. `due:` is the comment deadline. | 21 days before due (tighter than compliance gaps because comment-drafting windows are short). |
 
-A `watch` or `comment-decision` entry is not a compliance gap — it's a tracking artifact for pre-rule items that the watch skill and comments skill produce. Surface them in the status report in their own bucket so counsel reading at 7am can tell at a glance which items are "fix this before a regulator notices" vs. "keep an eye on this."
+A `watch` or `comment-decision` entry is not a compliance gap — it's a tracking artifact for pre-rule items that the watch skill and comments skill produce. Surface them in the status report in their own bucket so counsel can tell at a glance which items are "fix this before a regulator notices" vs. "keep an eye on this."
 
 ## Modes
 
@@ -87,7 +90,7 @@ If Slack MCP is available and `owner_slack` is set:
 Send a Slack DM to the gap owner — but only after the per-send confirmation at the top of this file. Preview the message to the user, wait for an explicit yes, then send:
 
 ```
-📋 New compliance gap assigned to you
+New compliance gap assigned to you
 
 Gap: [GAP-ID] — [requirement, one sentence]
 Regulation: [name + link]
@@ -126,7 +129,7 @@ was not sent and flag for manual follow-up.
 
 [same]
 
-### 👀 Watch items (forward-looking — pre-rule)
+### Watch items (forward-looking — pre-rule)
 
 [Pre-rule tracking — `watch` and `comment-decision` entries. These are not
 compliance gaps. Surface separately so the overdue / due-soon bands contain
@@ -173,8 +176,8 @@ Say nothing about config when the values are populated.
 Reminder cadence is a function of `gap_type` — compliance gaps get a 30-day heads-up, comment-decision items get 21 days (tighter because the drafting window is shorter), watch items get no auto-reminder (re-evaluate when an NPRM drops).
 
 For each gap with status "open" or "in-progress":
-- `partial`, `full`, `new-policy`, `none`: if due date is within 30 days and a reminder has not been sent in the last 7 days, PREVIEW a Slack DM (subject "⏰ Reminder: compliance gap due in [N] days") and wait for per-send confirm before sending.
-- `comment-decision`: if comment deadline is within 21 days and a reminder has not been sent in the last 7 days, PREVIEW a Slack DM (subject "💬 Comment-decision deadline in [N] days") and wait for per-send confirm before sending.
+- `partial`, `full`, `new-policy`, `none`: if due date is within 30 days and a reminder has not been sent in the last 7 days, PREVIEW a Slack DM (subject "Reminder: compliance gap due in [N] days") and wait for per-send confirm before sending.
+- `comment-decision`: if comment deadline is within 21 days and a reminder has not been sent in the last 7 days, PREVIEW a Slack DM (subject "Comment-decision deadline in [N] days") and wait for per-send confirm before sending.
 - `watch`: no auto-reminder. Revisit when the tracker is reviewed or an NPRM is logged for the same regulation.
 - If due date has passed on a compliance gap: flag as overdue in the report and PREVIEW a Slack DM — wait for per-send confirm before sending.
 - If comment deadline has passed on a `comment-decision` item and no comment was filed: flag as overdue, PREVIEW a Slack DM (wait for per-send confirm), and ask the owner to update to `risk-accepted` (deliberate no-comment) or `closed` (comment filed) with a note.
@@ -209,8 +212,7 @@ Updates status to closed, records resolution and close date.
 
 ### Mode 4: Risk-accept a gap
 
-Sometimes the answer is "we're not going to fix this." That's a valid decision
-— but it should be documented.
+Deciding not to fix a gap is a valid decision — but it must be documented.
 
 ```
 /regulatory-legal:gaps --accept GAP-002
@@ -225,7 +227,10 @@ the open-gaps report.
 
 The agent's digest includes the gap count and oldest-open-gap age. If anything
 goes overdue, that goes at the top of the digest. The agent also runs the
-due-date reminder check and sends any outstanding Slack notifications.
+due-date reminder check and lists any outstanding owner notifications in the
+digest as queued — it does not send them. Owner notifications go out through
+`/regulatory-legal:gaps` with the per-send confirmation above; the scheduled
+digest post to the configured digest channel is the agent's only Slack send.
 
 ## Close with the next-steps decision tree
 
@@ -239,4 +244,4 @@ If the tracker surfaced more than ~10 open gaps, or any time the user asks: offe
   action that the note describes.
 - Send Slack notifications if the Slack MCP is not configured. Falls back to
   flagging in the status report.
-- Send more than one reminder per 7-day period per gap. Nag once, not constantly.
+- Send more than one reminder per 7-day period per gap.

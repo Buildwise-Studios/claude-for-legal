@@ -1,8 +1,7 @@
 # Contributing to Claude for Legal
 
-Notes for anyone writing or editing a plugin in this repo. Keep this short — the
-design principles that matter most for the quality of the output, not a style
-guide.
+Notes for anyone writing or editing a plugin in this repo: the design
+principles that matter most for the quality of the output, not a style guide.
 
 ## Before your first PR
 
@@ -11,8 +10,7 @@ comment with a link to the [CLA](CLA.md) and ask you to confirm. Reply with
 `I have read the CLA Document and I hereby sign the CLA` and the check will pass.
 You only need to do this once.
 
-## Design principle: SKILL.md encodes the right behavior; CLAUDE.md guardrails
-are the net
+## Design principle: SKILL.md encodes the right behavior; CLAUDE.md guardrails are the safety net
 
 Every plugin in this repo ships with two layers of instruction:
 
@@ -26,8 +24,8 @@ Every plugin in this repo ships with two layers of instruction:
 **If a skill's correct output depends on a CLAUDE.md guardrail catching a
 mistake the SKILL.md would have made, that's a design smell.** The SKILL.md
 should tell the model what to do directly; the guardrails should catch what the
-SKILL.md missed. Every time a guardrail has to rescue a skill, we're relying on
-the guardrail firing consistently — and on a bad run, a weaker model, a terser
+SKILL.md missed. Every time a guardrail has to rescue a skill, the design relies
+on the guardrail firing consistently — and on a bad run, a weaker model, a terser
 prompt, or a future editor who reads only the skill text, the rescue doesn't
 happen.
 
@@ -66,8 +64,8 @@ Examples of this rule in practice:
   the pattern: stated plainly, non-overridable, owned by the skill.
 - **Write the gate header so the gate is default-on.** If there is an
   exemption, phrase the heading as the gate and narrow the exemption in a
-  sub-bullet, not the other way around. A load-bearing parenthetical is a bug
-  waiting to be reintroduced by the next edit.
+  sub-bullet, not the other way around. A load-bearing parenthetical is likely
+  to be dropped by a future edit, reintroducing the bug.
 
 ## Workflow notes
 
@@ -76,7 +74,12 @@ Examples of this rule in practice:
   decision-posture statement all shape what the skill should say and omit.
 - **Bump the plugin version on a material change.** Patch bumps for behavior
   additions; minor bumps for new skills or new required inputs.
-- **Run the validators.** `scripts/validate.py` and `scripts/lint-tool-scope.py`
-  check the structural invariants the plugin loader depends on.
-- **Do not remove the shared guardrails from CLAUDE.md.** The net stays. The
-  goal is a skill that doesn't need the net, not a plugin without one.
+- **Run the validators.** `claude plugin validate .claude-plugin/marketplace.json`
+  plus `claude plugin validate <plugin>/` for any plugin you touched,
+  `python3 scripts/lint-tool-scope.py`,
+  `python3 scripts/check-guardrail-sync.py` if you touched a plugin
+  `CLAUDE.md` template (the shared guardrail blocks must stay in sync across
+  all twelve), and `bash scripts/test-cookbooks.sh` if you changed a cookbook.
+  The full validation flow is in the root [CLAUDE.md](CLAUDE.md).
+- **Do not remove the shared guardrails from CLAUDE.md.** The goal is a skill
+  that doesn't need the safety net, not a plugin without one.

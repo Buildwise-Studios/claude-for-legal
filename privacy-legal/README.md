@@ -2,7 +2,7 @@
 
 In-house privacy counsel workflows: DPA review, DSAR response drafting, PIA generation, and regulation-to-policy gap analysis. Built around a team practice profile learned from your actual privacy policy, DPA template, and a reference PIA.
 
-**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. A lawyer reviews, verifies, and decides. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
+**Every output is a draft for attorney review — cited, flagged, and gated — not a legal conclusion.** The plugin does the work: reads the documents, applies your playbook, finds the issues, drafts the memo. The professional acts stay human: you configure the playbook positions, you verify the citations against primary sources, and you decide what goes to the data subject or the regulator. Citations are tagged by source so you know which ones came from a research tool and which ones need checking. Privilege markers are applied conservatively so nothing waives by accident. Consequential actions — filing, sending, executing — are gated behind explicit confirmation.
 
 ## Who this is for
 
@@ -17,7 +17,7 @@ In-house privacy counsel workflows: DPA review, DSAR response drafting, PIA gene
 
 The plugin interviews you to learn: are you a controller or processor, which regulations actually apply, what you will and won't agree to in a DPA. Then it reads three seed documents — your privacy policy, your DPA template, one PIA you're happy with — and learns your real positions and house style.
 
-Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` and survives plugin updates.
+Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` and survives plugin updates. In Claude Cowork, where that path isn't writable, setup saves to `claude-for-legal-config/` in your working folder instead — keep using the same folder across sessions.
 
 ```
 /privacy-legal:cold-start-interview
@@ -28,6 +28,7 @@ Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/priva
 | Command | Does |
 |---|---|
 | `/privacy-legal:cold-start-interview` | Cold-start interview |
+| `/privacy-legal:customize [section]` | Change one profile setting (risk posture, DPA playbook, escalation contacts) without re-running the full interview; maintains attestation dates |
 | `/privacy-legal:use-case-triage [activity]` | Does this need a PIA? Quick classification + conditions |
 | `/privacy-legal:dpa-review [file]` | Review a DPA against your playbook (auto-detects direction) |
 | `/privacy-legal:dsar-response` | Walk through a DSAR and draft the response |
@@ -41,6 +42,7 @@ Your configuration is stored at `~/.claude/plugins/config/claude-for-legal/priva
 | Skill | Purpose |
 |---|---|
 | **cold-start-interview** | Writes CLAUDE.md from interview + seed docs |
+| **customize** | Guided edit of one practice-profile section without re-running the cold-start interview; maintains attestation dates |
 | **use-case-triage** | Does this need a PIA / DPIA / can it proceed? Policy conflict check + handoffs |
 | **dpa-review** | Bi-directional (processor/controller) DPA term-by-term review |
 | **dsar-response** | Identity verification → system walk → exemptions → response draft |
@@ -94,7 +96,7 @@ Intake questions → PIA in your house format → policy diff → conditions lis
 
 ## How it learns
 
-Your practice profile at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` skill watches for drift between your policy and your practice and proposes updates. You can re-run setup, edit the file directly, or tell a skill to record a new position.
+Your practice profile at `~/.claude/plugins/config/claude-for-legal/privacy-legal/CLAUDE.md` isn't static — it improves as you use the plugin. Skills tell you when an output used a default you should tune. The `policy-monitor` skill watches for drift between your policy and your practice and proposes updates. You can re-run setup, run `/privacy-legal:customize` to change one setting, edit the file directly, or tell a skill to record a new position.
 
 ## File structure
 
@@ -104,8 +106,11 @@ privacy-legal/
 ├── .mcp.json
 ├── CLAUDE.md
 ├── README.md
+├── references/
+│   └── currency-watch.md
 ├── skills/
 │   ├── cold-start-interview/
+│   ├── customize/
 │   ├── use-case-triage/
 │   ├── dpa-review/
 │   ├── dsar-response/
@@ -115,6 +120,17 @@ privacy-legal/
 │   └── matter-workspace/
 └── hooks/hooks.json
 ```
+
+## Connectors
+
+Ships with Slack and Google Drive in `.mcp.json` — productivity connectors, not research sources. This plugin does not ship a case-law or regulatory research connector; add CourtListener or your firm's research tool via `/mcp` to enable retrieval-backed citations. Without one, cites to GDPR, state privacy statutes, and regulator guidance come from model knowledge and are tagged `[verify]`.
+
+## What this plugin does not do
+
+- **No research connector ships with it.** GDPR/CCPA articles, regulator guidance, and case law come from model knowledge or web search until you connect a research tool.
+- **No citator.** Nothing here checks whether an authority is still good law — keep your citator subscription.
+- **It does not respond to data subjects.** DSAR drafts are for counsel review; identity verification and the actual response stay with your team.
+- **It does not see your systems.** The DSAR system walk and PIA data maps work from the systems list in your practice profile, not from live access.
 
 ## Notes
 

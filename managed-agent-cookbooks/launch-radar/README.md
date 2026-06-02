@@ -8,7 +8,7 @@ This is a **cookbook, not a product.** It will not work out of the box. You need
 
 ## ⚠️ Before you deploy
 
-- **The radar triage is a routing decision, not a legal review.** "Needs review" means a product counsel should look; "FYI" does not mean the launch is fine; "skip" does not clear the launch. Review the full radar, not only the flagged items — the un-flagged items are where you lose the ones you needed to see.
+- **The radar triage is a routing decision, not a legal review.** "Needs review" means a product counsel should look; "FYI" does not mean the launch is fine; "skip" does not clear the launch. Review the full radar, not only the flagged items — missed launches are most likely to be among the un-flagged items.
 - **Risk classification uses the calibration in your plugin configuration.** If your calibration is stale, so is the triage. New product lines, new regulators, new geographies, and new third-party dependencies need to land in the calibration before the radar can route on them.
 - **The trigger keyword list is opinionated.** If your product surface doesn't match the defaults (e.g., you're biometrics-heavy, FedRAMP-bound, or handling minors' data in ways the keywords don't cover), retune before the first run or the memo will miss the cases it was built to catch.
 - **Tracker tickets are untrusted input.** A PM can put anything in a title or description, and an attacker can file a ticket. The triage routes on content; it does not vouch for the ticket.
@@ -17,7 +17,7 @@ This is a **cookbook, not a product.** It will not work out of the box. You need
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-export LINEAR_MCP_URL=... ATLASSIAN_MCP_URL=... ASANA_MCP_URL=... GDRIVE_MCP_URL=...
+export LINEAR_MCP_URL=... ATLASSIAN_MCP_URL=... ASANA_MCP_URL=...
 ../../scripts/deploy-managed-agent.sh launch-radar
 ```
 
@@ -33,11 +33,11 @@ Tracker tickets are untrusted input. A product manager can put arbitrary text in
 
 | Tier | Touches untrusted tracker content? | Tools | Connectors |
 |---|---|---|---|
-| **`tracker-reader`** | **Yes** | `Read`, `Grep` only | Linear, Jira (atlassian), Asana (read-only) |
-| `risk-classifier` / Orchestrator | No | `Read`, `Grep`, `Glob`, `Agent` | Orchestrator only: Linear / Jira / Asana / Drive (read-only) |
-| **`memo-writer`** (Write-holder) | No | `Read`, `Write`, `Edit` | None |
+| **`tracker-reader`** | **Yes** | `Read`, `Grep` only | Linear, Jira (atlassian), Asana — full toolset enabled; restrict to read tools at deploy time or point at a read-only deployment (the manifest does not enforce read-only) |
+| `risk-classifier` / Orchestrator | No | `Read`, `Grep`, `Glob`, `Agent` | None |
+| **`memo-writer`** (Write-holder) | No | `Read`, `Write`, `Edit`, `Glob` | None |
 
-`tracker-reader` returns a length-capped, schema-validated JSON list of launches. `risk-classifier` has no MCP and no network; it works from the validated list plus the user's calibration file. `memo-writer` is the only worker with Write, and produces `./out/launch-radar-<date>.md`. The orchestrator holds no Write and never parses raw ticket bodies itself.
+`tracker-reader` returns a length-capped JSON list of launches conforming to the schema in its manifest (enforce with `scripts/validate.py` in your own harness; the deploy script does not wire validation in). `risk-classifier` has no MCP and no network; it works from the validated list plus the user's calibration file. `memo-writer` is the only worker with Write, and produces `./out/launch-radar-<date>.md`. The orchestrator holds no Write and never parses raw ticket bodies itself.
 
 **Handoff:** when a launch needs a full legal review memo rather than a radar entry, the orchestrator emits a `handoff_request` for the `launch-review` skill (running in a fresh session) rather than drafting the memo inline. `scripts/orchestrate.py` routes it.
 
@@ -45,10 +45,10 @@ Tracker tickets are untrusted input. A product manager can put arbitrary text in
 
 Things you will need to change before this is useful:
 
-- **Tracker pointer.** Edit `mcp_servers` in [`agent.yaml`](./agent.yaml) and [`subagents/tracker-reader.yaml`](./subagents/tracker-reader.yaml) to the MCP URL of your tracker. If you only use one of Jira/Linear/Asana, drop the other two. If your tracker isn't in that list, swap in the MCP you do use and update the `tracker-reader` system prompt accordingly.
-- **Risk calibration.** The `risk-classifier` reads the user's calibration from `../../product-legal/CLAUDE.md` (populated by `/product-legal:cold-start-interview`). If you haven't run cold-start, either do that first or hand-author a CLAUDE.md with "Usually blocks / Usually requires work / Usually FYI" tables before the first scan. Without calibration the classifier falls back to keyword triggers only, which is noisy.
+- **Tracker pointer.** Edit `mcp_servers` in [`subagents/tracker-reader.yaml`](./subagents/tracker-reader.yaml) to the MCP URL of your tracker. If you only use one of Jira/Linear/Asana, drop the other two. If your tracker isn't in that list, swap in the MCP you do use and update the `tracker-reader` system prompt accordingly.
+- **Risk calibration.** The `risk-classifier` reads the deploying team's calibration from the practice profile shipped to the deploy environment (`PRACTICE_PROFILE_PATH`). Use the populated copy that `/product-legal:cold-start-interview` writes to `~/.claude/plugins/config/claude-for-legal/product-legal/CLAUDE.md`, or hand-author a profile with "Usually blocks / Usually requires work / Usually FYI" tables before the first scan. Do not point the classifier at the in-repo `../../product-legal/CLAUDE.md` — that file is a never-populated template and is replaced on every plugin update. Without calibration the classifier falls back to keyword triggers only, which is noisy.
 - **Scan cadence and horizon.** Default is weekly / 6 weeks. Your launch cadence may warrant daily or biweekly; short lead times need a longer horizon. Configure the cadence in your scheduler (cron, Temporal, Airflow, EventBridge), not inside the agent. The horizon is passed in the steering event.
-- **Delivery channel.** The memo goes to `./out/` by default. To post to Slack instead or additionally, either (a) add a Slack MCP to the cookbook and update `memo-writer` to post after writing, or (b) have your orchestration layer pick up `./out/launch-radar-<date>.md` and forward it. This pattern keeps delivery out of the agent for easier testing; pick whichever fits your ops story.
+- **Delivery channel.** The memo goes to `./out/` by default. To post to Slack instead or additionally, either (a) add a Slack MCP to the cookbook and update `memo-writer` to post after writing, or (b) have your orchestration layer pick up `./out/launch-radar-<date>.md` and forward it. This pattern keeps delivery out of the agent for easier testing; pick whichever fits your operations.
 - **Trigger keywords.** The keyword list in the `launch-watcher` system prompt is opinionated (COPPA, HIPAA, AI vendor names, etc.). Delete categories that don't apply to your product, add domain-specific terms (FedRAMP, PCI, HITRUST, TCPA, biometrics, etc.), and retune severity thresholds against your calibration table. Re-deploy after changes.
 - **Privilege header.** `memo-writer` prepends the work-product header from the plugin config. Confirm the exact marking with your GC before deploying — per-jurisdiction variations apply.
 
@@ -56,4 +56,4 @@ Things you will need to change before this is useful:
 
 - **You get:** a working manifest, a security-tiered pipeline, a memo that cites every launch back to its tracker URL, and a handoff path to the full launch-review skill.
 - **You don't get:** a production-ready agent. Point it at your tracker, load your calibration, set the cadence, run an evaluation, and have the product counsel review the first few outputs against their own read of the same tickets before trusting it.
-- **You especially don't get:** a replacement for the product counsel. This agent triages. A lawyer reviews, flags, decides. Every "needs review" item in the memo is a lead, not a verdict.
+- **You especially don't get:** a replacement for the product counsel. This agent triages. A human configures the calibration and trigger keywords; the product counsel reviews the radar, decides which launches need legal work, and makes the call on every one of them. Every "needs review" item in the memo is a lead, not a verdict.

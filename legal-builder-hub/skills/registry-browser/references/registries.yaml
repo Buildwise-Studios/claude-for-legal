@@ -1,5 +1,13 @@
 # Watched Registries
 # Default set. User adds more via /legal-builder-hub:registry-browser.
+#
+# This is a DISCOVERY list, not a trust grant: it controls what can be
+# browsed, not what can be installed without asking. Trust comes from the
+# user's allowlist.yaml. Keep in sync with references/allowlist-default.yaml
+# at the plugin root — the registries here are the ones the shipped default
+# allowlist KNOWS about, and that default requires a first-use confirmation
+# per install (first_use_confirmation: true) until the user sets their own
+# policy.
 
 registries:
   - name: "lpm-skills"
@@ -8,7 +16,14 @@ registries:
     type: "github-repo"
     last_synced: null
 
-  # Add more as the ecosystem grows:
-  # - name: "awesome-legal-skills"
-  #   url: "https://github.com/..."
-  #   type: "github-repo"
+  - name: "awesome-legal-skills"
+    url: "https://github.com/lawvable/awesome-legal-skills"
+    description: "Curated list of AI agent skills for legal work. From Lawvable."
+    type: "github-repo"
+    last_synced: null
+
+  - name: "agent-skills"
+    url: "https://github.com/lawvable/agent-skills"
+    description: "Curated collection of agent skills for legal work. From Lawvable."
+    type: "github-repo"
+    last_synced: null

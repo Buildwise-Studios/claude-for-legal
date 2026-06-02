@@ -30,6 +30,10 @@ interview and without hand-editing YAML.
    > You haven't run setup yet. Run `/ip-legal:cold-start-interview` first —
    > customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/ip-legal/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -40,7 +44,8 @@ interview and without hand-editing YAML.
      trademark, copyright, trade secret, design), practice orientation
      (prosecution / transactions / enforcement / in-house portfolio)
    - **Risk posture** — conservative / middle / aggressive, what each means
-     for clearance thresholds, FTO opinions, and cease-and-desist escalation
+     for clearance triage thresholds, FTO triage, and cease-and-desist
+     escalation
    - **People** — IP counsel, outside firms by IP type, enforcement
      escalation chain, invention committee
    - **Portfolio** — patent families, trademark classes, key marks, countries
@@ -49,8 +54,8 @@ interview and without hand-editing YAML.
      domain squatters, parody / fair use calls
    - **Enforcement posture** — when to send C&D vs. cure letter vs. suit;
      escalation triggers by infringement type
-   - **Clearance and FTO** — search vendors, clearance confidence thresholds,
-     FTO opinion format
+   - **Clearance and FTO** — search vendors, clearance triage thresholds
+     (GREEN/YELLOW/RED routing), FTO triage memo format
    - **OSS review** — license tier policies, ship-blocker licenses, review
      cadence for new dependencies
    - **Workflow** — matter workspaces (matter IDs, family IDs), docket feed,
@@ -98,6 +103,12 @@ interview and without hand-editing YAML.
   counsel"), flag the tension.
 - **Flag guardrail degradation.** The `[review]` flag, source attribution
   tags, and `[verify]` tags on cited authorities are load-bearing — do not
-  remove. Clearance confidence is load-bearing on `/clearance` output — do
-  not suppress.
+  remove. The triage-result line and never-conclude posture on `/clearance`
+  and `/fto-triage` output are load-bearing — do not suppress.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, or gates:
+  update `Last material change: [today's date]` in the profile header, and ask
+  whether the authorizing attorney has reviewed this change. If yes, update
+  `Authorized by:` with the new date; if no, append ` (pending attorney review
+  since [date])` to the existing `Authorized by:` line.

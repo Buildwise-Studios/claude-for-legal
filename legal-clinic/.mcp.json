@@ -22,7 +22,7 @@
       "type": "http",
       "url": "https://mcp.courtroom5.com",
       "title": "Courtroom5",
-      "description": "Courtroom5 — jurisdiction-aware guidance for self-represented litigants: case intake, deadline calculations, procedural next steps."
+      "description": "Courtroom5 — jurisdiction-aware procedural research: case posture and procedural next steps. Do not use it to compute due dates — deadline-related output is a research lead to verify; students and supervisors compute against the governing rule (see the deadlines skill)."
     },
     "Descrybe": {
       "type": "http",

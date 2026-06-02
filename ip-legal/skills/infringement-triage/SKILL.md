@@ -6,7 +6,7 @@ description: >
   assessing whether someone is infringing your IP or whether you might be
   infringing theirs, when a knockoff or copycat surfaces, or when deciding
   whether a matter is worth pursuing and how.
-argument-hint: "[describe the facts and which right — or just the facts and I'll ask which right]"
+argument-hint: "[describe the facts and which right — or just the facts and the skill will ask which right]"
 ---
 
 # /infringement-triage
@@ -366,10 +366,9 @@ for the analysis:
 - **Trade dress cross-flag** as above.
 
 **Route to a design patent specialist for anything beyond first-pass triage.**
-Design patent litigation is a subspecialty (Perkins Coie, Sterne Kessler,
-Desmarais, Kirkland's design team, Gibson Dunn's design group are
-representative; use your practice profile's IP litigation OC as the starting
-point). This skill flags issues; it does not assess infringement.
+Design patent litigation is a subspecialty — route to your practice profile's
+IP litigation OC or a dedicated design-patent specialist. This skill flags
+issues; it does not assess infringement.
 
 ### Utility patent workflow
 
@@ -425,8 +424,8 @@ contentions require.
 ### Was it a secret?
 
 Apply the Defend Trade Secrets Act (18 U.S.C. § 1836 et seq.) for federal
-purposes and the applicable state UTSA (or, in New York / Massachusetts /
-other non-UTSA jurisdictions, the state's common-law test). Flag:
+purposes and the applicable state UTSA (or, in New York — the remaining
+non-UTSA jurisdiction — the common-law/Restatement test). Flag:
 
 - **Not generally known** — to the public or to others in the industry who can
   obtain economic value from disclosure.
@@ -606,7 +605,7 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- **Conclude infringement or non-infringement.** Ever. The loudest guardrail.
+- **Conclude infringement or non-infringement** — no exceptions. This is the loudest guardrail in the plugin.
 - **Substitute for survey evidence, damages experts, or claim construction.**
 - **Evaluate jurisdiction-specific defenses outside the triage's jurisdiction
   scope.** If the facts cross borders, flag that foreign-law analysis is

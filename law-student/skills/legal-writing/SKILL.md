@@ -13,30 +13,38 @@ argument-hint: "[paste draft OR path to file]"
 1. Load `~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md` → class, writing skill level, past feedback patterns.
 2. Apply the framework below.
 3. Read full draft top to bottom. Identify structural type (memo / brief / paper / essay).
-4. Give structured feedback: structure first, analysis depth, clarity & style, top 3 fixes. Flag `[VERIFY]` on any substantive rule call I'm unsure about.
+4. Give structured feedback: structure first, analysis depth, clarity & style, top 3 fixes. Flag `[VERIFY]` on any substantive rule call the skill is unsure about.
 5. At most 1-2 labeled example phrasings — illustrating structural moves, never substantive content on the student's topic. Every example labeled "write yours — don't copy."
 6. If asked to rewrite: refuse gracefully. Offer targeted structural feedback instead.
 7. Append to `~/.claude/plugins/config/claude-for-legal/law-student/writing-feedback/[student]/tracker.md` for pattern detection.
 
 ---
 
+## Real-matter check
+
+If the question the student is asking sounds like it's about a REAL situation — their lease, their parking ticket, their family's business, their friend's arrest, a real dollar amount, a real deadline, a real party name — stop.
+
+> "This sounds like a real situation, not a hypothetical. I can't give you legal advice, and you can't give it either — you're not a lawyer yet. If this is real, [the person] needs an actual lawyer: legal aid, your school's clinic, a lawyer referral service (your jurisdiction's bar association, law society, or legal aid body), or (if there's money) a private attorney. I'm happy to help you understand the general legal concepts involved, but that's study, not advice."
+
+Watch for: real names, real addresses, real dates, specific dollar amounts, "my landlord/boss/parent/friend," "I got a ticket/letter/notice," deadlines measured in days. Any one of these is a trigger.
+
 ## Purpose
 
-Writing is how lawyers think on paper. You don't get better at it by having someone else write it for you. This skill reads your draft, tells you what's weak and why, and points at what to change — *without* writing it for you.
+Legal writing skill develops through practice, not through having someone else write the draft. This skill reads your draft, tells you what's weak and why, and points at what to change — *without* writing it for you.
 
 **Hard rule: no rewriting. Ever.** Structural feedback is the product. Labeled example phrasings are permitted in small doses to illustrate a move (one or two per session, maximum) with an explicit "write yours, don't copy" label. If feedback ever drifts into "here's what your paragraph should say," the skill has failed its purpose.
 
 ## Why the rule is strict
 
-A student who uses Claude to write their memo is a student who didn't learn to write memos. On the exam — or at the firm — that student is slower, less confident, and more wrong than the one who struggled through their own drafts. The point of law school writing practice is the struggle. This skill preserves it.
+A student who relies on Claude to write their memo does not learn to write memos, and on the exam — or at the firm — is slower, less confident, and more wrong than one who worked through their own drafts. The drafting work itself is what law school writing practice builds, and this skill preserves it.
 
 Example phrasings are permitted sparingly because seeing structural moves (not content) is genuinely pedagogical — the 1L who has never read a well-structured analysis paragraph can't invent one from scratch. Showing the move once, labeled, is different from writing the analysis.
 
 ## Confidence discipline
 
 - Structure feedback (organization, IRAC/CRAC, topic sentences, transitions, conciseness, active-voice usage) — confident. Writing is writing.
-- Content feedback (is the rule you stated correct? is the case you cited applicable?) — flag `[VERIFY]` on anything I'm not certain about. Don't silently trust my substantive calls.
-- Citation form feedback (Bluebook, ALWD) — I know the common forms but `[VERIFY]` on edge cases. Check the Bluebook itself for anything non-routine.
+- Content feedback (is the rule stated correct? is the cited case applicable?) — flag `[VERIFY]` on anything the skill is not certain about. The student should not silently trust substantive calls.
+- Citation form feedback — use the citation style for the student's jurisdiction (Bluebook in US law schools; OSCOLA in the UK; AGLC in Australia; McGill in Canada), defaulting to Bluebook if unstated. Common forms are reliable, but flag `[VERIFY]` on edge cases. Check the style guide itself for anything non-routine.
 
 ## Load context
 
@@ -84,7 +92,7 @@ Feedback organized top-down — structure first, then paragraph-level, then sent
 
 ## Analysis depth (the hardest thing for 1Ls)
 
-**Rule statements:** [Present where needed? Accurate? VERIFY-flagged where I'm unsure.]
+**Rule statements:** [Present where needed? Accurate? VERIFY-flagged where unsure.]
 
 **Application:** [Rules applied to the specific facts? Or rule + facts listed without linkage?]
 
@@ -100,7 +108,7 @@ Feedback organized top-down — structure first, then paragraph-level, then sent
 
 **Wordiness:** [Passages that could be cut in half.]
 
-**Citation form:** [Common errors — signals, pincites, id. vs. ibid. Reference Bluebook / ALWD for anything VERIFY-flagged.]
+**Citation form:** [Common errors — signals, pincites, id. vs. ibid. Reference the citation style for your jurisdiction (Bluebook in US law schools; OSCOLA in the UK; AGLC in Australia; McGill in Canada — default Bluebook if unstated) for anything VERIFY-flagged.]
 
 ## Top three fixes (in priority order)
 
@@ -164,4 +172,4 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 - **Write example sentences on the student's actual substantive issue.** Example phrasings illustrate structural moves in general form, not in the specific form the student is working in. If the student is writing about negligence in a car accident hypo, an example sentence about "defendant's breach" is too close to their draft; instead the example should illustrate "rule-application mapping" using a generic placeholder.
 - **Grade like a professor.** Professors have rubrics, assignment-specific expectations, and years of context on what the class is testing. This skill grades against general legal writing standards; use in addition to the professor's feedback, not instead of.
 - **Verify every substantive rule.** Flags `[VERIFY]` on anything it's unsure about; the student must check against their outline/sources.
-- **Fix citation form exhaustively.** Flags common errors and `[VERIFY]` on edge cases. Not a Bluebook checker.
+- **Fix citation form exhaustively.** Flags common errors and `[VERIFY]` on edge cases. Not a checker for your jurisdiction's style guide (Bluebook, OSCOLA, AGLC, or McGill).

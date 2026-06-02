@@ -1,6 +1,8 @@
 # demand-letters/ — pre-litigation demand work
 
-This folder holds the work product for every demand letter the counsel sends: payment demands, breach/cure notices, cease-and-desist, employment separation demands, preservation demands.
+> **Location.** This layout lives at `~/.claude/plugins/config/claude-for-legal/litigation-legal/demand-letters/` (or `./claude-for-legal-config/litigation-legal/demand-letters/` where the home path isn't writable, e.g. Claude Cowork). The copy inside the installed plugin is documentation only — never store live files there; the install directory is replaced on plugin update.
+
+This folder layout holds the work product for every demand letter the counsel sends: payment demands, breach/cure notices, cease-and-desist, employment separation demands, preservation demands.
 
 Separate from `matters/` because:
 

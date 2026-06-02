@@ -21,7 +21,7 @@ argument-hint: "[reg name, or paste reg text/summary]"
 
 ## Purpose
 
-A reg changed. You have policies. This skill finds which policies the change touches and what the gap is between "what the reg now requires" and "what the policy says."
+Given a regulatory change, this skill finds which indexed policies the change touches and what the gap is between "what the reg now requires" and "what the policy says."
 
 ## Load context
 
@@ -36,7 +36,7 @@ If the user asks you to exclude a policy section, requirement, or category from 
 3. Hand the flag to `gap-surfacer`: "This diff was scope-limited. Do not represent it as a complete compliance picture." Include the scope-limitation banner verbatim on any gap tracker entry derived from this diff.
 4. Note what the exclusion means: "Excluding vendor management means the diff will show 'no policy addresses vendor management' — which is worse than showing the gap."
 
-A compliance artifact built on an undisclosed scope exclusion looks like concealment in discovery. The flag is the difference between "we scoped the review" and "we hid the problem."
+A compliance artifact built on an undisclosed scope exclusion looks like concealment in discovery; the flag records that the review was deliberately scoped.
 
 ## Workflow
 
@@ -68,7 +68,7 @@ Read the regulatory change. List each discrete new or changed requirement:
 |---|---|---|---|
 | 1 | [what it requires] | [date] | [section] |
 
-Be specific. "Enhanced disclosure requirements" is not a requirement. "Must disclose X in Y format at Z point in the flow" is.
+Be specific: "Enhanced disclosure requirements" is not a requirement; "Must disclose X in Y format at Z point in the flow" is.
 
 ### Step 2: Map to policies
 

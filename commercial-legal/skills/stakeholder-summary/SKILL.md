@@ -18,7 +18,7 @@ description: >
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
@@ -51,10 +51,10 @@ Ask who this is for if it's not obvious from context.
 The summary is:
 - **One paragraph** for the verdict and what this is (business terms, plain English)
 - **One paragraph** for the catch — the thing the stakeholder would be surprised by later if nobody told them now
-- **A 2-3 item checklist** for what the stakeholder actually needs to do (at most three items; if you want a fourth, the first three aren't tight enough)
+- **A 2-3 item checklist** for what the stakeholder actually needs to do (at most three items)
 - **A one-line close** with approval timing
 
-**Under 200 words total.** If you're writing more, you're including detail the stakeholder doesn't need — they have the memo for that. This is the quick read before the stakeholder hits reply.
+**Under 200 words total.** Anything longer includes detail the stakeholder doesn't need — the full memo carries it. The summary is the quick read; the memo is the reference.
 
 If the close needs a third paragraph, fold it into the checklist instead. Don't let the close grow into a fourth block.
 
@@ -70,7 +70,7 @@ Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/
 
 ```markdown
 [WORK-PRODUCT HEADER — per plugin config ## Outputs]
-<!-- Remove the header above if forwarding outside the legal-privileged circle (e.g., to a business stakeholder, counterparty, or vendor). Confirm the correct marking for your jurisdiction and matter before forwarding. -->
+<!-- Internal business stakeholders are typically inside the corporate privilege circle (the company is the client) — keep the header or a confidentiality marking and limit distribution to need-to-know. Remove the header and sanitize before sending to recipients outside the circle (e.g., a counterparty, vendor, or other external party). Confirm the correct marking for your jurisdiction and matter before forwarding. -->
 
 **[Counterparty] [Agreement type]** — [READY TO SIGN | NEEDS CHANGES | BLOCKED]
 
@@ -129,7 +129,7 @@ If the review has 🔴 or 🟠 issues, the summary still needs to be two paragra
 
 ```markdown
 [WORK-PRODUCT HEADER — per plugin config ## Outputs]
-<!-- Remove the header above if forwarding outside the legal-privileged circle. -->
+<!-- Keep the header for internal need-to-know distribution; remove it and sanitize before sending outside the privilege circle (counterparty, vendor, other external party). -->
 
 **[Counterparty] [Agreement type]** — NEEDS CHANGES
 
@@ -187,6 +187,6 @@ If the upstream review surfaced no escalations, omit the block.
 
 ## A note on tone
 
-Stakeholders remember two things about legal: did it block me, and did it make sense. This skill is how legal makes sense. Write like you're explaining it to a smart colleague over coffee, not like you're writing a memo to file.
+Write in plain business language, as if explaining the result to a colleague — not in the style of a memo to file.
 
 If the honest summary is "this is fine, sign it," say that. Don't pad a clean review into three paragraphs to look thorough.

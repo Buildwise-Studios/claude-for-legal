@@ -23,13 +23,13 @@ argument-hint: "[class name, with past exams shared or paths to them]"
 
 ## Purpose
 
-Every professor's exam has fingerprints. The same hypo structures recur. The same traps come back. The same subject ratios repeat. Students who have prior exams study smarter; students who don't, study harder. This skill analyzes the prior exams you have and surfaces the patterns.
+Professors' exams show recurring patterns: the same hypo structures, traps, and subject ratios repeat across years, and prior exams let a student weight study time toward what is most likely to recur. This skill analyzes the prior exams you have and surfaces the patterns.
 
-Not magic. A forecast, not a prediction. The skill cannot tell you what's on the exam — it can tell you what's been on past exams and what's likely to recur based on syllabus coverage.
+It produces a forecast, not a prediction. The skill cannot tell you what's on the exam — it can tell you what's been on past exams and what's likely to recur based on syllabus coverage.
 
 ## Confidence discipline
 
-- Pattern analysis (what subjects appeared, how many questions per topic, how often policy vs. rule-application) — confident where the exams are clearly in front of me.
+- Pattern analysis (what subjects appeared, how many questions per topic, how often policy vs. rule-application) — confident where the exams have been provided.
 - Inference about likely emphasis on upcoming exam — `[UNCERTAIN]` is the default; these are forecasts, not certainties. Explicitly frame as "based on the [N] past exams you shared, [topic] appeared in [M]. Your upcoming exam may emphasize it, or the professor may rotate — use this as a weighting for review time, not a prediction."
 - If only 1-2 past exams are available, say so explicitly — any pattern inferred from 1 exam is noise.
 - If the professor is new (no past exams available), skill can't forecast. Say so; fall back to syllabus-based "these are the subjects covered" only.

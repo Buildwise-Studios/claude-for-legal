@@ -3,7 +3,7 @@ name: nda-review
 description: >
   Reference: fast triage of inbound NDAs into GREEN / YELLOW / RED so the team only
   spends lawyer time on the ones that need it. Built for sales and BD to self-serve
-  before pinging legal. Loaded by /commercial-legal:review when an NDA is detected.
+  before contacting legal. Loaded by /commercial-legal:review when an NDA is detected.
 user-invocable: false
 ---
 
@@ -17,13 +17,13 @@ user-invocable: false
 
 ## Destination check
 
-Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and clients (for work product) waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
+Before producing output, check where it's going. If the user has named a destination (a channel, a distribution list, a counterparty, "everyone"), ask whether it's inside the privilege circle. Public channels, company-wide lists, counterparty/opposing counsel, vendors, and anyone else outside the attorney-client relationship who is not assisting counsel waive the protection. When the destination looks outside the circle, flag it and offer (a) the privileged version for legal only, (b) a sanitized version for the broader channel, or (c) both — don't silently apply a privileged header and then help paste it somewhere the header won't protect it. See the canonical `## Shared guardrails → Destination check` in this plugin's CLAUDE.md.
 
 ## Purpose
 
-Most inbound NDAs are fine. A few have landmines. This skill sorts them in under a minute so legal only reads the ones that matter.
+Most inbound NDAs conform to standard positions; a small number contain high-risk terms. This skill sorts them quickly so legal only reads the ones that need attorney attention.
 
-**The goal:** a GREEN NDA should need nothing more than a signature. A YELLOW needs a lawyer's eyes on one or two specific things. A RED stops before anyone wastes time.
+**The goal:** a GREEN NDA should need nothing more than a signature. A YELLOW needs a lawyer's review on one or two specific items. A RED stops the process before further time is spent.
 
 ## Load the playbook first
 
@@ -55,11 +55,18 @@ Classify the NDA into one of three buckets by applying the positions from `~/.cl
 
 The NDA satisfies every position in the team's playbook, and no term triggers a RED flag per the playbook. Examples of checks the playbook typically covers: mutuality, term length, survival period, carveouts, governing law, restrictive covenants, fee-shifting. Confirm each one against `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` before calling GREEN.
 
-**GREEN requires attorney-reviewed playbook positions.** GREEN is the only path to signature without lawyer review. It cannot be issued against default or absent positions. Before issuing GREEN, check: does the practice profile have an attorney-reviewed `## NDA triage positions` section? If not:
+**GREEN requires attorney-attested playbook positions — check the stamp, not the adjective.** GREEN is the only path to signature without lawyer review. It cannot be issued against default or absent positions, and "the positions look thoughtful" is not the test. Before issuing GREEN, check the matching side's `NDA triage positions` section in the practice profile for BOTH of:
+
+1. **Positions present** — the NDA terms (term length, confidentiality period, mutual vs. one-way, residuals, non-solicit, governing law) are filled in with no `[PLACEHOLDER]` or `[DEFAULT]` markers.
+2. **Attestation stamp filled in** — `Reviewed by:` names an attorney and `Reviewed on:` has a date.
+
+If the positions are missing, or any still carries a `[PLACEHOLDER]` or `[DEFAULT]` marker:
 
 > I can't issue GREEN without attorney-reviewed NDA positions in your practice profile. Run `/commercial-legal:cold-start-interview --full` with your commercial counsel to set them, or route this NDA for attorney review. Issuing GREEN against defaults means a non-lawyer set the positions the next non-lawyer relies on.
 
-Do not route to signature on defaults. YELLOW is the right call when positions are missing — it surfaces the NDA to a human who can decide.
+If the positions are present but the `Reviewed by` / `Reviewed on` stamp is empty: **cap the triage at YELLOW** and add one line explaining why — "Positions present but not attorney-attested — have [attorney contact from the practice profile] confirm them and record `Reviewed by` / `Reviewed on` to enable GREEN."
+
+Do not route to signature on default, placeholder, or unattested positions. YELLOW is the right call in all three cases — it surfaces the NDA to a human who can decide.
 
 **Output:**
 
@@ -174,7 +181,7 @@ Default to the smallest edit that achieves the playbook position:
 - Replace a **sentence** before replacing the clause.
 - Only replace a **whole clause** when the counterparty's version is so far from your position that surgical edits would be harder to read than a fresh draft — and when you do, say so in the transmittal: "We've replaced §8.2 rather than marking it up because the changes were extensive. Happy to walk you through the delta."
 
-When in doubt, smaller. A client who receives a surgical redline trusts that you read carefully. A client who receives a wholesale replacement wonders whether you read at all.
+When in doubt, choose the smaller edit. A surgical redline signals careful reading; a wholesale replacement invites doubt about whether the document was read at all.
 
 ## Jurisdiction assumption
 
@@ -262,7 +269,7 @@ Per `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md` `## P
 
 ## Counterparty context
 
-**BigCo NDAs:** Fortune 500 counterparties generally won't negotiate NDAs. Calibrate: is the RED flag truly a deal-breaker, or is it "different from our form"? If the business relationship matters, the call is whether to accept their paper — escalate that decision, don't make it.
+**Large-enterprise NDAs:** Fortune 500 counterparties generally won't negotiate NDAs. Calibrate: is the RED flag truly a deal-breaker, or is it "different from our form"? If the business relationship matters, the call is whether to accept their paper — escalate that decision, don't make it.
 
 **Startup NDAs:** Will usually take our paper. If their NDA has issues, the fastest path is often "let's use ours" rather than redlining theirs.
 
@@ -275,7 +282,7 @@ If connected:
 
 ## What this skill does NOT do
 
-- It does not negotiate. It sorts.
+- It does not negotiate; it sorts.
 - It does not draft an NDA. If the answer is "use our paper," the user pulls our form from [CLM or document system].
 - It does not make the call on YELLOW items. It surfaces them for a human.
 - It does not state a position on any NDA term. Positions live in `~/.claude/plugins/config/claude-for-legal/commercial-legal/CLAUDE.md`.

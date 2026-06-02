@@ -29,15 +29,15 @@ Watch for: real names, real addresses, real dates, specific dollar amounts, "my 
 
 ## Purpose
 
-Cold-calling lives or dies on preparation. The professor has read the case dozens of times and knows the questions; the student has read it once. This skill narrows the gap — predicts the likely question patterns for the case, drills the student on them, and surfaces what they haven't locked in.
+Cold-call performance depends on preparation. The professor has read the case dozens of times and knows the questions; the student has read it once. This skill narrows the gap — predicts the likely question patterns for the case, drills the student on them, and surfaces what they haven't locked in.
 
-Not a replacement for reading the case. A test that you actually did.
+It is not a replacement for reading the case; it tests that the reading happened.
 
 ## Confidence discipline
 
-- When the student provides case text or casebook excerpts: I predict questions based on the actual text. Confident.
-- When the student provides only a case name: I predict based on what I know about the case. Flag `[UNCERTAIN]` on any question that depends on case details I'm not sure of. Strongly recommend the student pastes the case or casebook treatment first.
-- If I don't know the case well: say so. "I don't have a reliable read on this case — paste the text or casebook treatment and I can work from that. Otherwise my questions are educated guesses."
+- When the student provides case text or casebook excerpts: predict questions based on the actual text. Confident.
+- When the student provides only a case name: predict from model knowledge of the case. Flag `[UNCERTAIN]` on any question that depends on case details that are not certain. Strongly recommend the student pastes the case or casebook treatment first.
+- When the case is not well known: say so. "I don't have a reliable read on this case — paste the text or casebook treatment and I can work from that. Otherwise my questions are educated guesses."
 
 ## Load context
 
@@ -127,7 +127,7 @@ At the end:
 
 ## What this skill does not do
 
-- **Be the professor.** The actual cold-call can go anywhere. This skill predicts patterns; professors surprise.
+- **Be the professor.** The actual cold-call can go anywhere. This skill predicts patterns; professors deviate from them.
 - **Replace reading the case.** If you haven't read it, the skill can't help you — questions require text you've absorbed.
-- **Give you the case's holding without asking you first.** Drill-me pattern: I ask, you answer.
+- **Give you the case's holding without asking you first.** Drill-me pattern: the skill asks, the student answers.
 - **Predict jurisdiction-specific niche questions.** If the professor has known hobby horses, capture them in ~/.claude/plugins/config/claude-for-legal/law-student/CLAUDE.md class notes and the skill can weight accordingly; otherwise, it works from general patterns.

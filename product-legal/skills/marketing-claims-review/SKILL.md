@@ -31,7 +31,7 @@ argument-hint: "[paste copy, or file path]"
 
 ## Purpose
 
-Marketing wants to say the product is the best. Legal needs it to be true, or at least not provably false. This skill finds the claims that will get a demand letter from a competitor or an inquiry from a regulator, and suggests how to keep the energy while fixing the exposure.
+Marketing copy must be true, or at least not provably false. This skill finds the claims likely to draw a demand letter from a competitor or an inquiry from a regulator, and suggests revisions that preserve the marketing intent while fixing the exposure.
 
 ## Load standards
 
@@ -42,7 +42,7 @@ Read `~/.claude/plugins/config/claude-for-legal/product-legal/CLAUDE.md` → `##
 
 ## Research the applicable standards before clearing copy
 
-Research the currently operative advertising and substantiation standards for the applicable jurisdictions and media (for example, FTC, NAD, state UDAP regimes, sector regulators for healthcare / financial / children's products, and platform-specific policies). Identify what substantiation the *specific claim* requires — who measured it, when, sample size, apples-to-apples basis — not just whether *some* substantiation exists on file. Flag implied claims and comparative claims for heightened scrutiny. Verify currency: endorsement and review guides have been updated recently and continue to evolve. Cite primary sources with pinpoint references. If you cannot verify the current standard, flag for attorney verification — do not state a rule you haven't confirmed.
+Research the currently operative advertising and substantiation standards for the applicable jurisdictions and media (for example, FTC, NAD, state UDAP regimes, sector regulators for healthcare / financial / children's products, and platform-specific policies). Identify what substantiation the *specific claim* requires — who measured it, when, sample size, apples-to-apples basis — not just whether *some* substantiation exists on file. Flag implied claims and comparative claims for heightened scrutiny. Verify currency: endorsement and review guides are updated frequently. Cite primary sources with pinpoint references. If you cannot verify the current standard, flag for attorney verification — do not state a rule you haven't confirmed.
 
 > **Only cite the standards that apply to the specific claims under review.** A blanket list of every FTC guideline, NAD practice note, or sector rule makes the load-bearing ones invisible. Do not cite the Endorsement Guides (16 CFR Part 255) unless the copy contains an endorsement, testimonial, or influencer content. Do not cite disclosure-overlay rules unless a claim in the asset triggers the overlay. Do not cite a sector regulator unless the copy targets or implicates that sector. A standard earns its place in the output by mapping to a specific quoted claim; otherwise drop it.
 
@@ -50,11 +50,11 @@ Research the currently operative advertising and substantiation standards for th
 >
 > **Source attribution tiering.** Tag every citation with its source. For model-knowledge citations, use one of three tiers rather than a single blanket "verify" tag:
 >
-> - `[settled]` — stable, well-known statutory and regulatory references unlikely to have changed (e.g., FTC Act § 5, Lanham Act § 43(a) as a concept). Still verify before approving copy, but lower priority.
+> - `[settled — last confirmed YYYY-MM-DD]` — stable, well-known statutory and regulatory references that have been checked against a primary source on the stated date (e.g., FTC Act § 5, Lanham Act § 43(a) as a concept). The date matters — even "stable" references change. When you can't confirm the date of the last check, use `[model knowledge — verify]` instead; an unconfirmed "settled" is a confident overclaim. Still verify before approving copy, but lower priority.
 > - `[verify]` — model-knowledge citations that are real but should be verified: specific FTC enforcement actions, NAD decisions, state UDAP statutes, sector-specific rules, platform policies, case holdings, thresholds, effective dates, recent updates (the Endorsement Guides and disclosure rules update frequently).
 > - `[verify-pinpoint]` — pinpoint citations (specific subsection letters, CFR subpart references, case paragraph numbers) carry the highest fabrication risk and should ALWAYS be verified against a primary source.
 >
-> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[CourtListener]`, `[FTC site]`, `[NAD]`, `[platform policy]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations (from substantiation files) remain `[user provided]`. The tiering surfaces the real verification work — a reader who verifies everything verifies nothing. Never strip or collapse the tags.
+> Tool-retrieved citations keep their source tag (`[Westlaw]`, `[CourtListener]`, `[FTC site]`, `[NAD]`, `[platform policy]`, or the MCP tool name); web-search citations remain `[web search — verify]`; user-supplied citations (from substantiation files) remain `[user provided]`. The tiering directs the reader's verification effort to the citations that carry the most risk. Never strip or collapse the tags.
 
 ## Claim taxonomy
 
@@ -129,8 +129,8 @@ For each claim:
 **Claim:** "[exact quote]"
 **Type:** [Specific factual | Comparative | Implied | Absolute]
 **Substantiation on file:** [Yes — link | No | Unknown]
-**Call:** [✅ Fine | ⚠️ Needs substantiation | ⚠️ Needs rewording | 🔴 Cut]
-**Suggested fix:** "[alternative phrasing that keeps the energy]"
+**Call:** [🟢 Fine | ⚠️ Needs substantiation | ⚠️ Needs rewording | 🔴 Cut]
+**Suggested fix:** "[alternative phrasing that preserves the marketing intent]"
 **Why:** [one line]
 ```
 
@@ -156,7 +156,7 @@ Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/
 
 ## Summary
 
-[N] claims reviewed. [N]✅ [N]⚠️ [N]🔴
+[N] claims reviewed. [N]🟢 [N]⚠️ [N]🔴
 
 **Ready to ship:** [Yes | With changes below | No — rewrite needed]
 
@@ -174,7 +174,7 @@ Prepend the work-product header from `~/.claude/plugins/config/claude-for-legal/
 
 ## Claim-by-claim
 
-[All the claim blocks from Step 2, grouped: 🔴 first, then ⚠️, then ✅]
+[All the claim blocks from Step 2, grouped: 🔴 first, then ⚠️, then 🟢]
 
 ---
 
@@ -215,6 +215,6 @@ End with the next-steps decision tree per CLAUDE.md `## Outputs`. Customize the 
 
 ## What this skill does not do
 
-- It doesn't write the marketing. It fixes what's wrong with it. The suggested rewrites keep the energy, but the marketer owns the voice.
+- It doesn't write the marketing. It fixes what's wrong with it. The suggested rewrites preserve the marketing intent, but the marketer owns the voice.
 - It doesn't substantiate claims. It identifies which ones need it and who has the data.
 - It doesn't review design or imagery — words only. If an image implies a claim (competitor logo with a red X through it), flag it, but visual review is a human judgment.

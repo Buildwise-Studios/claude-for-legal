@@ -41,7 +41,7 @@ output_schema:
   additionalProperties: false
   properties:
     doc_id:   { type: string, maxLength: 64,  pattern: "^[A-Za-z0-9_.-]+$" }
-    path:     { type: string, maxLength: 512, pattern: "^https://(([A-Za-z0-9-]+\\.)*(box\\.com|datasite\\.com|intralinks\\.com|sharepoint\\.com)|([A-Za-z0-9-]+\\.)*cloudimanage\\.com)/" }
+    path:     { type: string, maxLength: 512, pattern: "^https://(([A-Za-z0-9-]+\\.)*(box\\.com|datasite\\.com|intralinks\\.com|sharepoint\\.com)|drive\\.google\\.com|docs\\.google\\.com|([A-Za-z0-9-]+\\.)*cloudimanage\\.com)/" }
     title:    { type: string, maxLength: 300 }
     doc_type:
       type: string

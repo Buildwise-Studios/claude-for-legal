@@ -4,8 +4,9 @@ description: >
   Suggest community skills based on recent activity in other plugins. Checks
   whether the community has built something relevant to a task and mentions it
   once, non-intrusively. Use when the user says "is there a community skill for
-  this", "what else is out there", or asks for skill recommendations; also runs
-  passively as part of other plugins' workflows.
+  this", "what else is out there", or asks for skill recommendations; can also
+  run as part of other plugins' workflows via a Stop hook each plugin must
+  declare (not wired by default).
 ---
 
 # /related-skills-surfacer
@@ -19,7 +20,7 @@ description: >
 
 ## Purpose
 
-The community might have built the thing you're about to build. This skill notices and mentions it — once, briefly, non-annoyingly.
+Surface community skills relevant to a task the user just completed — once, briefly, and without interrupting.
 
 ## How it runs
 
@@ -41,18 +42,18 @@ Given a task description (what the user was just doing), find registry skills th
 - Practice profile fit (don't suggest litigation skills to a transactional lawyer)
 - Not already installed
 
-**Threshold:** Only surface if the match is strong. Weak matches are noise. Better to surface nothing than to annoy.
+**Threshold:** Only surface if the match is strong. Weak matches are noise — surfacing nothing is better than over-notifying.
 
 ## Output
 
 If strong match:
-> 💡 The community has a skill for this: **[name]** from [registry] — "[description]". `/legal-builder-hub:skill-installer [name]` to try it.
+> The community has a skill for this: **[name]** from [registry] — "[description]". `/legal-builder-hub:skill-installer [name]` to try it.
 
 If no strong match: silent. No output. Don't announce "I found nothing."
 
 ## Frequency limit
 
-Don't surface the same skill twice. If the user didn't install it the first time, they saw it and decided no. Track dismissals in `references/surfaced.json`.
+Don't surface the same skill twice. If the user didn't install it the first time, they saw it and decided no. Track dismissals in `~/.claude/plugins/config/claude-for-legal/legal-builder-hub/surfaced.json` (in Claude Cowork, where that path isn't writable, use `claude-for-legal-config/surfaced.json` in the working folder) — the plugin directory is replaced on update, so dismissal memory must live in the config path.
 
 ## User control
 

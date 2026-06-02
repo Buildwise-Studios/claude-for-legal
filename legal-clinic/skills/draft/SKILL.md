@@ -73,7 +73,7 @@ If the requested document isn't in the template set: "The clinic's templates don
 
 ### Step 2: Gather the facts
 
-Read the intake summary or case notes. For each fact the document needs: do we have it?
+Read the intake summary or case notes. For each fact the document needs, check whether the case notes have it:
 
 | Document needs | Have? | Source |
 |---|---|---|

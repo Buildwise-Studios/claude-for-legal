@@ -30,6 +30,10 @@ without hand-editing YAML.
    > You haven't run setup yet. Run `/regulatory-legal:cold-start-interview`
    > first — customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/regulatory-legal/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -97,7 +101,13 @@ without hand-editing YAML.
   that yields fewer than one item a quarter), flag the tension.
 - **Flag guardrail degradation.** `[verify]` tags on cited regulations,
   source attribution on feed pulls, and the `[review]` flag on gap triage
-  are load-bearing — do not remove. Materiality threshold can be adjusted,
-  but lowering it below the point where the digest becomes noise is the
-  point — warn if that's the direction.
+  are load-bearing — do not remove. The materiality threshold can be
+  adjusted, but lowering it until the digest becomes noise defeats its
+  purpose — warn if the change moves in that direction.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, gates, or the allowlist:
+  update `Last material change: [today's date]` in the profile header, and ask
+  whether the authorizing attorney has reviewed this change. If yes, update
+  `Authorized by:` with the new date; if no, append ` (pending attorney review
+  since [date])` to the existing `Authorized by:` line.

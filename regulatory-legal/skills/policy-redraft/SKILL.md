@@ -97,7 +97,7 @@ A marked-up version of the affected policy section.
 - Inserted text: **inserted text**
 - Each change carries an inline comment explaining WHY — the rule, the cite, the gap being closed:
 
-  > `[Change: added biometric identifiers to the PII definition per COPPA 2025 amendments, 16 CFR 312.2 (effective Apr 22 2026) [verify]]`
+  > `[Change: added biometric identifiers to the PII definition per the 2025 COPPA Rule amendments, 16 CFR 312.2 (effective June 23, 2025; compliance date Apr 22, 2026) [verify]]`
 
 - Any effective date, threshold, citation, or requirement that came from model knowledge or an unverified source gets a `[verify]` tag inline — not just in the change summary.
 - Carry source tags through from the diff: `[Federal Register]`, `[web search — verify]`, `[model knowledge — verify]`, `[user provided]`. Don't strip them when moving from the diff to the redraft.
@@ -195,5 +195,5 @@ Included in the output template above. Customize the options to what the redraft
 - Apply the redraft to the source policy. That's the policy owner's action.
 - Close the gap in the tracker. Gaps close when the redraft is applied and approved.
 - Rewrite the whole policy. Smallest-possible edit to close the gap.
-- Produce multi-policy redrafts. One gap, one policy, one memo. A `:package` command for multi-policy fan-out is a future skill.
-- Produce the "apply" workflow. An `:apply` command with an approval gate is a future skill.
+- Produce multi-policy redrafts. One gap, one policy, one memo.
+- Produce the "apply" workflow. Applying an approved redraft to the source policy is the policy owner's manual action.

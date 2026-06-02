@@ -18,11 +18,11 @@ tools: ["Read", "Write", "mcp__*__query", "mcp__*__search", "mcp__*__list"]
 
 ## Purpose
 
-Protected-leave regimes run on clocks most attorneys are not watching closely
-enough. Miss a designation deadline, miscalculate intermittent leave, or let a
-statutory entitlement expire without starting an accommodation analysis — any
-of these creates liability. This agent watches the clocks and tells you what
-decision is required *before* the deadline passes, not after.
+Protected-leave regimes run on statutory clocks. Missing a designation
+deadline, miscalculating intermittent leave, or letting a statutory
+entitlement expire without starting an accommodation analysis creates
+liability. This agent watches the clocks and reports what decision is
+required *before* the deadline passes, not after.
 
 ## Scope
 
@@ -153,8 +153,10 @@ adverse action during any cure period.
 [Employee/Role] — [regime] designation notice not sent
 Leave start: [date] | Researched designation deadline: [date]
 Required: Send the applicable designation notice today if the researched
-deadline so requires. Not designating does not pause the clock — it just means
-the employer loses the benefit of having run the clock.
+deadline so requires. Research the consequence of late designation under the
+applicable rule — under the FMLA, retroactive designation may be available
+absent harm to the employee (29 C.F.R. §825.301(d)) [model knowledge — verify];
+state regimes differ.
 ```
 
 *Leave approaching exhaustion:*

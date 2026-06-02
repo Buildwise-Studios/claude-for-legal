@@ -116,6 +116,10 @@ tools:
       - { name: read,  enabled: true }
       - { name: write, enabled: true }
       - { name: edit,  enabled: true }
+      # glob is needed to find the prior report at ./out/docket-report-*.md
+      # for the "Posture changes since the last report" section; this leaf
+      # stays non-MCP.
+      - { name: glob,  enabled: true }
 mcp_servers: []
 skills:
   - { path: ../../../litigation-legal/skills/portfolio-status }

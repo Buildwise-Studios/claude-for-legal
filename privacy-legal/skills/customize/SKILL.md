@@ -30,6 +30,10 @@ cold-start interview and without hand-editing YAML.
    > You haven't run setup yet. Run `/privacy-legal:cold-start-interview`
    > first — customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/privacy-legal/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -51,7 +55,7 @@ cold-start interview and without hand-editing YAML.
      exemption application, template response structure
    - **Workflow** — intake path, matter workspaces, policy-monitor sweep
      cadence
-   - **Integrations** — document storage / privacy tool / Slack status,
+   - **Integrations** — document storage / Slack / scheduled-tasks status,
      fallbacks
 
 3. **Ask what they want to change.**
@@ -96,6 +100,14 @@ cold-start interview and without hand-editing YAML.
 - **Flag guardrail degradation.** The `[review]` flag, source attribution
   tags, `[verify]` tags on cited regulations, and the DPIA-trigger
   mandatory-check on `/use-case-triage` are load-bearing — do not remove. If
-  statutory DSAR timelines are adjusted below the regulatory minimum,
-  refuse and explain why.
+  DSAR response timelines are adjusted to be looser than the statutory
+  deadline for any regime in the footprint (an internal SLA longer than the
+  regulatory maximum), refuse and explain why. Tighter internal SLAs are
+  fine.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, or gates:
+  update `Last material change: [today's date]` in the profile header, and ask
+  whether the authorizing attorney has reviewed this change. If yes, update
+  `Authorized by:` with the new date; if no, append ` (pending attorney review
+  since [date])` to the existing `Authorized by:` line.

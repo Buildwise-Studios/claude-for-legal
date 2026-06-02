@@ -28,6 +28,10 @@ hand-editing YAML.
    > You haven't run setup yet. Run `/law-student:cold-start-interview`
    > first — customize is for adjusting a profile you already have.
 
+   Config lives at the home path or, in environments where that isn't
+   writable (Claude Cowork), at `./claude-for-legal-config/law-student/` in
+   the working folder — check both; home wins if both exist.
+
 2. **Show the customizable map.** List what's in the profile, grouped, with a
    one-line summary of the current value:
 
@@ -35,8 +39,7 @@ hand-editing YAML.
      for bar, enrolled clinics or journals
    - **Current classes** — class name, professor, syllabus path, exam format
      (closed/open book, essay/MBE/mixed), cold-call style
-   - **Learning style** — Socratic vs. summary, how much pushback you want,
-     whether the plugin rewrites your work or only critiques structurally
+   - **Learning style** — Socratic vs. summary, how much pushback you want
    - **Outline preferences** — outline format (IRAC/CREAC/case-briefing
      style), level of rule detail, whether to include policy discussion,
      saved outline templates
@@ -80,9 +83,11 @@ hand-editing YAML.
 - **Flag internal inconsistency.** If the change would make the profile
   inconsistent (e.g., "summary-first" learning style + "maximum pushback"
   Socratic setting), flag the tension.
-- **Flag guardrail degradation.** The "no rewriting your writing" rule on
+- **No-rewriting is not configurable.** The "no rewriting your writing" rule on
   `/legal-writing` and `/irac-practice` is load-bearing — the value of the skill is
-  structural feedback, not ghost-writing. If the user asks to turn that off,
-  confirm they understand that the plugin will not write their work for
-  them.
+  structural feedback, not ghost-writing. If the user asks to turn it off,
+  explain why the rule holds and offer targeted structural feedback instead.
 - **One change at a time.** Don't re-ask the whole interview.
+- **Re-attestation on material changes.** When a change touches playbook
+  positions, severity thresholds, escalation chains, gates, or the allowlist:
+  update `Last material change: [today's date]` in the profile header.

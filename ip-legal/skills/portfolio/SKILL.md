@@ -19,8 +19,8 @@ Surfaces what's renewing, adds assets, records filings, and audits the register.
    `~/.claude/plugins/config/claude-for-legal/ip-legal/portfolio.yaml`.
 
 2. **Default (no args):** equivalent to `--report` — show deadlines in the
-   next 90 days grouped by urgency (🔴 lapsed/grace, ⏰ due within window,
-   🟡 upcoming, 🌐 agent-managed, ❓ unknown).
+   next 90 days grouped by urgency (🔴 lapsed/grace; due-within-window;
+   🟡 upcoming; agent-managed; unknown).
 
 3. **`--report [--days N]`:** Mode 2. Change the window with `--days`
    (30 / 60 / 90 / 180 typical). Always prepend the work-product header
@@ -87,19 +87,18 @@ connected to:
   `CONNECTORS.md` at the repo root for how to get one added.
 - **USPTO directly via customer number** — pulls status, deadlines, and
   correspondence for your whole portfolio rather than one application at a
-  time. Not currently available as an MCP; on the wish list in
-  `CONNECTORS.md`.
+  time. Not currently available as an MCP.
 
-Without either, paste your docket or upload a spreadsheet and I'll track from
-there.
+Without either, paste your docket or upload a spreadsheet and the skill
+tracks from there.
 
 ## Purpose
 
 A trademark registration that isn't renewed on time can be cancelled. A patent
-without its maintenance fee paid lapses. A domain that expires can be sniped
-within the hour. All of this is avoidable, and all of it depends on one thing:
-the right deadline is on someone's calendar, tied to the right registration
-number, in the right jurisdiction.
+without its maintenance fee paid lapses. A domain that expires can be
+re-registered by a third party within hours. All of this is avoidable, and
+all of it depends on one thing: the right deadline is on someone's calendar,
+tied to the right registration number, in the right jurisdiction.
 
 This skill maintains that calendar.
 
@@ -309,7 +308,7 @@ IP PORTFOLIO DEADLINE REPORT — [date]
     [Action] — original due [date], grace ends [date]
     Status: [grace / lapsed]
 
-⏰ DUE WITHIN [N] DAYS ([N])
+DUE WITHIN [N] DAYS ([N])
   [Asset ID] / [Jurisdiction] / [Type] / [Mark or title]
     [Action] — due [date]
     Basis: [e.g., "5th-6th anniversary of registration"]
@@ -318,11 +317,11 @@ IP PORTFOLIO DEADLINE REPORT — [date]
 🟡 UPCOMING (next window beyond 30 days, within [N] days)
   [list]
 
-🌐 AGENT-MANAGED ([N])
+AGENT-MANAGED ([N])
   [Asset ID] / [Jurisdiction] — managed by [local agent]; confirm directly
   [Asset ID] / [Jurisdiction] — no local agent recorded; add with --update
 
-❓ UNKNOWN ([N])
+UNKNOWN ([N])
   [Asset ID] — missing [field]; cannot compute deadline
   Confirm with [IP management system / USPTO TSDR / relevant registry] before relying on this report.
 

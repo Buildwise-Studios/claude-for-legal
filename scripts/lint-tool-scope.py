@@ -9,9 +9,12 @@ below — keeping write and external-channel access on the leaves, not the orche
 
   1. No `mcp_toolset` entries on the orchestrator — MCP clients live on the
      subagent leaves, not the parent.
-  2. No `write` enabled in any `agent_toolset*` config — only the designated
+  2. Empty top-level `mcp_servers:` on the orchestrator — a bare server
+     declaration is connector access waiting to be granted, and the leaves
+     declare their own servers.
+  3. No `write` enabled in any `agent_toolset*` config — only the designated
      writer leaf gets Write.
-  3. No Slack tool (`slack_send_message` or any `slack_*`) granted. Orchestrators
+  4. No Slack tool (`slack_send_message` or any `slack_*`) granted. Orchestrators
      emit `handoff_request` instead of calling Slack directly.
 
 Exits non-zero with a message naming the offending file + tool on any
@@ -34,6 +37,16 @@ def _lint_one(path: Path) -> list[str]:
     errs: list[str] = []
     with path.open() as f:
         doc = yaml.safe_load(f)
+    servers = doc.get("mcp_servers") or []
+    if servers:
+        names = ", ".join(
+            str(s.get("name", "<unnamed>")) if isinstance(s, dict) else "<invalid>"
+            for s in servers
+        )
+        errs.append(
+            f"{path}: orchestrator must not declare mcp_servers ({names}); "
+            f"subagent leaves declare their own servers"
+        )
     tools = doc.get("tools") or []
     for idx, entry in enumerate(tools):
         if not isinstance(entry, dict):

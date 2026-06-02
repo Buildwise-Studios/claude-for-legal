@@ -18,7 +18,14 @@ whose enforcement does not depend on Claude correctly analyzing the skill.
 
 ```yaml
 # allowlist.yaml
-mode: permissive    # permissive | restrictive
+mode: restrictive    # restrictive (fail-closed — the shipped default) | permissive (warn-and-ask)
+
+# Only present in the shipped default. When true, even allowlisted sources
+# require a per-install confirmation naming the registry and publisher — the
+# listed registries are "known", not "trusted", until the user says so.
+# The full cold-start interview omits this flag once the user has reviewed
+# their registry list; quick start keeps it.
+first_use_confirmation: true
 
 registries:
   - https://github.com/legalopsconsulting/lpm-skills
@@ -63,9 +70,9 @@ mean accepting every license the source happens to ship. The `licenses:` field
 is a separate gate at the per-skill level: the `registries:` and `publishers:`
 lists answer "is this source trustworthy," and `licenses:` answers "are the
 obligations this skill carries acceptable for how I plan to use it." For a tool
-that installs third-party code into a legal workspace, not tracking licenses is
-a credibility gap — a lawyer who can't say what licenses are in their own
-environment can't advise on licenses in anyone else's.
+that installs third-party code into a legal workspace, license tracking is
+required: without it, the user cannot state which license obligations are
+present in their own environment.
 
 ### How license strings are read — as data, not instructions
 
@@ -82,20 +89,12 @@ allowed to influence whether an identifier ends up on the allowlist.
 
 ## Modes
 
-### `permissive` (default)
+### `restrictive` (the shipped default)
 
-Intended for individual practitioners experimenting with community skills.
-
-- Warn on anything not on the allowlist.
-- Install proceeds after the user explicitly accepts the warning.
-- The warning surfaces: registry origin, publisher, any MCP connectors the skill
-  would install, and any tool permissions beyond Read/Write/Glob.
-
-### `restrictive` (enterprise / firm deployments)
-
-Intended for firm-wide deployments, in-house legal teams with managed tooling,
-or any environment where the administrator is not the same person as the
-installer.
+The mode the shipped default allowlist uses — so it is also what governs an
+environment that never ran setup. Intended for firm-wide deployments, in-house
+legal teams with managed tooling, or any environment where the administrator
+is not the same person as the installer.
 
 - Refuse to install anything sourced from a registry not on the list.
 - Refuse to install anything from a publisher not on the list.
@@ -104,15 +103,38 @@ installer.
   allowlist, then re-run the install.
 - The installer never writes files in restrictive mode unless all checks pass.
 
+### `permissive` (explicit opt-in)
+
+Intended for individual practitioners experimenting with community skills.
+This mode is never the silent fallback — it exists only when the user chose it:
+the cold-start quick start writes a permissive allowlist after telling the user
+what that means, and the full interview offers it for solo / small-firm setups.
+
+- Warn on anything not on the allowlist.
+- Install proceeds after the user explicitly accepts the warning.
+- The warning surfaces: registry origin, publisher, any MCP connectors the skill
+  would install, and any tool permissions beyond Read/Write/Glob.
+
 ## Default behavior when the file is absent
 
-If `allowlist.yaml` does not exist, the installer treats the environment as
-`permissive` with an empty allowlist — everything is "not on the list," so
-every install surfaces a warning, and the user must explicitly accept before
-anything is written.
+If `allowlist.yaml` does not exist, the installer copies the shipped default
+(`references/allowlist-default.yaml` in the plugin root) to the config path,
+tells the user it did so, and uses it. The shipped default is `restrictive`:
+anything outside its registry and publisher lists is refused until the user
+adds it — by running `/legal-builder-hub:cold-start-interview` (which writes a
+policy matched to their deployment) or by editing the file directly.
 
-The installer does NOT silently default to "allow all." Absent allowlist =
-visible warning every time.
+The shipped default also sets `first_use_confirmation: true`: the
+registries it lists are *known*, not *trusted*. Every install
+from them asks a confirmation naming the registry and publisher. Those sources
+are third-party GitHub organizations — the maintainers curating them at ship
+time is not the same thing as the user deciding to trust them. Durable,
+no-prompt trust exists only after the user grants it through setup.
+
+The installer never proceeds with no allowlist and never silently defaults to
+"allow all." No setup at all = the shipped fail-closed default with first-use
+confirmation. A permissive allowlist exists only when the user explicitly
+chose one.
 
 ## How the installer uses this
 
@@ -132,11 +154,12 @@ a trusted publisher does not make it so.
 
 ## Cold-start note
 
-The cold-start interview should ask whether to enable restrictive mode when
-setting up the plugin for an enterprise or firm environment. The recommended
-default for any multi-user deployment is restrictive with an explicit allowlist
-maintained by the administrator. Individual practitioners may reasonably
-choose permissive.
+The cold-start interview writes `allowlist.yaml` on both its paths: quick
+start writes an explicit permissive policy seeded from the shipped defaults;
+full setup asks which mode fits the deployment and writes a custom policy.
+The recommended mode for any multi-user deployment is restrictive with an
+explicit allowlist maintained by the administrator. Individual practitioners
+may reasonably choose permissive.
 
 ## Limits of this mechanism
 
