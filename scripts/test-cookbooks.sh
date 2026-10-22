@@ -15,6 +15,17 @@ if ! python3 "$ROOT/scripts/lint-tool-scope.py"; then
   fail=1
 fi
 
+# orchestrate.py imports jsonschema (scripts/requirements.txt). Skip when the
+# extra is missing so cookbook dry-runs still pass on a clean tree.
+if python3 -c 'import jsonschema' 2>/dev/null; then
+  if ! python3 "$ROOT/scripts/test_orchestrate_handoff.py"; then
+    echo "  ✗ orchestrate handoff tests" >&2
+    fail=1
+  fi
+else
+  echo "  ⚠ skip orchestrate handoff tests (pip install -r scripts/requirements.txt)" >&2
+fi
+
 for d in "$ROOT"/managed-agent-cookbooks/*/; do
   slug=$(basename "$d")
   if ! bash "$ROOT/scripts/deploy-managed-agent.sh" "$slug" --dry-run 2>&1 | tail -n +2 | python3 -c "

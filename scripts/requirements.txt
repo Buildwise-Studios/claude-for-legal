@@ -1,0 +1,3 @@
+# Python extras for scripts/ (not needed to use the plugins).
+# orchestrate.py and validate.py import jsonschema at module load.
+jsonschema>=4.0.0
