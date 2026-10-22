@@ -15,6 +15,11 @@ if ! python3 "$ROOT/scripts/lint-tool-scope.py"; then
   fail=1
 fi
 
+if ! python3 "$ROOT/scripts/test_orchestrate_handoff.py"; then
+  echo "  ✗ orchestrate handoff tests" >&2
+  fail=1
+fi
+
 for d in "$ROOT"/managed-agent-cookbooks/*/; do
   slug=$(basename "$d")
   if ! bash "$ROOT/scripts/deploy-managed-agent.sh" "$slug" --dry-run 2>&1 | tail -n +2 | python3 -c "
